@@ -8,6 +8,7 @@ export default defineConfig({
     vue(),
     VitePWA({
       includeAssets: ['favicon.png', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],  
+      registerType: 'autoUpdate',
       manifest: {
         name: 'Handball 4 you',
         short_name: 'H4Y',
