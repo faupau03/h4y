@@ -22,7 +22,7 @@
             />
             <img
                 v-if="club"
-                :src="'/logos/clubs/' + club.no + '.png'"
+                :src="'logos/clubs/' + club.no + '.png'"
                 alt=""
                 class="w-1/3 h-1/3 my-10 ml-5 rounded-lg border border-gray-500"
             />
