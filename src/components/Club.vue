@@ -97,10 +97,19 @@
                         <hr
                             class="bg-gray-400 text-black h-[1.5px] mb-2 -mt-3"
                         />
+                        <router-link to="team" class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900">Zum Team</router-link>
                         <div v-if="teamLoading">Loading...</div>
                         <div v-else>
                             <div id="league-info">
                                 <!-- Information about how many games and button to team component -->
+                            </div>
+                            <div id="no-data" v-show="!teamMatches.length">
+                                <div id="no-future-matches" v-show="!showAll">
+                                    Keine zukünftigen Spiele
+                                </div>
+                                <div v-show="showAll">
+                                    Keine Spiele in dieser Klasse
+                                </div>
                             </div>
                             <div
                                 v-for="match in teamMatches"
@@ -151,6 +160,10 @@
                                             {{ match.gGuestGoals }}
                                         </div>
                                     </div>
+                                    <div id="info" class="col-span-3 text-gray-600" :class="match.gComment.length > 1 ? 'flex': 'hidden'">
+                                        <InformationCircleIcon class="h-4 w-4 mt-1 mr-1"/>
+                                        {{ match.gComment }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -177,6 +190,7 @@ import {
     StarIcon,
     ClockIcon,
     LocationMarkerIcon,
+    InformationCircleIcon,
 } from "@heroicons/vue/solid";
 import { StarIcon as StarIconOutline } from "@heroicons/vue/outline";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
