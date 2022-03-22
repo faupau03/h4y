@@ -1,11 +1,7 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from "./components/HelloWorld.vue";
-import { onUpdated, ref } from "vue";
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import { ViewListIcon, StarIcon, SearchIcon } from "@heroicons/vue/outline";
-
 import { registerSW } from "virtual:pwa-register";
 
 import { onMounted } from "vue";
@@ -72,10 +68,3 @@ onMounted(() => {
         </div>
     </div>
 </template>
-
-<style>
-@import url(https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.min.css);
-.rounded-xl {
-    border-radius: 1rem;
-}
-</style>
