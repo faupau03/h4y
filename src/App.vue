@@ -6,17 +6,24 @@ import { onUpdated, ref } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import { ViewListIcon, StarIcon, SearchIcon } from "@heroicons/vue/outline";
 
+import { registerSW } from "virtual:pwa-register";
 
 import { onMounted } from "vue";
+
+if ("serviceWorker" in navigator) {
+    // && !/localhost/.test(window.location)) {
+    registerSW();
+}
 
 const localFavorites = ref([]);
 const gym = ref({});
 
 onMounted(() => {
-    console.log("onMounted");   
-    localFavorites.value = JSON.parse(localStorage.getItem("favorites") || "[]");
+    console.log("onMounted");
+    localFavorites.value = JSON.parse(
+        localStorage.getItem("favorites") || "[]"
+    );
 });
-
 </script>
 
 <template>
