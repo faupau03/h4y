@@ -14,42 +14,42 @@ import Gym from "./components/Gym.vue";
 
 const routes = [
     {
-        path: '/', component: Leagues, meta: {
+        path: import.meta.env.BASE_URL + '/', component: Leagues, meta: {
             KeepAlive: true // Need to be cached
         }
     },
     {
-        path: '/leagues', component: Leagues, meta: {
+        path: import.meta.env.BASE_URL + '/leagues', component: Leagues, meta: {
             KeepAlive: true // Need to be cached
         }
     },
     {
-        path: '/favorites', component: Favorites, meta: {
+        path: import.meta.env.BASE_URL + '/favorites', component: Favorites, meta: {
             KeepAlive: true // Need to be cached
         }
     },
     {
-        path: '/search', component: Search, meta: {
+        path: import.meta.env.BASE_URL + '/search', component: Search, meta: {
             KeepAlive: true // Need to be cached
         }
     },
     {
-        path: '/match', component: Match, meta: {
+        path: import.meta.env.BASE_URL + '/match', component: Match, meta: {
             KeepAlive: true // Need to be cached
         }
     },
     {
-        path: '/club', component: Club, meta: {
+        path: import.meta.env.BASE_URL + '/club', component: Club, meta: {
             KeepAlive: true // Need to be cached
         }
     },
     {
-        path: '/gym', component: Gym, meta: {
+        path: import.meta.env.BASE_URL + '/gym', component: Gym, meta: {
             KeepAlive: true // Need to be cached
         }
     },
     {
-        path: '/settings', component: Settings, meta: {
+        path: import.meta.env.BASE_URL + '/settings', component: Settings, meta: {
             KeepAlive: true // Need to be cached
         }
     },

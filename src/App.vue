@@ -3,8 +3,7 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { ViewListIcon, StarIcon, SearchIcon } from "@heroicons/vue/outline";
 import { registerSW } from "virtual:pwa-register";
-
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 
 if ("serviceWorker" in navigator) {
     // && !/localhost/.test(window.location)) {
@@ -30,7 +29,7 @@ onMounted(() => {
             class="z-10 bg-white fixed bottom-0 w-full border-t border-gray-200 flex"
         >
             <router-link
-                to="/leagues"
+                to="leagues"
                 class="flex flex-grow items-center justify-center p-2 hover:text-indigo-500"
                 active-class="text-indigo-500"
             >
@@ -42,7 +41,7 @@ onMounted(() => {
                 </div>
             </router-link>
             <router-link
-                to="/favorites"
+                to="favorites"
                 active-class="text-indigo-500"
                 class="flex flex-grow items-center justify-center p-2 hover:text-indigo-500"
             >
@@ -54,7 +53,7 @@ onMounted(() => {
                 </div>
             </router-link>
             <router-link
-                to="/search"
+                to="search"
                 class="flex flex-grow items-center justify-center p-2 hover:text-indigo-500"
                 active-class="text-indigo-500"
             >
