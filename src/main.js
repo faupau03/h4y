@@ -11,10 +11,16 @@ import Settings from "./components/Settings.vue";
 import Match from "./components/Match.vue";
 import Club from "./components/Club.vue";
 import Gym from "./components/Gym.vue";
+import Team from "./components/Team.vue";
 
 const routes = [
     {
         path: import.meta.env.BASE_URL + '/', component: Leagues, meta: {
+            KeepAlive: true // Need to be cached
+        }
+    },
+    {
+        path: import.meta.env.BASE_URL + '/team', component: Team, meta: {
             KeepAlive: true // Need to be cached
         }
     },

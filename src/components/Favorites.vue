@@ -13,6 +13,17 @@
                 <p class="font-bold" :class="showMenu ? '' : 'ml-[calc(100%-2.5rem)] -mr-2'">Verein</p>
                 <div
                     v-for="favorite in favorites"
+                    v-show="favorite.type == 'club'"
+                    class="rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-indigo-600 h-9 break-all text-indigo-100 p-2 my-1 overflow-hidden"
+                    :class="showMenu ? '' : 'ml-[calc(100%-3.2rem)] -mr-2'"
+                    @click="selectFavorite(favorite)"
+                >
+                    {{ favorite.name }}
+                </div>
+                <p class="font-bold" :class="showMenu ? '' : 'ml-[calc(100%-2.5rem)] -mr-2'">Team</p>
+                <div
+                    v-for="favorite in favorites"
+                    v-show="favorite.type == 'team'"
                     class="rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-indigo-600 h-9 break-all text-indigo-100 p-2 my-1 overflow-hidden"
                     :class="showMenu ? '' : 'ml-[calc(100%-3.2rem)] -mr-2'"
                     @click="selectFavorite(favorite)"
@@ -61,9 +72,10 @@ const getSelectedFavorite = () => {
     } else {
         selectedFavorite.value = {};
     }
+    console.log(selectedFavoriteLoc);
     let isFavorite = false;
     favorites.value.forEach((favorite) => {
-        if (favorite == selectedFavorite.value) {
+        if (favorite.type == selectedFavorite.value.type && favorite.id == selectedFavorite.value.id) {
             isFavorite = true;
         }
     });

@@ -97,7 +97,7 @@
                         <hr
                             class="bg-gray-400 text-black h-[1.5px] mb-2 -mt-3"
                         />
-                        <router-link to="team" class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900">Zum Team</router-link>
+                        <router-link :to="'team#' + teamID + ';' + team.gClassID + ';' + club_no" v-show="teamID" class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900">Zum Team</router-link>
                         <div v-if="teamLoading">Loading...</div>
                         <div v-else>
                             <div id="league-info">
@@ -224,7 +224,7 @@ const doClose = (close, open) => {
         return;
     }
     const refItem = elements.value.find((elm) => {
-        return elm.getAttribute("data-id") === teamID;
+        return elm.getAttribute("data-id") === teamID.value;
     });
     console.log(refItem);
     close(refItem);
@@ -271,13 +271,14 @@ const fetchTeamMatches = async (classID) => {
             (team) => team.gClassID === classID
         ).matches;
         teamLoading.value = false;
+        teamID.value = null;
         return;
     }
     const team_id = json[0]["content"]["score"].find((element) =>
         element.tabTeamname.includes(club.value.lname)
     );
     console.log(team_id.tabTeamID);
-
+    teamID.value = team_id.tabTeamID;
     const response2 = await fetch(
         "https://spo.handball4all.de/service/if_g_json.php?ca=0&cmd=ps&cl=" +
             classID +
