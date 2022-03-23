@@ -97,7 +97,7 @@
                         <hr
                             class="bg-gray-400 text-black h-[1.5px] mb-2 -mt-3"
                         />
-                        <router-link :to="'team#' + teamID + ';' + team.gClassID + ';' + club_no" v-show="teamID" class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900">Zum Team</router-link>
+                        <router-link :to="'team#' + teamID + ';' + team.gClassID + ';' + club.no" v-show="teamID" class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900">Zum Team</router-link>
                         <div v-if="teamLoading">Loading...</div>
                         <div v-else>
                             <div id="league-info">

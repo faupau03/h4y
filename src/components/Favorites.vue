@@ -10,7 +10,12 @@
                 @click="showMenu = !showMenu"
             />
             <div class="mr-5 transition-all">
-                <p class="font-bold" :class="showMenu ? '' : 'ml-[calc(100%-2.5rem)] -mr-2'">Verein</p>
+                <p
+                    class="font-bold"
+                    :class="showMenu ? '' : 'ml-[calc(100%-2.5rem)] -mr-2'"
+                >
+                    Verein
+                </p>
                 <div
                     v-for="favorite in favorites"
                     v-show="favorite.type == 'club'"
@@ -20,18 +25,27 @@
                 >
                     {{ favorite.name }}
                 </div>
-                <p class="font-bold" :class="showMenu ? '' : 'ml-[calc(100%-2.5rem)] -mr-2'">Team</p>
+                <p
+                    class="font-bold"
+                    :class="showMenu ? '' : 'ml-[calc(100%-2.5rem)] -mr-2'"
+                >
+                    Team
+                </p>
                 <div
                     v-for="favorite in favorites"
                     v-show="favorite.type == 'team'"
                     class="rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-indigo-600 h-9 break-all text-indigo-100 p-2 my-1 overflow-hidden"
-                    :class="showMenu ? '' : 'ml-[calc(100%-3.2rem)] -mr-2'"
+                    :class="showMenu ? 'flex' : 'ml-[calc(100%-3.2rem)] -mr-2'"
                     @click="selectFavorite(favorite)"
                 >
-                    {{ favorite.name }}
+                    <span class="ml-0 mr-auto">{{ favorite.name }}</span>
+                    <span class="ml-auto mr-0">
+                        {{ favorite.clubname }}
+                    </span>
                 </div>
             </div>
         </div>
+
         <Club
             class="w-[calc(100%-4rem)] ml-auto mr-0"
             v-if="selectedFavorite && selectedFavorite.type == 'club'"
@@ -39,14 +53,27 @@
             :key="selectedFavorite.no"
             @updateFavorites="getFavorites"
         />
+        <Team
+            class="w-[calc(100%-4rem)] ml-auto mr-0"
+            v-else-if="selectedFavorite && selectedFavorite.type == 'team'"
+            :team_id="selectedFavorite.id"
+            :team_class="selectedFavorite.classid"
+            :team_club="selectedFavorite.clubno"
+            :key="selectedFavorite.id"
+            @updateFavorites="getFavorites"
+        />
+        
         <!-- Other components like, match, gym, ... -->
-        <div v-else class="w-[calc(100%-4rem)] h-full ml-auto mr-0 flex justify-center items-center px-5">
-            <span class="text-lg ">
-                Noch keine Favoriten angelegt. <br> Gehen Sie dafür zur Suche oder den Ligen.
+        <div
+            v-else
+            class="w-[calc(100%-4rem)] h-full ml-auto mr-0 flex justify-center items-center px-5"
+        >
+            <span class="text-lg">
+                Noch keine Favoriten angelegt. <br />
+                Gehen Sie dafür zur Suche oder den Ligen.
             </span>
-            
         </div>
-
+        
     </div>
 </template>
 
@@ -54,6 +81,7 @@
 import { onMounted } from "vue";
 import { ref } from "vue";
 import Club from "./Club.vue";
+import Team from "./Team.vue";
 import { MenuAlt1Icon } from "@heroicons/vue/outline";
 
 const favorites = ref([]);
@@ -75,7 +103,10 @@ const getSelectedFavorite = () => {
     console.log(selectedFavoriteLoc);
     let isFavorite = false;
     favorites.value.forEach((favorite) => {
-        if (favorite.type == selectedFavorite.value.type && favorite.id == selectedFavorite.value.id) {
+        if (
+            favorite.type == selectedFavorite.value.type &&
+            favorite.id == selectedFavorite.value.id
+        ) {
             isFavorite = true;
         }
     });
