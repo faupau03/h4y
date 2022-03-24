@@ -9,14 +9,16 @@
         <div
             id="club-header"
             class="flex w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
-        >
+        >   
+            <ShareIcon class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-20 top-5" @click="shareTeam"/>
+
             <StarIconOutline
-                class="h-5 w-5 mt-1 ml-2 hover:text-indigo-500 absolute right-5 top-5"
+                class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-5 top-5"
                 v-show="!isFavorite()"
                 @click="addFavorite"
             />
             <StarIcon
-                class="h-5 w-5 mt-1 ml-2 text-indigo-500 hover:text-black absolute right-5 top-5"
+                class="h-6 w-6 mt-1 ml-2 text-indigo-500 hover:text-black absolute right-5 top-5"
                 v-show="isFavorite()"
                 @click="removeFavorite"
             />
@@ -194,6 +196,7 @@ import {
     LocationMarkerIcon,
     InformationCircleIcon,
 } from "@heroicons/vue/solid";
+import { ShareIcon } from "@heroicons/vue/outline";
 import { StarIcon as StarIconOutline } from "@heroicons/vue/outline";
 import { UserGroupIcon } from "@heroicons/vue/solid";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
@@ -214,6 +217,21 @@ const club = ref(null);
 const showAll = ref(false);
 
 const emit = defineEmits(["updateFavorites"]);
+
+
+const shareTeam = () => {
+    if (navigator.share) {
+        navigator.share({
+            title: "Team",
+            text: team.value.name,
+            url: route.fullPath,
+        });
+    }
+    else {
+        // TODO: show alternative share method
+        alert("Dein Browser unterstützt das Share-Feature nicht.");
+    }
+}
 
 const fetchTeamMatches = async () => {
     const response2 = await fetch(
