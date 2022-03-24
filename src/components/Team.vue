@@ -9,8 +9,11 @@
         <div
             id="club-header"
             class="flex w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
-        >   
-            <ShareIcon class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-20 top-5" @click="shareTeam"/>
+        >
+            <ShareIcon
+                class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-20 top-5"
+                @click="shareTeam"
+            />
 
             <StarIconOutline
                 class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-5 top-5"
@@ -50,7 +53,7 @@
         >
             <div class="flex mt-1">
                 <span class="font-bold ml-2"> Tabelle </span>
-                <span class="hidden sm:block ml-auto mr-9 "> Tore </span>
+                <span class="hidden sm:block ml-auto mr-9"> Tore </span>
                 <span class="sm:ml-0 ml-auto mr-5"> Spiele </span>
                 <span class="mr-2"> Punkte </span>
             </div>
@@ -64,9 +67,10 @@
                 <div class="text-sm mr-1">
                     {{ team_score.tabScore }}
                 </div>
-                <div class="font-bold text-sm">
-                    {{ team_score.tabTeamname }}
-                </div>
+                <div
+                    class="font-bold text-sm"
+                    v-html="wbr(team_score.tabTeamname)"
+                ></div>
                 <div class="ml-auto hidden sm:flex mr-7 text-sm">
                     <img
                         class="h-5 w-5 mt-0.5 mr-1"
@@ -157,7 +161,7 @@
                     </svg>
                     {{ team_score.numPlayedGames }}
                 </div>
-                <div class="text-sm mr-2 ml-5 <font-bold">
+                <div class="text-sm mr-2 sm:ml-5 <font-bold">
                     {{ team_score.pointsPlus }}
                 </div>
             </div>
@@ -179,7 +183,90 @@
             </div>
             <div
                 class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2 mb-20"
-            ></div>
+            >
+                <div v-if="teamLoading">Loading...</div>
+                <div v-else>
+                    <div id="league-info">
+                        <!-- Information about how many games and button to team component -->
+                    </div>
+                    <div id="no-data" v-show="!teamMatches.length">
+                        <div id="no-future-matches" v-show="!showAll">
+                            Keine zukünftigen Spiele
+                        </div>
+                        <div v-show="showAll">
+                            Keine Spiele in dieser Klasse
+                        </div>
+                    </div>
+                    <div
+                        v-for="match in teamMatches"
+                        class="rounded-lg bg-indigo-200 my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
+                    >
+                        <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
+                            <div
+                                id="teams"
+                                class="text-black w-fit col-span-2 text-xs font-bold"
+                            >
+                                <!-- teams -->
+                                {{ match.gHomeTeam }} :
+                                {{ match.gGuestTeam }}
+                            </div>
+
+                            <div
+                                id="date-time"
+                                class="w-fit text-xs text-gray-800"
+                            >
+                                <div class="flex">
+                                    {{ match.gWDay }}
+                                    {{ match.gDate }}
+                                </div>
+                                <div class="flex">
+                                    <ClockIcon
+                                        class="h-4 mr-1 text-indigo-900"
+                                    />
+                                    {{ match.gTime }}
+                                </div>
+                            </div>
+
+                            <div
+                                id="location"
+                                class="flex text-black col-span-2"
+                            >
+                                <!-- Gymnasium -->
+                                <LocationMarkerIcon
+                                    class="h-4 w-4 text-indigo-900 shrink-0"
+                                />
+                                <span class="truncate text-xs">
+                                    {{ match.gGymnasiumName }}
+                                </span>
+                            </div>
+
+                            <div id="score" class="flex w-fit">
+                                <div class="min-w-[20px] mr-1 text-right">
+                                    {{ match.gHomeGoals }}
+                                </div>
+                                :
+                                <div class="min-w-[20px] ml-1">
+                                    {{ match.gGuestGoals }}
+                                </div>
+                            </div>
+                            <div
+                                id="info"
+                                class="col-span-3 text-gray-600"
+                                :class="
+                                    match.gComment.length > 1
+                                        ? 'flex'
+                                        : 'hidden'
+                                "
+                            >
+                                <InformationCircleIcon
+                                    class="h-4 w-4 mt-1 mr-1"
+                                />
+                                {{ match.gComment }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -218,20 +305,22 @@ const showAll = ref(false);
 
 const emit = defineEmits(["updateFavorites"]);
 
-
 const shareTeam = () => {
     if (navigator.share) {
         navigator.share({
             title: "Team",
-            text: team.value.name,
+            text: team.value.head.name + " " + club.value.lname,
             url: route.fullPath,
         });
-    }
-    else {
+    } else {
         // TODO: show alternative share method
         alert("Dein Browser unterstützt das Share-Feature nicht.");
     }
-}
+};
+
+const wbr = (str) => {
+    return str.replace("/", "/<wbr>");
+};
 
 const fetchTeamMatches = async () => {
     const response2 = await fetch(
@@ -329,7 +418,7 @@ const fetchClub = async () => {
     club.value = json[0].searchResult.list[0];
 };
 
-const setTeamID = async() => {
+const setTeamID = async () => {
     console.log(props.team_id);
     if (props.team_id && props.team_class && props.team_club) {
         console.log("props");

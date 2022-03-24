@@ -149,7 +149,7 @@
                                         </span>   
                                     </div>
                                     
-                                    <div id="score" class="flex w-fit">
+                                    <div id="score" class="flex w-fit text-black">
                                         <div
                                             class="min-w-[20px] mr-1 text-right"
                                         >
