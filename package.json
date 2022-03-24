@@ -11,6 +11,7 @@
     "@headlessui/vue": "^1.5.0",
     "@heroicons/vue": "^1.0.6",
     "@vueform/multiselect": "^2.3.3",
+    "express": "^4.17.3",
     "fotology": "^1.2.2",
     "vue": "^3.2.25",
     "vue-router": "^4.0.14"
