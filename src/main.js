@@ -15,9 +15,7 @@ import Team from "./components/Team.vue";
 
 const routes = [
     {
-        path: import.meta.env.BASE_URL + '/', component: Leagues, meta: {
-            KeepAlive: true // Need to be cached
-        }
+        path: import.meta.env.BASE_URL + '/', redirect: import.meta.env.BASE_URL + 'favorites'
     },
     {
         path: import.meta.env.BASE_URL + '/team', component: Team, meta: {
