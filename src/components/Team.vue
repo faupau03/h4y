@@ -68,7 +68,7 @@
                 <div class="ml-auto hidden sm:flex mr-7 text-sm">
                     <img
                         class="h-5 w-5 mt-0.5 mr-1"
-                        src="icons/goal.png"
+                        src="/icons/goal.png"
                         alt=""
                     />
                     {{ team_score.numGoalsShot }} : {{ team_score.numGoalsGot }}
