@@ -17,20 +17,20 @@ const route = useRoute();
 const { meta } = useMeta({
     title: "H4Y - Handball Ergebnisse",
     description: "Handballergebnisse , Liveticker und mehr",
-    url: window.location.toString(),
     og: {
         title: "H4Y - Handball Ergebnisse",
         description: "Handballergebnisse , Liveticker und mehr",
         url: window.location.toString(),
+        img: "pwa-512x512.png",
     },
 });
 
 watch(route, () => {
     meta.title = "H4Y - Handball Ergebnisse";
     meta.description = "Handballergebnisse , Liveticker und mehr";
-    meta.url = window.location.toString();
     meta.og.title = "H4Y - Handball Ergebnisse";
     meta.og.description = "Handballergebnisse , Liveticker und mehr";
+    meta.og.img = "pwa-512x512.png";
     meta.og.url = window.location.toString();
 });
 
