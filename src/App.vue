@@ -4,8 +4,6 @@
 import { ViewListIcon, StarIcon, SearchIcon } from "@heroicons/vue/outline";
 import { registerSW } from "virtual:pwa-register";
 import { ref, onMounted, watch } from "vue";
-import { useMeta, useActiveMeta } from "vue-meta";
-import { useRoute } from "vue-router";
 
 if ("serviceWorker" in navigator) {
     // && !/localhost/.test(window.location)) {
@@ -14,25 +12,6 @@ if ("serviceWorker" in navigator) {
 
 const route = useRoute();
 
-const { meta } = useMeta({
-    title: "H4Y - Handball Ergebnisse",
-    description: "Handballergebnisse , Liveticker und mehr",
-    og: {
-        title: "H4Y - Handball Ergebnisse",
-        description: "Handballergebnisse , Liveticker und mehr",
-        url: window.location.toString(),
-        img: "pwa-512x512.png",
-    },
-});
-
-watch(route, () => {
-    meta.title = "H4Y - Handball Ergebnisse";
-    meta.description = "Handballergebnisse , Liveticker und mehr";
-    meta.og.title = "H4Y - Handball Ergebnisse";
-    meta.og.description = "Handballergebnisse , Liveticker und mehr";
-    meta.og.img = "pwa-512x512.png";
-    meta.og.url = window.location.toString();
-});
 
 console.log(window.location.toString());
 const metadata = useActiveMeta();

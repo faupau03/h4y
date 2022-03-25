@@ -6,7 +6,7 @@
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview --host",
-    "serve":  "node server.js"
+    "serve": "node server.js"
   },
   "dependencies": {
     "@headlessui/vue": "^1.5.0",
@@ -15,7 +15,6 @@
     "express": "^4.17.3",
     "fotology": "^1.2.2",
     "vue": "^3.2.25",
-    "vue-meta": "^3.0.0-alpha.8",
     "vue-router": "^4.0.14"
   },
   "devDependencies": {
