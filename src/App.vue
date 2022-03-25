@@ -16,8 +16,8 @@ const { meta } = useMeta({
     description: team.value.head.name + " " + club.value.lname,
     url: route.value.fullPath,
     og: {
-        title: team.value.head.name + club.value.lname,
-        description: team.value.head.name + " " + club.value.lname,
+        title: "H4Y - Handball Ergebnisse",
+        description: "Handballergebnisse , Liveticker und mehr",
         url: route.value.fullPath,
     },
 });
