@@ -310,6 +310,11 @@ const { meta } = useMeta({
     title: team.value.head.name + club.value.lname,
     description: team.value.head.name + " " + club.value.lname,
     url: route.value.fullPath,
+    og: {
+        title: team.value.head.name + club.value.lname,
+        description: team.value.head.name + " " + club.value.lname,
+        url: route.value.fullPath,
+    },
 })
 
 const shareTeam = () => {
