@@ -4,11 +4,23 @@
 import { ViewListIcon, StarIcon, SearchIcon } from "@heroicons/vue/outline";
 import { registerSW } from "virtual:pwa-register";
 import { ref, onMounted } from "vue";
+import { useMeta } from "vue-meta";
 
 if ("serviceWorker" in navigator) {
     // && !/localhost/.test(window.location)) {
     registerSW();
 }
+
+const { meta } = useMeta({
+    title: team.value.head.name + club.value.lname,
+    description: team.value.head.name + " " + club.value.lname,
+    url: route.value.fullPath,
+    og: {
+        title: team.value.head.name + club.value.lname,
+        description: team.value.head.name + " " + club.value.lname,
+        url: route.value.fullPath,
+    },
+});
 
 const localFavorites = ref([]);
 const gym = ref({});
@@ -22,6 +34,20 @@ onMounted(() => {
 </script>
 
 <template>
+    <metainfo>
+        <template v-slot:title="{ metainfo }"
+            >{{ metainfo.description }}</template
+        >
+        <template v-slot:og(title)="{ metainfo }">
+            {{ metainfo.description }}
+        </template>
+        <template v-slot:og(url)="{ og }">
+            {{ og.url }}
+        </template>
+        <template v-slot:og(description)="{ metainfo }">
+            {{ metainfo.description }}
+        </template>
+    </metainfo>
     <div class="w-screen h-screen">
         <router-view></router-view>
 

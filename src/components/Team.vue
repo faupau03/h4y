@@ -287,7 +287,6 @@ import { ShareIcon } from "@heroicons/vue/outline";
 import { StarIcon as StarIconOutline } from "@heroicons/vue/outline";
 import { UserGroupIcon } from "@heroicons/vue/solid";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
-import { useMeta, useActiveMeta } from 'vue-meta'
 
 const route = useRoute();
 const favorites = ref([]);
@@ -305,17 +304,6 @@ const club = ref(null);
 const showAll = ref(false);
 
 const emit = defineEmits(["updateFavorites"]);
-
-const { meta } = useMeta({
-    title: team.value.head.name + club.value.lname,
-    description: team.value.head.name + " " + club.value.lname,
-    url: route.value.fullPath,
-    og: {
-        title: team.value.head.name + club.value.lname,
-        description: team.value.head.name + " " + club.value.lname,
-        url: route.value.fullPath,
-    },
-})
 
 const shareTeam = () => {
     if (navigator.share) {
