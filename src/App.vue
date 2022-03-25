@@ -3,7 +3,7 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { ViewListIcon, StarIcon, SearchIcon } from "@heroicons/vue/outline";
 import { registerSW } from "virtual:pwa-register";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useMeta, useActiveMeta } from "vue-meta";
 import { useRoute } from "vue-router";
 
@@ -17,26 +17,24 @@ const route = useRoute();
 const { meta } = useMeta({
     title: "H4Y - Handball Ergebnisse",
     description: "Handballergebnisse , Liveticker und mehr",
-    url: route.fullPath,
+    url: window.location.toString(),
     og: {
         title: "H4Y - Handball Ergebnisse",
         description: "Handballergebnisse , Liveticker und mehr",
-        url: route.fullPath,
+        url: window.location.toString(),
     },
 });
 
-console.log(location);
-
-watch(route.fullPath, () => {
+watch(route, () => {
     meta.title = "H4Y - Handball Ergebnisse";
     meta.description = "Handballergebnisse , Liveticker und mehr";
-    meta.url = route.fullPath;
+    meta.url = window.location.toString();
     meta.og.title = "H4Y - Handball Ergebnisse";
     meta.og.description = "Handballergebnisse , Liveticker und mehr";
-    meta.og.url = route.fullPath;
+    meta.og.url = window.location.toString();
 });
 
-console.log(route.fullPath);
+console.log(window.location.toString());
 const metadata = useActiveMeta();
 
 const localFavorites = ref([]);
