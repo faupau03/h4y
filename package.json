@@ -14,7 +14,7 @@
     "express": "^4.17.3",
     "fotology": "^1.2.2",
     "vue": "^3.2.25",
-    "vue-meta": "^3.0.0-alpha.2",
+    "vue-meta": "^3.0.0-alpha.8",
     "vue-router": "^4.0.14"
   },
   "devDependencies": {
