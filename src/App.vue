@@ -24,6 +24,19 @@ const { meta } = useMeta({
         url: route.fullPath,
     },
 });
+
+console.log(location);
+
+watch(route.fullPath, () => {
+    meta.title = "H4Y - Handball Ergebnisse";
+    meta.description = "Handballergebnisse , Liveticker und mehr";
+    meta.url = route.fullPath;
+    meta.og.title = "H4Y - Handball Ergebnisse";
+    meta.og.description = "Handballergebnisse , Liveticker und mehr";
+    meta.og.url = route.fullPath;
+});
+
+console.log(route.fullPath);
 const metadata = useActiveMeta();
 
 const localFavorites = ref([]);
