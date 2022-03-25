@@ -4,7 +4,7 @@
 import { ViewListIcon, StarIcon, SearchIcon } from "@heroicons/vue/outline";
 import { registerSW } from "virtual:pwa-register";
 import { ref, onMounted } from "vue";
-import { useMeta } from "vue-meta";
+import { useMeta, useActiveMeta } from "vue-meta";
 
 if ("serviceWorker" in navigator) {
     // && !/localhost/.test(window.location)) {
@@ -21,6 +21,7 @@ const { meta } = useMeta({
         url: route.value.fullPath,
     },
 });
+const metadata = useActiveMeta();
 
 const localFavorites = ref([]);
 const gym = ref({});
