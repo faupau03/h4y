@@ -17,11 +17,11 @@ const route = useRoute();
 const { meta } = useMeta({
     title: "H4Y - Handball Ergebnisse",
     description: "Handballergebnisse , Liveticker und mehr",
-    url: route.value.fullPath,
+    url: route.fullPath,
     og: {
         title: "H4Y - Handball Ergebnisse",
         description: "Handballergebnisse , Liveticker und mehr",
-        url: route.value.fullPath,
+        url: route.fullPath,
     },
 });
 const metadata = useActiveMeta();
