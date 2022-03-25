@@ -5,11 +5,14 @@ import { ViewListIcon, StarIcon, SearchIcon } from "@heroicons/vue/outline";
 import { registerSW } from "virtual:pwa-register";
 import { ref, onMounted } from "vue";
 import { useMeta, useActiveMeta } from "vue-meta";
+import { useRoute } from "vue-router";
 
 if ("serviceWorker" in navigator) {
     // && !/localhost/.test(window.location)) {
     registerSW();
 }
+
+const route = useRoute();
 
 const { meta } = useMeta({
     title: "H4Y - Handball Ergebnisse",
