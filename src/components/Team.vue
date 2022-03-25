@@ -57,37 +57,16 @@
                 <span class="sm:ml-0 ml-auto mr-5"> Spiele </span>
                 <span class="mr-2"> Punkte </span>
             </div>
-            <div v-if="!team"></div>
-            <!-- Handball by P Thanga Vignesh from NounProject.com -->
-            <div
-                v-else
+            <TableLoading
+            v-if="teamLoading">
+            </TableLoading>
+            <Table
+                v-else-if="team"
                 v-for="team_score in team.content.score"
                 :key="team_score.tabTeamID"
-                class="flex p-1 m-1 bg-indigo-100 rounded-lg"
+                :team_score="team_score"
             >
-                <div class="text-sm mr-1">
-                    {{ team_score.tabScore }}
-                </div>
-                <div
-                    class="font-bold text-sm"
-                    v-html="wbr(team_score.tabTeamname)"
-                ></div>
-                <div class="ml-auto hidden sm:flex mr-7 text-sm">
-                    <img
-                        class="h-5 w-5 mt-0.5 mr-1"
-                        src="/icons/goal.png"
-                        alt=""
-                    />
-                    {{ team_score.numGoalsShot }} : {{ team_score.numGoalsGot }}
-                </div>
-                <div class="text-sm flex sm:ml-0 ml-auto mr-7 w-fit">
-                    <img class="h-4 mt-1" src="/icons/ball.svg" alt="">
-                    {{ team_score.numPlayedGames }}
-                </div>
-                <div class="text-sm mr-2 sm:ml-5 <font-bold">
-                    {{ team_score.pointsPlus }}
-                </div>
-            </div>
+            </Table>
         </div>
         <div class="w-5/6 m-auto">
             <div class="mt-3 flex justify-between">
@@ -107,7 +86,7 @@
             <div
                 class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2 mb-20"
             >
-                <div v-if="teamLoading">
+                <div v-if="matchesLoading">
                     <MatchLoading
                         v-for="n in 3"
                         :key="n"
@@ -141,8 +120,11 @@ import { onMounted } from "vue";
 import { ref, toRef } from "vue";
 import { watch } from "vue";
 import { useRoute } from "vue-router";
+
 import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
+import Table from "./helpers/Table.vue";
+import TableLoading from "./helpers/TableLoading.vue";
 
 import {
     ChevronUpIcon,
@@ -161,6 +143,7 @@ const favorites = ref([]);
 const props = defineProps(["team_id", "team_class", "team_club"]);
 
 const teamLoading = ref(false);
+const matchesLoading = ref(false);
 const teamMatches = ref([]);
 
 const teamClassID = ref(null);
@@ -186,11 +169,10 @@ const shareTeam = () => {
     }
 };
 
-const wbr = (str) => {
-    return str.replace("/", "/<wbr>");
-};
+
 
 const fetchTeamMatches = async () => {
+    matchesLoading.value = true;
     const response2 = await fetch(
         "https://spo.handball4all.de/service/if_g_json.php?ca=0&cmd=ps&cl=" +
             teamClassID.value +
@@ -215,7 +197,7 @@ const fetchTeamMatches = async () => {
         teamMatches.value = team_games;
     }
 
-    teamLoading.value = false;
+    matchesLoading.value = false;
 };
 
 const isFavorite = () => {

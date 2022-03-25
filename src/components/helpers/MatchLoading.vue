@@ -1,6 +1,6 @@
 <template>
     <div
-        class="rounded-lg h-[88px] w-full bg-indigo-200 my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
+        class="rounded-lg xs:h-[76px] sm:h-[48px] h-[92px] w-full bg-indigo-200 my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
     >
         <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
             <div
@@ -19,11 +19,14 @@
 
             <div id="date-time" class="w-fit text-xs text-gray-800">
                 <span
-                    class="inline-block w-6 animate-pulse rounded h-3 bg-gray-500"
+                    class="inline-block w-6 animate-pulse rounded xs:hidden h-3 bg-gray-500"
                 ></span>
                 <div class="flex">
                     <span
-                        class="w-14 animate-pulse rounded h-3 bg-gray-500"
+                        class="w-4 mr-1 hidden xs:block animate-pulse rounded h-3 bg-gray-500"
+                    ></span>
+                    <span
+                        class="w-12 animate-pulse rounded h-3 bg-gray-500"
                     ></span>
                 </div>
                 <div class="flex">
@@ -51,13 +54,13 @@
             <div id="score" class="flex w-fit text-black">
                 <div class="min-w-[20px] mr-1 text-right">
                     <span
-                        class="w-6 animate-pulse -mb-1 h-4 inline-block rounded bg-gray-500"
+                        class="w-5 animate-pulse -mb-1 h-4 inline-block rounded bg-gray-500"
                     ></span>
                 </div>
                 :
                 <div class="min-w-[20px] ml-1">
                     <span
-                        class="w-6 animate-pulse -mb-1 h-4 inline-block rounded bg-gray-500"
+                        class="w-5 animate-pulse -mb-1 h-4 inline-block rounded bg-gray-500"
                     ></span>
                 </div>
             </div>
