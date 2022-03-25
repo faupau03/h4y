@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
-      includeAssets: ['favicon.png', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png', 'icons/*', 'logos/*'],
+      includeAssets: ['favicon.png', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png', 'icons/*.png', 'logos/clubs/*.png'],
       registerType: 'prompt',
       manifest: {
         name: 'Handball 4 you',
