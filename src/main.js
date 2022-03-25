@@ -2,7 +2,6 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './index.css'
 import { createRouter, createWebHistory } from 'vue-router'
-import { createMetaManager, plugin as metaPlugin } from 'vue-meta'
 
 // Components
 import Search from "./components/Search.vue";
@@ -67,7 +66,5 @@ const router = createRouter({
 })
 
 const app = createApp(App)
-const metaManager = createMetaManager()
 app.use(router)
-app.use(metaManager)
 app.mount('#app')
