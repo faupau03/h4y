@@ -12,8 +12,8 @@ if ("serviceWorker" in navigator) {
 }
 
 const { meta } = useMeta({
-    title: team.value.head.name + club.value.lname,
-    description: team.value.head.name + " " + club.value.lname,
+    title: "H4Y - Handball Ergebnisse",
+    description: "Handballergebnisse , Liveticker und mehr",
     url: route.value.fullPath,
     og: {
         title: "H4Y - Handball Ergebnisse",
