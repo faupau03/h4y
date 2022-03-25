@@ -10,11 +10,6 @@ if ("serviceWorker" in navigator) {
     registerSW();
 }
 
-const route = useRoute();
-
-
-console.log(window.location.toString());
-const metadata = useActiveMeta();
 
 const localFavorites = ref([]);
 const gym = ref({});
@@ -28,20 +23,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <metainfo>
-        <template v-slot:title="{ metainfo }"
-            >{{ metainfo.description }}</template
-        >
-        <template v-slot:og(title)="{ metainfo }">
-            {{ metainfo.description }}
-        </template>
-        <template v-slot:og(url)="{ og }">
-            {{ og.url }}
-        </template>
-        <template v-slot:og(description)="{ metainfo }">
-            {{ metainfo.description }}
-        </template>
-    </metainfo>
     <div class="w-screen h-screen">
         <router-view></router-view>
 

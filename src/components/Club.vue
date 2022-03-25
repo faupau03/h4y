@@ -10,13 +10,17 @@
             id="club-header"
             class="flex w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
         >
+            <ShareIcon
+                class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-20 top-5"
+                @click="shareClub"
+            />
             <StarIconOutline
-                class="h-5 w-5 mt-1 ml-2 hover:text-indigo-500 absolute right-5 top-5"
+                class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-5 top-5"
                 v-show="!isFavorite()"
                 @click="addFavorite"
             />
             <StarIcon
-                class="h-5 w-5 mt-1 ml-2 text-indigo-500 hover:text-black absolute right-5 top-5"
+                class="h-6 w-6 mt-1 ml-2 text-indigo-500 hover:text-black absolute right-5 top-5"
                 v-show="isFavorite()"
                 @click="removeFavorite"
             />
@@ -52,7 +56,9 @@
                         name=""
                         id=""
                         v-model="showAll"
-                        @click="teamClassID ? fetchTeamMatches(teamClassID) : null"
+                        @click="
+                            teamClassID ? fetchTeamMatches(teamClassID) : null
+                        "
                     />
                 </div>
             </div>
@@ -72,8 +78,10 @@
                                 : '',
                             !open ? 'my-1 rounded-lg' : '',
                         ]"
-                        @click="teamClassID = team.gClassID,
-                            hideOther(team.gClassID),
+                        @click="
+                            (teamClassID = team.gClassID),
+                                (teamLoading = true),
+                                hideOther(team.gClassID),
                                 fetchTeamMatches(team.gClassID)
                         "
                         :disabled="!team.matches.length"
@@ -91,14 +99,90 @@
                         />
                     </DisclosureButton>
                     <DisclosurePanel
-                        v-slot="{ close }"
                         class="px-4 pt-4 pb-2 text-sm text-gray-500 bg-indigo-100 rounded-b-lg"
                     >
                         <hr
                             class="bg-gray-400 text-black h-[1.5px] mb-2 -mt-3"
                         />
-                        <router-link :to="'team#' + teamID + ';' + team.gClassID + ';' + club.no" v-show="teamID" class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900">Zum Team</router-link>
-                        <div v-if="teamLoading">Loading...</div>
+                        <router-link
+                            :to="
+                                'team#' +
+                                teamID +
+                                ';' +
+                                team.gClassID +
+                                ';' +
+                                club.no
+                            "
+                            v-show="teamID && !teamLoading"
+                            class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900"
+                            >Zum Team</router-link
+                        
+                        >
+                        <span v-show="teamLoading" class="h-4 w-14 ml-auto mr-0 bg-indigo-300 rounded block underline-offset-2 underline hover:text-indigo-700 text-indigo-900"></span>
+                        <div v-if="teamLoading">
+                            <div
+                                v-for="n in 3"
+                                :key="n"
+                                class="rounded-lg  h-[88px] w-full bg-indigo-200 my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
+                            >
+                                <div
+                                    class="grid grid-cols-3 sm:grid-cols-6 gap-1"
+                                >
+                                    <div
+                                        id="teams"
+                                        class=" text-black w-fit col-span-2 text-xs font-bold"
+                                    >
+                                        <!-- teams -->
+                                        <span class="w-12 h-4 animate-pulse rounded -mb-1 bg-gray-500 inline-block"></span> :
+                                        <span class="w-12 h-4 animate-pulse rounded -mb-1 bg-gray-500 inline-block"></span>
+                                    </div>
+
+                                    <div
+                                        id="date-time"
+                                        class="w-fit text-xs text-gray-800"
+                                    >   
+                                        <span class="inline-block w-6 animate-pulse rounded h-3 bg-gray-500"></span>
+                                        <div class="flex">
+                                            <span class="w-14 animate-pulse rounded h-3 bg-gray-500"></span>
+                                        </div>
+                                        <div class="flex">
+                                            <div
+                                            class="h-4 w-4 mt-0.5 animate-pulse bg-gray-500 rounded-full mr-1 shrink-0"
+                                        ></div>
+                                            <span class="w-8 h-3 mt-1  animate-pulse rounded m-0.5 bg-gray-500"></span>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        id="location"
+                                        class="flex text-black col-span-2 mt-1"
+                                    >
+                                        <!-- Gymnasium -->
+                                        <div
+                                            class="h-4 w-4 bg-gray-500 animate-pulse rounded-full mr-1 shrink-0"
+                                        ></div>
+                                        <span class="truncate text-xs">
+                                            <span class="w-20 rounded animate-pulse h-4 bg-gray-500 inline-block"></span>
+                                        </span>
+                                    </div>
+
+                                    <div
+                                        id="score"
+                                        class="flex w-fit text-black"
+                                    >
+                                        <div
+                                            class="min-w-[20px] mr-1 text-right"
+                                        >
+                                            <span class="w-6 animate-pulse -mb-1 h-4 inline-block rounded bg-gray-500"></span>
+                                        </div>
+                                        :
+                                        <div class="min-w-[20px] ml-1">
+                                            <span class="w-6 animate-pulse -mb-1 h-4 inline-block rounded bg-gray-500"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div v-else>
                             <div id="league-info">
                                 <!-- Information about how many games and button to team component -->
@@ -113,9 +197,12 @@
                             </div>
                             <div
                                 v-for="match in teamMatches"
+                                :key="match.gID"
                                 class="rounded-lg bg-indigo-200 my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
                             >
-                                <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
+                                <div
+                                    class="grid grid-cols-3 sm:grid-cols-6 gap-1"
+                                >
                                     <div
                                         id="teams"
                                         class="text-black w-fit col-span-2 text-xs font-bold"
@@ -125,31 +212,39 @@
                                         {{ match.gGuestTeam }}
                                     </div>
 
-                                    <div id="date-time" class="w-fit text-xs text-gray-800">
+                                    <div
+                                        id="date-time"
+                                        class="w-fit text-xs text-gray-800"
+                                    >
                                         <div class="flex">
                                             {{ match.gWDay }}
                                             {{ match.gDate }}
                                         </div>
                                         <div class="flex">
                                             <ClockIcon
-                                            class="h-4 mr-1 text-indigo-900"
-                                        />
-                                        {{ match.gTime }}
+                                                class="h-4 mr-1 text-indigo-900"
+                                            />
+                                            {{ match.gTime }}
                                         </div>
-                                        
                                     </div>
 
-                                    <div id="location" class="flex text-black col-span-2">
+                                    <div
+                                        id="location"
+                                        class="flex text-black col-span-2"
+                                    >
                                         <!-- Gymnasium -->
                                         <LocationMarkerIcon
                                             class="h-4 w-4 text-indigo-900 shrink-0"
                                         />
                                         <span class="truncate text-xs">
                                             {{ match.gGymnasiumName }}
-                                        </span>   
+                                        </span>
                                     </div>
-                                    
-                                    <div id="score" class="flex w-fit text-black">
+
+                                    <div
+                                        id="score"
+                                        class="flex w-fit text-black"
+                                    >
                                         <div
                                             class="min-w-[20px] mr-1 text-right"
                                         >
@@ -160,8 +255,18 @@
                                             {{ match.gGuestGoals }}
                                         </div>
                                     </div>
-                                    <div id="info" class="col-span-3 text-gray-600" :class="match.gComment.length > 1 ? 'flex': 'hidden'">
-                                        <InformationCircleIcon class="h-4 w-4 mt-1 mr-1"/>
+                                    <div
+                                        id="info"
+                                        class="col-span-3 text-xs text-gray-600"
+                                        :class="
+                                            match.gComment.length > 1
+                                                ? 'flex'
+                                                : 'hidden'
+                                        "
+                                    >
+                                        <InformationCircleIcon
+                                            class="h-4 w-4 mr-1"
+                                        />
                                         {{ match.gComment }}
                                     </div>
                                 </div>
@@ -192,7 +297,7 @@ import {
     LocationMarkerIcon,
     InformationCircleIcon,
 } from "@heroicons/vue/solid";
-import { StarIcon as StarIconOutline } from "@heroicons/vue/outline";
+import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/outline";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 const route = useRoute();
@@ -211,6 +316,19 @@ const emit = defineEmits(["updateFavorites", "disclosure-update"]);
 club.value = {};
 
 const elements = ref([]);
+
+const shareClub = () => {
+    if (navigator.share) {
+        navigator.share({
+            title: "Verein",
+            text: club.value.lname,
+            url: route.fullPath,
+        });
+    } else {
+        // TODO: show alternative share method
+        alert("Dein Browser unterstützt das Share-Feature nicht.");
+    }
+};
 
 const hideOther = (id) => {
     const items = elements.value.filter((elm) => {

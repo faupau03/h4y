@@ -38,7 +38,7 @@
             >
                 <UserGroupIcon class="text-gray-700" />
             </div>
-            <div id="club-info" class="my-10 m-5">
+            <div id="club-info" class="my-12 m-5">
                 <div class="font-bold">
                     {{ team ? team.head.name : "" }}
                 </div>
@@ -62,6 +62,7 @@
             <div
                 v-else
                 v-for="team_score in team.content.score"
+                :key="team_score.tabTeamID"
                 class="flex p-1 m-1 bg-indigo-100 rounded-lg"
             >
                 <div class="text-sm mr-1">
@@ -199,6 +200,7 @@
                     </div>
                     <div
                         v-for="match in teamMatches"
+                        :key="match.gID"
                         class="rounded-lg bg-indigo-200 my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
                     >
                         <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
