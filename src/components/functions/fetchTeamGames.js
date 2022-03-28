@@ -15,7 +15,7 @@ export async function fetchTeamGames(teamID, classID, clubMatches, showAll) {
         teamID
     );
     const json = await response.json();
-    console.log(json);
+    //console.log(json);
     const team_games = json[0]["content"]["futureGames"]["games"];
     if (showAll) {
         return team_games;

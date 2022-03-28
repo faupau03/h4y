@@ -99,7 +99,10 @@
                     <DisclosurePanel
                         class="px-4 pt-4 pb-2 text-sm text-gray-500 bg-indigo-100 rounded-b-lg"
                     >
-                        <div v-for="(subTeam, key, index) in teamMatches" :key="key">
+                        <div
+                            v-for="(subTeam, key, index) in teamMatches"
+                            :key="key"
+                        >
                             <hr
                                 class="bg-gray-400 text-black h-[1.5px]"
                                 :class="index === 0 ? '-mt-3' : ''"
@@ -134,7 +137,11 @@
                                     :key="match.gID"
                                     :match="match"
                                 ></Match>
-                                <div id="no-data" v-show="!subTeam.length" class="mb-2">
+                                <div
+                                    id="no-data"
+                                    v-show="!subTeam.length"
+                                    class="mb-2"
+                                >
                                     <div
                                         id="no-future-matches"
                                         v-show="!showAll"
@@ -300,14 +307,9 @@ const fetchMatches = async () => {
 const getData = async (teamClassID) => {
     teamLoading.value = true;
     teamID.value = await fetchTeamID(teamClassID, club.value.lname);
-    console.log(
-        "There are " +
-            teamID.value.length +
-            " teams of this club in this class."
-    );
+    //console.log("There are " + teamID.value.length + " teams of this club in this class.");
     teamMatches.value = {};
     for (const team of teamID.value) {
-        console.log(team);
         teamMatches.value[team] = await fetchTeamGames(
             team,
             teamClassID,
@@ -315,7 +317,6 @@ const getData = async (teamClassID) => {
             showAll.value
         );
     }
-    console.log(await teamMatches.value);
     teamLoading.value = false;
 };
 

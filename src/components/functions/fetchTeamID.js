@@ -12,11 +12,11 @@ export async function fetchTeamID(classID, clubName) {
     const team_ids = json[0]["content"]["score"].filter((element) =>
         element.tabTeamname.includes(clubName)
     );
-    console.log(team_ids[0].tabTeamID);
-    console.log(team_ids);
+    //console.log(team_ids[0].tabTeamID);
+    //console.log(team_ids);
     const ids = team_ids.map((team) => {
-        console.log(team.tabTeamname);
-        console.log(team.tabTeamID);
+        //console.log(team.tabTeamname);
+        //console.log(team.tabTeamID);
         return team.tabTeamID;
     });
     return ids;
