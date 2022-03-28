@@ -77,10 +77,10 @@
                             !open ? 'my-1 rounded-lg' : '',
                         ]"
                         @click="
-                            (teamClassID = team.gClassID),
-                                (teamLoading = true),
-                                hideOther(team.gClassID),
-                                getData(team.gClassID)
+                            team.gClassID !== teamClassID
+                                ? ((teamClassID = team.gClassID),
+                                  getData(team.gClassID))
+                                : (teamClassID = null)
                         "
                         :disabled="!team.matches.length"
                     >
@@ -97,9 +97,24 @@
                         />
                     </DisclosureButton>
                     <DisclosurePanel
+                        static
+                        v-show="team.gClassID === teamClassID"
                         class="px-4 pt-4 pb-2 text-sm text-gray-500 bg-indigo-100 rounded-b-lg"
                     >
+                        <div v-if="teamLoading" id="games_loading">
+                            <hr
+                                class="bg-gray-400 text-black h-[1.5px] -mt-3"
+                            />
+                            <span
+                                v-show="teamLoading"
+                                class="h-4 w-14 ml-auto mr-0 bg-indigo-300 rounded block underline-offset-2 underline hover:text-indigo-700 text-indigo-900"
+                            ></span>
+                            <MatchLoading v-for="n in 3" :key="n">
+                            </MatchLoading>
+                        </div>
+
                         <div
+                            v-else
                             v-for="(subTeam, key, index) in teamMatches"
                             :key="key"
                         >
@@ -116,51 +131,31 @@
                                     ';' +
                                     club.no
                                 "
-                                v-show="teamID && !teamLoading"
                                 class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900"
                                 >Zum Team</router-link
                             >
-                            <span
-                                v-show="teamLoading"
-                                class="h-4 w-14 ml-auto mr-0 bg-indigo-300 rounded block underline-offset-2 underline hover:text-indigo-700 text-indigo-900"
-                            ></span>
-                            <div v-if="teamLoading">
-                                <MatchLoading v-for="n in 3" :key="n">
-                                </MatchLoading>
+                            <div id="league-info">
+                                <!-- Information about how many games and button to team component -->
                             </div>
-                            <div v-else>
-                                <div id="league-info">
-                                    <!-- Information about how many games and button to team component -->
+                            <Match
+                                v-for="match in subTeam"
+                                :key="match.gID"
+                                :match="match"
+                            ></Match>
+                            <div
+                                id="no-data"
+                                v-show="!subTeam.length"
+                                class="mb-2"
+                            >
+                                <div id="no-future-matches" v-show="!showAll">
+                                    Keine zukünftigen Spiele
                                 </div>
-                                <Match
-                                    v-for="match in subTeam"
-                                    :key="match.gID"
-                                    :match="match"
-                                ></Match>
-                                <div
-                                    id="no-data"
-                                    v-show="!subTeam.length"
-                                    class="mb-2"
-                                >
-                                    <div
-                                        id="no-future-matches"
-                                        v-show="!showAll"
-                                    >
-                                        Keine zukünftigen Spiele
-                                    </div>
-                                    <div v-show="showAll">
-                                        Keine Spiele in dieser Klasse
-                                    </div>
+                                <div v-show="showAll">
+                                    Keine Spiele in dieser Klasse
                                 </div>
                             </div>
                         </div>
                     </DisclosurePanel>
-                    <button
-                        :ref="(el) => (elements[idx] = el)"
-                        :data-id="team.gClassID"
-                        v-show="false"
-                        @click="doClose(close, open)"
-                    ></button>
                 </Disclosure>
             </div>
         </div>
@@ -195,7 +190,7 @@ const club = ref({});
 const teams = ref([]);
 const favorites = ref([]);
 const props = defineProps(["club_no"]);
-const teamLoading = ref(false);
+const teamLoading = ref(true);
 const teamMatches = ref([]);
 const teamClassID = ref(null);
 const teamID = ref([]);
@@ -225,17 +220,6 @@ const hideOther = (id) => {
         return elm.getAttribute("data-id") !== id.toString();
     });
     items.forEach((elm) => elm.click());
-};
-
-const doClose = (close, open) => {
-    if (!open) {
-        return;
-    }
-    const refItem = elements.value.find((elm) => {
-        return elm.getAttribute("data-id") === teamID.value;
-    });
-    console.log(refItem);
-    close(refItem);
 };
 
 const log = (message) => {

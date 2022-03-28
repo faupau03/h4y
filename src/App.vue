@@ -23,7 +23,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="w-screen h-screen">
+    <div class="h-screen">
         <router-view></router-view>
 
         <div
