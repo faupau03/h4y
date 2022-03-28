@@ -56,9 +56,7 @@
                         name=""
                         id=""
                         v-model="showAll"
-                        @click="
-                            teamClassID ? fetchTeamMatches(teamClassID) : null
-                        "
+                        @click="teamClassID ? getData(teamClassID) : null"
                     />
                 </div>
             </div>
@@ -82,7 +80,7 @@
                             (teamClassID = team.gClassID),
                                 (teamLoading = true),
                                 hideOther(team.gClassID),
-                                fetchTeamMatches(team.gClassID)
+                                getData(team.gClassID)
                         "
                         :disabled="!team.matches.length"
                     >
@@ -101,45 +99,51 @@
                     <DisclosurePanel
                         class="px-4 pt-4 pb-2 text-sm text-gray-500 bg-indigo-100 rounded-b-lg"
                     >
-                        <hr
-                            class="bg-gray-400 text-black h-[1.5px] mb-2 -mt-3"
-                        />
-                        <router-link
-                            :to="
-                                'team#' +
-                                teamID +
-                                ';' +
-                                team.gClassID +
-                                ';' +
-                                club.no
-                            "
-                            v-show="teamID && !teamLoading"
-                            class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900"
-                            >Zum Team</router-link
-                        >
-                        <span
-                            v-show="teamLoading"
-                            class="h-4 w-14 ml-auto mr-0 bg-indigo-300 rounded block underline-offset-2 underline hover:text-indigo-700 text-indigo-900"
-                        ></span>
-                        <div v-if="teamLoading">
-                            <MatchLoading v-for="n in 3" :key="n">
-                            </MatchLoading>
-                        </div>
-                        <div v-else>
-                            <div id="league-info">
-                                <!-- Information about how many games and button to team component -->
+                        <div v-for="(subTeam, key, index) in teamMatches" :key="key">
+                            <hr
+                                class="bg-gray-400 text-black h-[1.5px]"
+                                :class="index === 0 ? '-mt-3' : ''"
+                            />
+                            <router-link
+                                :to="
+                                    'team#' +
+                                    teamID[index] +
+                                    ';' +
+                                    team.gClassID +
+                                    ';' +
+                                    club.no
+                                "
+                                v-show="teamID && !teamLoading"
+                                class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900"
+                                >Zum Team</router-link
+                            >
+                            <span
+                                v-show="teamLoading"
+                                class="h-4 w-14 ml-auto mr-0 bg-indigo-300 rounded block underline-offset-2 underline hover:text-indigo-700 text-indigo-900"
+                            ></span>
+                            <div v-if="teamLoading">
+                                <MatchLoading v-for="n in 3" :key="n">
+                                </MatchLoading>
                             </div>
-                            <Match
-                                v-for="match in teamMatches"
-                                :key="match.gID"
-                                :match="match"
-                            ></Match>
-                            <div id="no-data" v-show="!teamMatches.length">
-                                <div id="no-future-matches" v-show="!showAll">
-                                    Keine zukünftigen Spiele
+                            <div v-else>
+                                <div id="league-info">
+                                    <!-- Information about how many games and button to team component -->
                                 </div>
-                                <div v-show="showAll">
-                                    Keine Spiele in dieser Klasse
+                                <Match
+                                    v-for="match in subTeam"
+                                    :key="match.gID"
+                                    :match="match"
+                                ></Match>
+                                <div id="no-data" v-show="!subTeam.length" class="mb-2">
+                                    <div
+                                        id="no-future-matches"
+                                        v-show="!showAll"
+                                    >
+                                        Keine zukünftigen Spiele
+                                    </div>
+                                    <div v-show="showAll">
+                                        Keine Spiele in dieser Klasse
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -171,8 +175,13 @@ import {
 import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/outline";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
+// helper components
 import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
+
+// helper functions
+import { fetchTeamID } from "./functions/fetchTeamID.js";
+import { fetchTeamGames } from "./functions/fetchTeamGames.js";
 
 const route = useRoute();
 const club = ref({});
@@ -182,7 +191,7 @@ const props = defineProps(["club_no"]);
 const teamLoading = ref(false);
 const teamMatches = ref([]);
 const teamClassID = ref(null);
-const teamID = ref(null);
+const teamID = ref([]);
 const showAll = ref(false);
 
 const emit = defineEmits(["updateFavorites", "disclosure-update"]);
@@ -246,60 +255,6 @@ const fetchAddress = async () => {
     club.value.webaddress = json[club.value.no];
 };
 
-const fetchTeamMatches = async (classID) => {
-    console.log(classID);
-    teamMatches.value = classID;
-    emit("disclosure-update");
-    teamLoading.value = true;
-    const response = await fetch(
-        "https://spo.handball4all.de/service/if_g_json.php?ca=1&cmd=ps&cl=" +
-            classID
-    );
-    const json = await response.json();
-    if (!json[0]["content"]["score"].length) {
-        // no scoreboard, so no teamid
-        // setting matches to mobile api data
-        teamMatches.value = teams.value.find(
-            (team) => team.gClassID === classID
-        ).matches;
-        teamLoading.value = false;
-        teamID.value = null;
-        return;
-    }
-    const team_id = json[0]["content"]["score"].find((element) =>
-        element.tabTeamname.includes(club.value.lname)
-    );
-    console.log(team_id.tabTeamID);
-    teamID.value = team_id.tabTeamID;
-    const response2 = await fetch(
-        "https://spo.handball4all.de/service/if_g_json.php?ca=0&cmd=ps&cl=" +
-            classID +
-            "&ct=" +
-            team_id.tabTeamID
-    );
-    const json2 = await response2.json();
-    const team_games = json2[0]["content"]["futureGames"]["games"];
-    if (!showAll.value) {
-        teamMatches.value = team_games.filter((game) => {
-            const date_split = game.gDate.split(".");
-            const time_split = game.gTime.split(":");
-            //TODO: this date is hardcoded to the 21st century
-            const date = new Date(
-                "20" + date_split[2],
-                date_split[1] - 1,
-                date_split[0],
-                time_split[0],
-                time_split[1]
-            );
-            return date > new Date();
-        });
-    } else {
-        teamMatches.value = team_games;
-    }
-
-    teamLoading.value = false;
-};
-
 const fetchMatches = async () => {
     const response = await fetch(
         "https://spo.handball4all.de/misc/mobApp.php?jsoncallback=teamData&format=json&cmd=data&lvTypeNext=club&lvIDNext=" +
@@ -340,6 +295,28 @@ const fetchMatches = async () => {
         }
         teams.value = teams_json;
     });
+};
+
+const getData = async (teamClassID) => {
+    teamLoading.value = true;
+    teamID.value = await fetchTeamID(teamClassID, club.value.lname);
+    console.log(
+        "There are " +
+            teamID.value.length +
+            " teams of this club in this class."
+    );
+    teamMatches.value = {};
+    for (const team of teamID.value) {
+        console.log(team);
+        teamMatches.value[team] = await fetchTeamGames(
+            team,
+            teamClassID,
+            club.value.lname,
+            showAll.value
+        );
+    }
+    console.log(await teamMatches.value);
+    teamLoading.value = false;
 };
 
 const isFavorite = () => {
@@ -396,8 +373,8 @@ watch(club_no_ref, async (newValue, oldValue) => {
 
 onMounted(async () => {
     await fetchClub();
-    await fetchMatches();
     await getFavorites();
     await fetchAddress();
+    await fetchMatches();
 });
 </script>
