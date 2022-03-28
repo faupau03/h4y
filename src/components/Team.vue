@@ -57,9 +57,10 @@
                 <span class="sm:ml-0 ml-auto mr-5"> Spiele </span>
                 <span class="mr-2"> Punkte </span>
             </div>
-            <TableLoading
-            v-if="teamLoading">
-            </TableLoading>
+            <div v-if="matchesLoading">
+                <TableLoading v-for="i in 10" :key="i">
+                </TableLoading>
+            </div>
             <Table
                 v-else-if="team"
                 v-for="team_score in team.content.score"
@@ -78,8 +79,7 @@
                         type="checkbox"
                         name=""
                         id=""
-                        v-model="showAll"
-                        @click="teamClassID ? fetchTeamMatches() : null"
+                        @click="showAll = !showAll, teamClassID ? getData() : null"
                     />
                 </div>
             </div>
@@ -108,6 +108,8 @@
                         v-for="match in teamMatches"
                         :key="match.id"
                         :match="match"
+                        :teamID="teamID"
+                        :teamClassID="teamClassID"
                     ></Match>
                 </div>
             </div>
@@ -125,6 +127,11 @@ import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
 import Table from "./helpers/Table.vue";
 import TableLoading from "./helpers/TableLoading.vue";
+
+
+// helper function
+import { getFavorites, updateFavorites } from "./functions/favorites";
+import { fetchTeam, fetchTeamGames } from "./functions/fetchData.js";
 
 import {
     ChevronUpIcon,
@@ -169,36 +176,18 @@ const shareTeam = () => {
     }
 };
 
-
-
-const fetchTeamMatches = async () => {
+const getData = async () => {
     matchesLoading.value = true;
-    const response2 = await fetch(
-        "https://spo.handball4all.de/service/if_g_json.php?ca=0&cmd=ps&cl=" +
-            teamClassID.value +
-            "&ct=" +
-            teamID.value
+    team.value = await fetchTeam(teamID.value, teamClassID.value);
+    teamMatches.value = await fetchTeamGames(
+        teamID.value,
+        teamClassID.value,
+        [],
+        showAll.value
     );
-    const json2 = await response2.json();
-    team.value = json2[0];
-    const team_games = json2[0]["content"]["futureGames"]["games"];
-    if (!showAll.value) {
-        teamMatches.value = team_games.filter((game) => {
-            const date_split = game.gDate.split(".");
-            //TODO: this date is hardcoded to the 21st century
-            const date = new Date(
-                "20" + date_split[2],
-                date_split[1] - 1,
-                date_split[0]
-            );
-            return date > new Date();
-        });
-    } else {
-        teamMatches.value = team_games;
-    }
-
     matchesLoading.value = false;
-};
+    console.log(teamMatches.value);
+}
 
 const isFavorite = () => {
     if (!favorites.value.length) {
@@ -221,7 +210,7 @@ const addFavorite = () => {
         clubno: teamClubNo.value,
         clubname: club.value.lname,
     });
-    updateFavorites();
+    updateFavorites(favorites.value);
 };
 
 const removeFavorite = () => {
@@ -234,21 +223,7 @@ const removeFavorite = () => {
             favorites.value.splice(favorites.value.indexOf(favorite), 1);
         }
     }
-    updateFavorites();
-};
-
-const updateFavorites = () => {
-    localStorage.setItem("favorites", JSON.stringify(favorites.value));
-    emit("updateFavorites");
-};
-
-const getFavorites = async () => {
-    const json = localStorage.getItem("favorites");
-    if (json) {
-        favorites.value = JSON.parse(json);
-    } else {
-        favorites.value = [];
-    }
+    updateFavorites(favorites.value);
 };
 
 const team_id_ref = toRef(props, "team_id");
@@ -289,8 +264,8 @@ const setTeamID = async () => {
 
 onMounted(async () => {
     await setTeamID();
-    await getFavorites();
-    await fetchTeamMatches();
+    favorites.value = await getFavorites();
+    await getData();
     await fetchClub();
 });
 </script>

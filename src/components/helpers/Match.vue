@@ -1,6 +1,7 @@
 <template>
     <div
         class="rounded-lg bg-indigo-200 my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
+        @click="$router.push('match#' + match.gID + ';' + teamID + ';' + teamClassID)"
     >
         <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
             <div
@@ -61,6 +62,6 @@ import {
 
 
 
-const props = defineProps(['match']);
+const props = defineProps(['match','teamID','teamClassID']);
 
 </script>

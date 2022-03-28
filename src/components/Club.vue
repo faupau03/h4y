@@ -64,9 +64,9 @@
                 class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2 mb-20"
             >
                 <Disclosure
-                    v-for="(team, idx) in teams"
+                    v-for="(team) in teams"
                     :key="team.gClassID"
-                    v-slot="{ open, close }"
+                    v-slot="{ open }"
                 >
                     <DisclosureButton
                         class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-indigo-900 bg-indigo-100 rounded-t-lg hover:bg-indigo-200 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75"
@@ -74,13 +74,14 @@
                             !team.matches.length
                                 ? '!text-gray-600 !bg-gray-200'
                                 : '',
-                            !open ? 'my-1 rounded-lg' : '',
+                            (team.gClassID !== teamClassID) ? 'my-1 rounded-lg' : '',
                         ]"
                         @click="
                             team.gClassID !== teamClassID
                                 ? ((teamClassID = team.gClassID),
-                                  getData(team.gClassID))
-                                : (teamClassID = null)
+                                open = true,
+                                getData(team.gClassID))
+                                : (teamClassID = null, open = false)
                         "
                         :disabled="!team.matches.length"
                     >
@@ -141,6 +142,8 @@
                                 v-for="match in subTeam"
                                 :key="match.gID"
                                 :match="match"
+                                :teamID="teamID[index]"
+                                :teamClassID="team.gClassID"
                             ></Match>
                             <div
                                 id="no-data"
@@ -182,8 +185,8 @@ import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
 
 // helper functions
-import { fetchTeamID } from "./functions/fetchTeamID.js";
-import { fetchTeamGames } from "./functions/fetchTeamGames.js";
+import { fetchTeamID, fetchTeamGames } from "./functions/fetchData.js";
+import { getFavorites, updateFavorites } from "./functions/favorites";
 
 const route = useRoute();
 const club = ref({});
@@ -297,7 +300,7 @@ const getData = async (teamClassID) => {
         teamMatches.value[team] = await fetchTeamGames(
             team,
             teamClassID,
-            club.value.lname,
+            teams.value,
             showAll.value
         );
     }
@@ -322,7 +325,7 @@ const addFavorite = () => {
         name: club.value.lname,
         no: club.value.no,
     });
-    updateFavorites();
+    updateFavorites(favorites.value);
 };
 
 const removeFavorite = () => {
@@ -331,21 +334,7 @@ const removeFavorite = () => {
             favorites.value.splice(favorites.value.indexOf(favorite), 1);
         }
     }
-    updateFavorites();
-};
-
-const updateFavorites = () => {
-    localStorage.setItem("favorites", JSON.stringify(favorites.value));
-    emit("updateFavorites");
-};
-
-const getFavorites = async () => {
-    const json = localStorage.getItem("favorites");
-    if (json) {
-        favorites.value = JSON.parse(json);
-    } else {
-        favorites.value = [];
-    }
+    updateFavorites(favorites.value);
 };
 
 const club_no_ref = toRef(props, "club_no");
@@ -358,7 +347,7 @@ watch(club_no_ref, async (newValue, oldValue) => {
 
 onMounted(async () => {
     await fetchClub();
-    await getFavorites();
+    favorites.value = await getFavorites();
     await fetchAddress();
     await fetchMatches();
 });

@@ -15,7 +15,8 @@
     "express": "^4.17.3",
     "fotology": "^1.2.2",
     "vue": "^3.2.25",
-    "vue-router": "^4.0.14"
+    "vue-router": "^4.0.14",
+    "vue-virtual-scroller": "^2.0.0-alpha.1"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.0",
