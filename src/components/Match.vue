@@ -15,7 +15,7 @@
             </span>
             <ShareIcon
                 class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-7 top-5"
-                @click="shareTeam"
+                @click="shareGame"
             />
             <div id="game-info" class="mt-14 m-5 w-full">
                 <div class="font-bold text-xl sm:text-2xl justify-center flex">
@@ -102,129 +102,53 @@
                     </div>
                 </div>
             </div>
-            <div class="flex justify-evenly p-3 m-2 bg-indigo-200 rounded font-bold text-gray-800">
-                <div>
-                    Aktion
-                </div>
-                <div>
-                    Spielstand
-                </div>
-                <div>
-                    Aktion
-                </div>
+            <div
+                class="flex justify-evenly p-3 m-2 bg-indigo-200 rounded font-bold text-gray-800"
+            >
+                <div>Aktion</div>
+                <div>Spielstand</div>
+                <div>Aktion</div>
             </div>
             <div id="data" class="max-h-80 overflow-auto mb-2">
-                <div
-                    v-for="(ticker, index) in gameTicker.reverse()"
-                    :key="index"
-                    class="flex justify-evenly p-3 m-2 bg-indigo-100 rounded items-center  text-gray-800"
-                    v-show="!messageFilter.includes(ticker['message'])"
+                <VirtualisedList
+                    class="h-full"
+                    :nodes="gameTicker"
+                    :viewportHeight="320"
+                    :getNodeHeight="(node) => 84"
+                    :get-node-key="(node, index) => index"
                 >
-                    <div class="w-1/3">
-                        <!-- 1. Halbzeit -->
+                    <template #cell="slotProps">
                         <div
-                        v-if="ticker['message'] == 'Spielstand 1. Halbzeit'"
-                        class="flex">
-                            Spielstand
-                            <img class="ml-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/2Vg7rkdR.svg" alt="">
+                            class="flex justify-evenly md:text-xl sm:text-sm text-xs p-3 mx-2 bg-indigo-100 rounded items-center text-gray-800"
+                        >
+                            <div class="w-1/3">
+                                <TickerElement
+                                    :message="slotProps.node.message"
+                                    side="left"
+                                />
+                            </div>
+                            <div>
+                                <div class="flex justify-center">
+                                    {{ getTime(slotProps.node["game_time"]) }}
+                                </div>
+                                <div
+                                    class="justify-center flex text-indigo-700 font-bold sm:text-xl"
+                                >
+                                    {{ slotProps.node["home_score"] }}
+                                    :
+                                    {{ slotProps.node["guest_score"] }}
+                                </div>
+                            </div>
+                            <div class="w-1/3">
+                                <TickerElement
+                                    class="flex"
+                                    :message="slotProps.node.message"
+                                    side="right"
+                                />
+                            </div>
                         </div>
-                        <!-- 2. Halbzeit -->
-                        <div
-                        v-else-if="ticker['message'] == 'Spielstand 2. Halbzeit'"
-                        class="flex">
-                            Spielstand
-                            <img class="ml-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/2Vg7rkdR.svg" alt="">
-                        </div>
-                        <!-- 7m Tor -->
-                        <div
-                        v-else-if="ticker['message'].includes('7m') && (ticker['message'].includes('Tor') || ticker['message'].includes('Erfolgreicher')) && ticker['message'].includes('Heimmannschaft')"
-                        class="flex">
-                            7m Tor durch Nr. {{ ticker["message"].match(/\d+/)[0] }}
-                            <img class="ml-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/doZSekQl.svg" alt="">
-                        </div>
-                        <!-- 7m -->
-                        <div
-                        v-else-if="ticker['message'].includes('7m') && ticker['message'].includes('Heimmannschaft')"
-                        class="flex">
-                            7m von Nr. {{ ticker["message"].match(/\d+/)[0] }}
-                            <img class="ml-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/OBOdJWyJ.svg" alt="">
-                        </div>
-                        <!-- Tor -->
-                        <div
-                        v-else-if="ticker['message'].includes('Tor') && ticker['message'].includes('Heimmannschaft')"
-                        class="flex">
-                            Tor durch Nr. {{ ticker["message"].match(/\d+/)[0] }}
-                            <img class="ml-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/3GjFnr19.svg" alt="">
-                        </div>
-                        <!-- Auszeit -->
-                        <div
-                        v-else-if="ticker['message'].includes('Mannschafts-Auszeit') && ticker['message'].includes('Heimmannschaft')"
-                        class="flex">
-                            Auszeit
-                            <img class="ml-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/3B6Hgy_M.svg" alt="">
-                        </div>
-                        <!-- Verwarnung -->
-                        <div
-                        v-else-if="ticker['message'].includes('Verwarnung') && ticker['message'].includes('Heimmannschaft')"
-                        class="flex">
-                            Verwarnung für Nr. {{ ticker["message"].match(/\d+/)[0] }}
-                            <img class="ml-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/jAfYIp8x.svg" alt="">
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-center">
-                        {{
-                            getTime(
-                                ticker["game_time"]
-                            )
-                        }}
-                    </div>
-                    <div class="justify-center flex text-indigo-700  font-bold sm:text-xl">
-                        {{ ticker["home_score"] }}
-                        :
-                        {{ ticker["guest_score"] }}
-                    </div>
-                    </div>
-                    <div class="w-1/3">
-                        <!-- 7m Tor -->
-                        <div
-                        v-if="ticker['message'].includes('7m') && ticker['message'].includes('Tor') && ticker['message'].includes('Gastmannschaft')"
-                        class="flex">
-                            7m Tor durch Nr. {{ ticker["message"].match(/\d+/)[0] }}
-                            <img class="ml-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/doZSekQl.svg" alt="">
-                        </div>
-                        <!-- 7m -->
-                        <div
-                        v-else-if="ticker['message'].includes('7m') && ticker['message'].includes('Gastmannschaft')"
-                        class="flex">
-                            7m von Nr. {{ ticker["message"].match(/\d+/)[0] }}
-                            <img class="ml-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/OBOdJWyJ.svg" alt="">
-                        </div>
-                        <!-- Tor -->
-                        <div
-                        v-else-if="ticker['message'].includes('Tor') && ticker['message'].includes('Gastmannschaft')"
-                        class="flex">
-                            <img class="mr-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/3GjFnr19.svg" alt="">
-                            Tor durch Nr. {{ ticker["message"].match(/\d+/)[0] }}
-                        </div>
-                        <!-- Auszeit -->
-                        <div
-                        v-else-if="ticker['message'].includes('Mannschafts-Auszeit') && ticker['message'].includes('Gastmannschaft')"
-                        class="flex">
-                            <img class="mr-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/3B6Hgy_M.svg" alt="">
-                            Auszeit
-                            
-                        </div>
-                        <!-- Verwarnung -->
-                        <div
-                        v-else-if="ticker['message'].includes('Verwarnung') && ticker['message'].includes('Gastmannschaft')"
-                        class="flex">
-                        <img class="mr-1 h-5 mt-0.5" src="https://spo.handball4all.de/service/ticker/jAfYIp8x.svg" alt="">
-                            Verwarnung für Nr. {{ ticker["message"].match(/\d+/)[0] }}
-                            
-                        </div>
-                    </div>
-                </div>
+                    </template>
+                </VirtualisedList>
             </div>
         </div>
         <div
@@ -254,6 +178,7 @@ import { onMounted } from "vue";
 import { ref, toRef } from "vue";
 import { watch } from "vue";
 import { useRoute } from "vue-router";
+import { VirtualisedList } from "vue-virtualised";
 
 //helper components
 import Match from "./helpers/Match.vue";
@@ -261,6 +186,7 @@ import MatchLoading from "./helpers/MatchLoading.vue";
 import Table from "./helpers/Table.vue";
 import TableLoading from "./helpers/TableLoading.vue";
 import Maps from "./helpers/Maps.vue";
+import TickerElement from "./helpers/tickerElement.vue"
 
 import {
     ChevronUpIcon,
@@ -293,15 +219,13 @@ const gameTickerInfo = ref({});
 const gameTicker = ref([]);
 const interval = 5000;
 const gameTickerLoading = ref(false);
+const showAll = ref(false);
 
 const teamClassID = ref(null);
 const teamID = ref(null);
 const gameID = ref(null);
 
-const messageFilter = [
-    "Spielzeit gestoppt",
-    "Spielzeit gestartet",
-]
+const messageFilter = ["Spielzeit gestoppt", "Spielzeit gestartet"];
 
 const shareGame = () => {
     if (navigator.share) {
@@ -361,7 +285,6 @@ const getData = async () => {
     scores.value = await fetchTeam(teamID.value, teamClassID.value);
     game.value = games.value.find((game) => game.gID === gameID.value);
     loading.value = false;
-    console.log(game.value);
 };
 
 const tickerInit = async () => {
@@ -369,19 +292,48 @@ const tickerInit = async () => {
     if (game.value.gLive) {
         console.log("game is live");
         setInterval(async () => {
-            gameTicker.value = await fetchTicker(game.value.gTickerToken);
+            let tmp = await fetchTicker(game.value.gTickerToken);
+            if (!showAll.value) {
+                tmp = tmp.filter(
+                    (item) => !messageFilter.includes(item["message"])
+                );
+            }
+            tmp = tmp.reverse();
+            gameTicker.value = removeDuplicates(tmp);
         }, interval);
-        gameTicker.value = await fetchTicker(game.value.gTickerToken);
+        let tmp = await fetchTicker(game.value.gTickerToken);
+        if (!showAll.value) {
+            tmp = tmp.filter(
+                (item) => !messageFilter.includes(item["message"])
+            );
+        }
+        tmp = tmp.reverse();
+        gameTicker.value = removeDuplicates(tmp);
         gameTickerInfo.value = await fetchTickerInfo(game.value.gTickerToken);
     }
     gameTickerLoading.value = false;
 };
 
+const removeDuplicates = (array) => {
+    const new_array = [];
+    array.forEach(element => {
+        let found = false;
+        new_array.forEach(new_element => {
+            if (element["message"] === new_element["message"] && element["game_time"] === new_element["game_time"]) {
+                console.log("found duplicate");
+                found = true;
+            }
+        });
+        if (!found) {
+            new_array.push(element);
+        }
+    });
+    return new_array;
+}
+
 onMounted(async () => {
     await setGameID();
     await getData();
-    game.value.gLive = true;
-    game.value.gTickerToken = "b87ed19c1f10952aa6fa123203fbc576";
     await tickerInit();
 });
 </script>
