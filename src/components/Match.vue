@@ -116,14 +116,14 @@
                         Aufstellung
                     </button>
                     <img
-                        src="icons/arrows-angle-expand.svg"
+                        src="/icons/arrows-angle-expand.svg"
                         alt="expand"
                         v-show="!fullscreenTicker"
                         class="h-7 w-7 ml-5 hover:bg-indigo-500 bg-indigo-300 rounded-lg p-1.5 mr-5 hover:cursor-pointer"
                         @click="fullscreenTicker = true"
                     />
                     <img
-                        src="icons/arrows-angle-contract.svg"
+                        src="/icons/arrows-angle-contract.svg"
                         alt="contract"
                         v-show="fullscreenTicker"
                         class="h-7 w-7 ml-5 hover:bg-indigo-500 bg-indigo-300 rounded-lg p-1.5 mr-5 hover:cursor-pointer"
