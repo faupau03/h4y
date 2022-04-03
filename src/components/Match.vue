@@ -313,7 +313,7 @@ const getData = async () => {
 
 const tickerInit = async () => {
     gameTickerLoading.value = true;
-    if (game.value.gLive) {
+    if (game.value.live) {
         console.log("game is live");
         setInterval(async () => {
             let tmp = await fetchTicker(game.value.gTickerToken);
