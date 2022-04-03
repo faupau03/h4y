@@ -69,7 +69,7 @@
             >
             </Table>
         </div>
-        <div class="w-5/6 m-auto">
+        <div class="w-5/6 m-auto pb-24">
             <div class="mt-3 flex justify-between">
                 <h2 class="font-bold text-lg m-1">Spiele</h2>
                 <div class="text-sm m-2">

@@ -14,6 +14,7 @@
     "@vueform/multiselect": "^2.3.3",
     "express": "^4.17.3",
     "fotology": "^1.2.2",
+    "ical-generator": "^3.4.0",
     "vue": "^3.2.25",
     "vue-router": "^4.0.14",
     "vue-virtual-scroller": "^2.0.0-alpha.1",
