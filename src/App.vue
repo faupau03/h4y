@@ -4,13 +4,11 @@
 import { ViewListIcon, StarIcon, SearchIcon } from "@heroicons/vue/outline";
 import { registerSW } from "virtual:pwa-register";
 import { ref, onMounted, watch } from "vue";
-
+import { useRoute } from "vue-router";
 if ("serviceWorker" in navigator) {
     // && !/localhost/.test(window.location)) {
     registerSW();
 }
-
-
 const localFavorites = ref([]);
 const gym = ref({});
 

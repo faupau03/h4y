@@ -1,7 +1,11 @@
 <template>
     <div
         class="rounded-lg bg-indigo-200 my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
-        @click="$router.push('match#' + match.gID + ';' + teamID + ';' + teamClassID)"
+        @click="
+            $router.push(
+                'match#' + match.gID + ';' + teamID + ';' + teamClassID
+            )
+        "
     >
         <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
             <div
@@ -40,7 +44,20 @@
                 <div class="min-w-[20px] ml-1">
                     {{ match.gGuestGoals }}
                 </div>
+                <!-- Live animation -->
+                <div
+                    v-show="match.live == true"
+                    class="rounded-full relative w-4 h-4 mt-0.5"
+                >
+                    <div
+                        class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75"
+                    ></div>
+                    <div
+                        class="z-20 mx-auto my-auto mt-0.5 animate-none rounded-full h-3 w-3 bg-red-500"
+                    ></div>
+                </div>
             </div>
+
             <div
                 id="info"
                 class="col-span-3 text-xs text-gray-600"
@@ -60,8 +77,5 @@ import {
     InformationCircleIcon,
 } from "@heroicons/vue/solid";
 
-
-
-const props = defineProps(['match','teamID','teamClassID']);
-
+const props = defineProps(["match", "teamID", "teamClassID"]);
 </script>
