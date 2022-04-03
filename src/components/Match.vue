@@ -1,5 +1,21 @@
 <template>
     <div class="w-full h-full">
+        <!-- Press text div -->
+        <div v-if="showText" class="pressText absolute w-full overflow-auto max-h-fit bg-gray-900 bg-opacity-25 z-30 flex justify-center items-center">
+            <div  class="rounded-lg shadow-2xl bg-white z-30 p-5 h-fit sm:mx-20 mx-5 my-10">
+            <span>
+                <XCircleIcon @click="showText = false" class="h-8 bg-indigo-300 rounded p-1 hover:bg-indigo-500 ml-auto"/>
+            </span>
+            <span
+                v-html="pressText.robotext.text">
+            </span>
+            <span
+                v-html="pressText.robotext.footer">
+            </span>
+        </div>
+        </div>
+        
+
         <div class="ml-5 pt-3 mb-3">
             <h1 class="text-3xl font-bold">Spiel</h1>
             <p class="text-sm text-gray-500 uppercase font-bold">Info</p>
@@ -25,7 +41,11 @@
                         class="z-20 mx-auto my-auto mt-0.5 animate-none rounded-full h-3 w-3 bg-red-500"
                     ></div>
                 </div>
-                <Cal class="ml-auto" :game="game" />
+                <AnnotationIcon v-show="game.robotextstate == 'generated'" class="h-6 mt-1 ml-auto hover:text-indigo-500" @click="showPressText()"/>
+                <a :href="'https://spo.handball4all.de/misc/sboPublicReports.php?sGID=' + game.sGID">
+                <DocumentIcon v-show="game.sGID" class="h-6 mt-1 ml-2 hover:text-indigo-500" :class="game.robotextstate == 'generated' ? '' : 'ml-auto'" @click="publicReport"/>
+                </a>
+                <Cal class="ml-2" :class="game.sGID ? '' : 'ml-auto'" :game="game" />
                 <ShareIcon
                     class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 mr-5"
                     @click="shareGame"
@@ -386,9 +406,9 @@ import {
     LocationMarkerIcon,
     InformationCircleIcon,
 } from "@heroicons/vue/solid";
-import { ShareIcon, ClockIcon } from "@heroicons/vue/outline";
+import { ShareIcon, ClockIcon, XCircleIcon } from "@heroicons/vue/outline";
 import { StarIcon as StarIconOutline } from "@heroicons/vue/outline";
-import { UserGroupIcon } from "@heroicons/vue/solid";
+import { UserGroupIcon, DocumentIcon, AnnotationIcon } from "@heroicons/vue/solid";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 // helper functions
@@ -415,6 +435,9 @@ const showAll = ref(false);
 
 const fullscreenTicker = ref(false);
 const infoTicker = ref(false);
+
+const pressText = ref({});
+const showText = ref(false);
 
 const gameTickerTimer = ref(null);
 const gameTickerStop = ref(false);
@@ -458,6 +481,7 @@ const getTime = (time) => {
     return minutes + ":" + seconds_string;
 };
 
+
 // needs game id, team id, class id and club no
 const setGameID = async () => {
     if (props.game_id && props.team_id && props.team_class) {
@@ -484,6 +508,22 @@ const screenHeight = () => {
 const screenWidth = () => {
     return screen.width;
 };
+
+
+const showPressText = async() => {
+    const response = await fetch(
+        "https://spo.handball4all.de/service/robotext/if_robotext.php?cmd=text&game=" + game.value.gID
+            
+    );
+    const data = await response.json();
+    
+    if (data) {
+        pressText.value = data;
+        showText.value = true;
+    }
+    console.log(pressText.value);
+};
+
 
 /*
     Functions for ticker player info
@@ -774,3 +814,23 @@ onMounted(async () => {
     await tickerInit();
 });
 </script>
+
+<style>
+.pressText h1 {
+    font-size: 1.5rem !important;
+    margin: 0.5em 0;
+}
+.pressText h3 {
+    font-size: 1rem !important;
+    font-weight: 700;
+    margin: 0.5em 0;
+}
+
+.pressText p:first-of-type {
+    background-color: rgb(224, 231, 255, 0.7);
+    padding: 0.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    border-radius: 0.5em;
+}
+</style>
