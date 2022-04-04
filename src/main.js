@@ -2,8 +2,6 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './index.css'
 import { createRouter, createWebHistory } from 'vue-router'
-import VueVirtualScroller from 'vue-virtual-scroller'
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css' //Needed?
 // Components
 import Search from "./components/Search.vue";
 import Leagues from "./components/Leagues.vue";
@@ -68,5 +66,4 @@ const router = createRouter({
 
 const app = createApp(App)
 app.use(router)
-app.use(VueVirtualScroller)
 app.mount('#app')
