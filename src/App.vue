@@ -14,6 +14,7 @@ const gym = ref({});
 
 onMounted(() => {
     console.log("onMounted");
+    console.log("new version");
     localFavorites.value = JSON.parse(
         localStorage.getItem("favorites") || "[]"
     );
