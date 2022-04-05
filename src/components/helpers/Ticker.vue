@@ -243,7 +243,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { fetchTickerInfo, fetchTicker } from "../functions/fetchData.js";
-import TickerElement from "./TickerElement.vue";
+import TickerElement from "../helpers/TickerElement.vue";
 import { VirtualisedList } from "vue-virtualised";
 import { ClockIcon } from "@heroicons/vue/outline";
 
