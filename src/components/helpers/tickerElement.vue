@@ -2,19 +2,19 @@
     <div v-if="side == 'left' && !guest">
         <div class="flex mr-1 ml-auto sm:mr-10 w-fit items-center">
             {{ info }}
-            <img class="h-5 w-5 ml-1 sm:mt-1 -mt-0.5" :src="src" alt="">
+            <img class="h-5 w-5 ml-1 sm:mt-1 -mt-0.5" :src="src" alt="" />
         </div>
     </div>
     <div v-else-if="side == 'right' && guest">
         <div class="flex ml-1 mr-auto sm:ml-10 w-fit items-center">
-            <img class="h-5 w-5 mr-1 sm:mt-1 -mt-0.5" :src="src" alt="">
+            <img class="h-5 w-5 mr-1 sm:mt-1 -mt-0.5" :src="src" alt="" />
             {{ info }}
         </div>
     </div>
 </template>
 <script setup>
-import { onMounted } from 'vue';
-import { ref, toRef, watch } from 'vue';
+import { onMounted } from "vue";
+import { ref, toRef, watch } from "vue";
 const props = defineProps(["message", "side"]);
 const info = ref(null);
 const src = ref(null);
@@ -36,8 +36,12 @@ const init = () => {
         src.value = "https://spo.handball4all.de/service/ticker/2Vg7rkdR.svg";
     }
     // 7m Tor
-    else if (message.includes("7m") && (message.includes("Tor") || message.includes("Erfolgreicher"))) {
-        info.value = "7m Tor durch Nr. " + message.replace("7m", "").match(/\d+/)[0];
+    else if (
+        message.includes("7m") &&
+        (message.includes("Tor") || message.includes("Erfolgreicher"))
+    ) {
+        info.value =
+            "7m Tor durch Nr. " + message.replace("7m", "").match(/\d+/)[0];
         src.value = "https://spo.handball4all.de/service/ticker/doZSekQl.svg";
     }
     // 7m
@@ -57,31 +61,44 @@ const init = () => {
     }
     // Verwarnung
     else if (message.includes("Verwarnung")) {
-        info.value = "Verwarnung für Nr. " + (message.match(/\d+/) ? message.match(/\d+/)[0] : message.replace("Verwarnung für die Nummer ", "").charAt(0));
+        info.value =
+            "Verwarnung für Nr. " +
+            (message.match(/\d+/)
+                ? message.match(/\d+/)[0]
+                : message.replace("Verwarnung für die Nummer ", "").charAt(0));
         src.value = "https://spo.handball4all.de/service/ticker/jAfYIp8x.svg";
     }
     // Disqualifikation
     else if (message.includes("Disqualifikation")) {
-        info.value = "Disqualifikation für Nr. " + (message.match(/\d+/) ? message.match(/\d+/)[0] : message.replace("Disqualifikation für die Nummer ", "").charAt(0));
+        info.value =
+            "Disqualifikation für Nr. " +
+            (message.match(/\d+/)
+                ? message.match(/\d+/)[0]
+                : message
+                      .replace("Disqualifikation für die Nummer ", "")
+                      .charAt(0));
         src.value = "https://spo.handball4all.de/service/ticker/2wU3SwVT.svg";
     }
     // 2-min
     else if (message.includes("2-min")) {
-        info.value = "2-min Strafe für Nr. " + (message.replace("2-min", "").match(/\d+/) ? message.replace("2-min", "").match(/\d+/)[0] : message.replace("2-min Strafe für die Nummer ", "").charAt(0));
+        info.value =
+            "2-min Strafe für Nr. " +
+            (message.replace("2-min", "").match(/\d+/)
+                ? message.replace("2-min", "").match(/\d+/)[0]
+                : message
+                      .replace("2-min Strafe für die Nummer ", "")
+                      .charAt(0));
         src.value = "https://spo.handball4all.de/service/ticker/V-fktpyp.svg";
-    }
-    else {
+    } else {
         info.value = "error";
         src.value = "";
     }
 
     if (message.includes("Gastmannschaft")) {
         guest.value = true;
-    }
-    else {
+    } else {
         guest.value = false;
     }
-
 };
 
 init();
@@ -92,5 +109,4 @@ watch(message_ref, async (newValue, oldValue) => {
         init();
     }
 });
-
 </script>
