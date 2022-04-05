@@ -8,31 +8,19 @@
         </div>
         <div
             id="club-header"
-            class="flex w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
+            class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
         >
-            <ShareIcon
-                class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-20 top-5"
-                @click="shareClub"
-            />
-            <StarIconOutline
-                class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-5 top-5"
-                v-show="!isFavorite()"
-                @click="addFavorite"
-            />
-            <StarIcon
-                class="h-6 w-6 mt-1 ml-2 text-indigo-500 hover:text-black absolute right-5 top-5"
-                v-show="isFavorite()"
-                @click="removeFavorite"
-            />
-            <img
+            <Header v-if="club" :type="'club'" :club="club" :club_id="club.no" @updateFavorites="emit('updateFavorites')"></Header>
+            <div id="club-content" class="flex mb-5">
+                <img
                 v-if="club"
                 :src="'logos/clubs/' + club.no + '.png'"
                 alt=""
-                class="w-1/3 h-1/3 my-10 ml-5 rounded-lg border border-gray-500"
+                class="w-1/3 ml-5 rounded-lg border border-gray-500"
             />
 
             <div v-else>Loading...</div>
-            <div id="club-info" class="my-10 m-5 line-clamp-4 break-words">
+            <div id="club-info" class=" m-5 line-clamp-4 break-words">
                 <div class="font-bold">
                     {{ club.lname }}
                 </div>
@@ -44,6 +32,7 @@
                 :href="'http://' + club.webaddress"
                 >{{ club.webaddress }}</a
             >
+            </div>
         </div>
         <div class="w-5/6 m-auto pb-24">
             <div class="mt-3 flex justify-between">
@@ -183,15 +172,14 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 // helper components
 import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
+import Header from "./helpers/Header.vue";
 
 // helper functions
 import { fetchTeamID, fetchTeamGames } from "./functions/fetchData.js";
-import { getFavorites, updateFavorites } from "./functions/favorites";
 
 const route = useRoute();
 const club = ref({});
 const teams = ref([]);
-const favorites = ref([]);
 const props = defineProps(["club_no"]);
 const teamLoading = ref(true);
 const teamMatches = ref([]);
@@ -199,24 +187,11 @@ const teamClassID = ref(null);
 const teamID = ref([]);
 const showAll = ref(false);
 
-const emit = defineEmits(["updateFavorites", "disclosure-update"]);
+const emit = defineEmits(["updateFavorites","disclosure-update"]);
 
 club.value = {};
 
 const elements = ref([]);
-
-const shareClub = () => {
-    if (navigator.share) {
-        navigator.share({
-            title: "Verein",
-            text: club.value.lname,
-            url: route.fullPath,
-        });
-    } else {
-        // TODO: show alternative share method
-        alert("Dein Browser unterstützt das Share-Feature nicht.");
-    }
-};
 
 const hideOther = (id) => {
     const items = elements.value.filter((elm) => {
@@ -307,35 +282,7 @@ const getData = async (teamClassID) => {
     teamLoading.value = false;
 };
 
-const isFavorite = () => {
-    if (!favorites.value.length) {
-        return false;
-    }
-    for (const favorite of favorites.value) {
-        if (favorite.type == "club" && favorite.id == club.value.id) {
-            return true;
-        }
-    }
-};
 
-const addFavorite = () => {
-    favorites.value.push({
-        type: "club",
-        id: club.value.id,
-        name: club.value.lname,
-        no: club.value.no,
-    });
-    updateFavorites(favorites.value);
-};
-
-const removeFavorite = () => {
-    for (const favorite of favorites.value) {
-        if (favorite.type == "club" && favorite.id == club.value.id) {
-            favorites.value.splice(favorites.value.indexOf(favorite), 1);
-        }
-    }
-    updateFavorites(favorites.value);
-};
 
 const club_no_ref = toRef(props, "club_no");
 watch(club_no_ref, async (newValue, oldValue) => {
@@ -347,7 +294,6 @@ watch(club_no_ref, async (newValue, oldValue) => {
 
 onMounted(async () => {
     await fetchClub();
-    favorites.value = await getFavorites();
     await fetchAddress();
     await fetchMatches();
 });

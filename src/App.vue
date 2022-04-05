@@ -14,7 +14,7 @@ const gym = ref({});
 
 onMounted(() => {
     console.log("onMounted");
-    console.log("new version");
+    console.log("new version 2");
     localFavorites.value = JSON.parse(
         localStorage.getItem("favorites") || "[]"
     );
@@ -22,7 +22,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="h-screen w-screen">
+    <div class="h-screen w-screen overflow-x-hidden">
         <router-view></router-view>
 
         <div

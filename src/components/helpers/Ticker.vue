@@ -11,7 +11,7 @@
         class="w-5/6 m-auto border bg-white border-gray-100 shadow-xl rounded-lg relative mt-2"
         :class="
             fullscreenTicker
-                ? '!m-0 !z-50 !absolute !right-0 !top-0 !bottom-0 !left-0 !h-screen !w-screen'
+                ? '!m-0 !z-50 !absolute !right-0 !top-0 !bottom-0 !left-0 !h-screen !w-screen overflow-hidden'
                 : ''
         "
     >
@@ -250,8 +250,11 @@ import { ClockIcon } from "@heroicons/vue/outline";
 
 const props = defineProps(["game_token", "game_live"]);
 
+
 const gameToken = ref("");
 const gameLive = ref(false);
+const gameScore = ref({});
+defineExpose({ gameScore });
 
 const gameTickerInfo = ref({});
 const gameTicker = ref([]);
@@ -279,7 +282,8 @@ const getTime = (time) => {
 };
 
 const screenHeight = () => {
-    return screen.height;
+    console.log(window.innerHeight);
+    return window.innerHeight;
 };
 
 const screenWidth = () => {
@@ -466,8 +470,9 @@ const tickerInit = async () => {
             } else {
                 gameTickerStop.value = false;
             }
+            gameScore.value = gameTicker.value[0];
         }, interval);
-        let tmp = await fetchTicker(game.value.gToken);
+        let tmp = await fetchTicker(gameToken.value);
         if (!showAll.value) {
             tmp = tmp.filter(
                 (item) => !messageFilter.includes(item["message"])
@@ -483,15 +488,10 @@ const tickerInit = async () => {
         } else {
             gameTickerStop.value = false;
         }
-        gameTickerInfo.value = await fetchTickerInfo(game.value.gToken);
+        gameTickerInfo.value = await fetchTickerInfo(gameToken.value);
 
         //Sort team_members by no
         gameTickerInfo.value.team_home.team_members.sort(function (a, b) {
-            console.log("A: " + parseInt(a.player_no));
-            console.log("B: " + parseInt(b.player_no));
-            console.log(
-                "Result: " + (parseInt(a.player_no) - parseInt(b.player_no))
-            );
             if (!parseInt(a.player_no) && !parseInt(b.player_no)) {
                 if (a.player_no < b.player_no) {
                     return -1;
@@ -507,11 +507,6 @@ const tickerInit = async () => {
             return Number(a.player_no) - Number(b.player_no);
         });
         gameTickerInfo.value.team_guest.team_members.sort(function (a, b) {
-            console.log("A: " + parseInt(a.player_no));
-            console.log("B: " + parseInt(b.player_no));
-            console.log(
-                "Result: " + (parseInt(a.player_no) - parseInt(b.player_no))
-            );
             if (!parseInt(a.player_no) && !parseInt(b.player_no)) {
                 if (a.player_no < b.player_no) {
                     return -1;
@@ -558,10 +553,11 @@ const removeDuplicates = (array) => {
 
 // needs game token and live boolean
 const setGameToken = async () => {
-    if (props.game_token && props.live) {
+    console.log(props.game_live);
+    if (props.game_token && props.game_live) {
         console.log("props");
         gameToken.value = props.game_token;
-        gameLive.value = props.live;
+        gameLive.value = props.game_live;
     } else {
         console.log("not live or no game token");
     }
@@ -572,5 +568,6 @@ const setGameToken = async () => {
 onMounted(async () => {
     await setGameToken();
     await tickerInit();
+    console.log(screenWidth());
 });
 </script>

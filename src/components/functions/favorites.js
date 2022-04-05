@@ -1,6 +1,5 @@
 const updateFavorites = (favorites) => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
-    emit("updateFavorites");
 };
 
 const getFavorites = async () => {

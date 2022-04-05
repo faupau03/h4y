@@ -8,42 +8,30 @@
         </div>
         <div
             id="club-header"
-            class="flex w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
+            class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
         >
-            <ShareIcon
-                class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-20 top-5"
-                @click="shareTeam"
-            />
+            <Header @updateFavorites="emit('updateFavorites')" :type="'team'" :team_id="teamID" :class_id="teamClassID" :club_id="teamClubNo" :team="team" :club="club"></Header>
+            <div id="content" class="flex mb-5">
+                <img
+                    v-if="team"
+                    :src="'logos/clubs/' + teamClubNo + '.png'"
+                    alt=""
+                    class="w-1/3 ml-5 rounded-lg border border-gray-500"
+                />
 
-            <StarIconOutline
-                class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 absolute right-5 top-5"
-                v-show="!isFavorite()"
-                @click="addFavorite"
-            />
-            <StarIcon
-                class="h-6 w-6 mt-1 ml-2 text-indigo-500 hover:text-black absolute right-5 top-5"
-                v-show="isFavorite()"
-                @click="removeFavorite"
-            />
-            <img
-                v-if="team"
-                :src="'logos/clubs/' + teamClubNo + '.png'"
-                alt=""
-                class="w-1/3 h-1/3 my-10 ml-5 rounded-lg border border-gray-500"
-            />
-
-            <div
-                v-else
-                class="w-1/3 h-1/3 my-10 ml-5 rounded-lg border border-gray-300 shadow-2xl bg-gray-300"
-            >
-                <UserGroupIcon class="text-gray-700" />
-            </div>
-            <div id="club-info" class="my-12 m-5">
-                <div class="font-bold">
-                    {{ team ? team.head.name : "" }}
+                <div
+                    v-else
+                    class="w-1/3 ml-5 rounded-lg border border-gray-300 shadow-2xl bg-gray-300"
+                >
+                    <UserGroupIcon class="text-gray-700" />
                 </div>
-                <div class="text-sm text-gray-900">
-                    {{ club ? club.lname : "" }}
+                <div id="club-info" class="m-5">
+                    <div class="font-bold">
+                        {{ team ? team.head.name : "" }}
+                    </div>
+                    <div class="text-sm text-gray-900">
+                        {{ club ? club.lname : "" }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,8 +46,7 @@
                 <span class="mr-2"> Punkte </span>
             </div>
             <div v-if="matchesLoading">
-                <TableLoading v-for="i in 10" :key="i">
-                </TableLoading>
+                <TableLoading v-for="i in 10" :key="i"> </TableLoading>
             </div>
             <Table
                 v-else-if="team"
@@ -79,7 +66,9 @@
                         type="checkbox"
                         name=""
                         id=""
-                        @click="showAll = !showAll, teamClassID ? getData() : null"
+                        @click="
+                            (showAll = !showAll), teamClassID ? getData() : null
+                        "
                     />
                 </div>
             </div>
@@ -87,10 +76,7 @@
                 class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2 mb-20"
             >
                 <div v-if="matchesLoading">
-                    <MatchLoading
-                        v-for="n in 3"
-                        :key="n"
-                    ></MatchLoading>
+                    <MatchLoading v-for="n in 3" :key="n"></MatchLoading>
                 </div>
                 <div v-else>
                     <div id="league-info">
@@ -127,10 +113,9 @@ import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
 import Table from "./helpers/Table.vue";
 import TableLoading from "./helpers/TableLoading.vue";
-
+import Header from "./helpers/Header.vue";
 
 // helper function
-import { getFavorites, updateFavorites } from "./functions/favorites";
 import { fetchTeam, fetchTeamGames } from "./functions/fetchData.js";
 
 import {
@@ -146,7 +131,6 @@ import { UserGroupIcon } from "@heroicons/vue/solid";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 const route = useRoute();
-const favorites = ref([]);
 const props = defineProps(["team_id", "team_class", "team_club"]);
 
 const teamLoading = ref(false);
@@ -163,19 +147,6 @@ const showAll = ref(false);
 
 const emit = defineEmits(["updateFavorites"]);
 
-const shareTeam = () => {
-    if (navigator.share) {
-        navigator.share({
-            title: "Team",
-            text: team.value.head.name + " " + club.value.lname,
-            url: route.fullPath,
-        });
-    } else {
-        // TODO: show alternative share method
-        alert("Dein Browser unterstützt das Share-Feature nicht.");
-    }
-};
-
 const getData = async () => {
     matchesLoading.value = true;
     team.value = await fetchTeam(teamID.value, teamClassID.value);
@@ -187,44 +158,8 @@ const getData = async () => {
     );
     matchesLoading.value = false;
     console.log(teamMatches.value);
-}
-
-const isFavorite = () => {
-    if (!favorites.value.length) {
-        return false;
-    }
-    for (const favorite of favorites.value) {
-        if (favorite.type == "team" && favorite.id == teamID.value) {
-            return true;
-        }
-    }
 };
 
-const addFavorite = () => {
-    console.log("add favorite");
-    favorites.value.push({
-        type: "team",
-        id: teamID,
-        name: team.value.head.sname,
-        classid: teamClassID.value,
-        clubno: teamClubNo.value,
-        clubname: club.value.lname,
-    });
-    updateFavorites(favorites.value);
-};
-
-const removeFavorite = () => {
-    console.log("remove favorite");
-
-    for (const favorite of favorites.value) {
-        console.log(favorite.type);
-        console.log(favorite.id);
-        if (favorite.type == "team" && favorite.id == teamID.value) {
-            favorites.value.splice(favorites.value.indexOf(favorite), 1);
-        }
-    }
-    updateFavorites(favorites.value);
-};
 
 const team_id_ref = toRef(props, "team_id");
 watch(team_id_ref, async (newValue, oldValue) => {
@@ -264,7 +199,6 @@ const setTeamID = async () => {
 
 onMounted(async () => {
     await setTeamID();
-    favorites.value = await getFavorites();
     await getData();
     await fetchClub();
 });

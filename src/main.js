@@ -2,6 +2,14 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './index.css'
 import { createRouter, createWebHistory } from 'vue-router'
+
+import { registerSW } from 'virtual:pwa-register'
+
+const updateSW = registerSW({
+    onOfflineReady() {},
+})
+
+
 // Components
 import Search from "./components/Search.vue";
 import Leagues from "./components/Leagues.vue";
