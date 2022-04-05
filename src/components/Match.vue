@@ -62,7 +62,7 @@
             </div>
         </div>
         <div id="wrapper" class="pb-24">
-            <Ticker ref="tickerScore" :game_token="'24a5a097685fc0af178f762e3750338c'" :game_live="true" />
+            <Ticker ref="tickerScore" :game_token="game.gTickerToken" :game_live="game.gLive" />
             <div
                 id="scores"
                 class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-2"
