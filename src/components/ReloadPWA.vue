@@ -1,5 +1,5 @@
 <template>
-    <div v-if="offlineReady || needRefresh" class="flex flex-wrap" role="alert">
+    <div v-if="needRefresh" class="flex flex-wrap" role="alert">
         <div class="message mt-1">
             <span v-if="offlineReady"> App ready to work offline </span>
             <span v-else
