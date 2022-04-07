@@ -2,19 +2,19 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { ViewListIcon, StarIcon, SearchIcon } from "@heroicons/vue/outline";
-import { registerSW } from "virtual:pwa-register";
+import ReloadPWA from "./components/ReloadPWA.vue";
 import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-if ("serviceWorker" in navigator) {
-    // && !/localhost/.test(window.location)) {
-    registerSW();
-}
+
+const showUpdate = ref(false);
+
 const localFavorites = ref([]);
 const gym = ref({});
 
+
 onMounted(() => {
     console.log("onMounted");
-    console.log("new version 2");
+    console.log("new version 13");
     localFavorites.value = JSON.parse(
         localStorage.getItem("favorites") || "[]"
     );
@@ -23,6 +23,7 @@ onMounted(() => {
 
 <template>
     <div class="h-screen w-screen overflow-x-hidden">
+        <ReloadPWA/>
         <router-view></router-view>
 
         <div

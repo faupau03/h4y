@@ -7,6 +7,11 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
+      mode: 'development',
+      base: '/',
+      srcDir: 'src',
+      filename: 'sw.ts',
+      strategies: 'injectManifest',
       includeAssets: ['favicon.png', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png', 'icons/*.png', 'logos/clubs/*.png'],
       registerType: 'autoUpdate',
       manifest: {
