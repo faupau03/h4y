@@ -30,13 +30,13 @@
                     class="font-bold text-3xl sm:text-4xl my-4 justify-center flex"
                 >
                     {{
-                        tickerScore.game_score
+                        (tickerScore && tickerScore.game_score)
                             ? tickerScore.gameScore.home_score
                             : game.gHomeGoals
                     }}
                     :
                     {{
-                        tickerScore.game_score
+                        (tickerScore && tickerScore.game_score)
                             ? tickerScore.gameScore.guest_score
                             : game.gGuestGoals
                     }}
@@ -64,6 +64,7 @@
         <div id="wrapper" class="pb-24">
             <Ticker v-if="!loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live" />
             <div
+                v-if="!loading && scores.content.score.length"
                 id="scores"
                 class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-2"
             >
@@ -118,7 +119,7 @@ import {
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 // helper functions
-import { fetchTeam, fetchTeamGames } from "./functions/fetchData.js";
+import { fetchClassGames, fetchTeam, fetchTeamGames } from "./functions/fetchData.js";
 
 const route = useRoute();
 const props = defineProps(["team_id", "team_class", "game_id"]);
@@ -170,12 +171,19 @@ const setGameID = async () => {
 
 const getData = async () => {
     loading.value = true;
-    games.value = await fetchTeamGames(
-        teamID.value,
-        teamClassID.value,
-        [],
-        true
-    );
+    if (!teamID.value) {
+        games.value = await fetchClassGames(teamClassID.value);
+        console.log(games.value);
+    }
+    else {
+        games.value = await fetchTeamGames(
+            teamID.value,
+            teamClassID.value,
+            [],
+            true
+        );
+    }
+    
     scores.value = await fetchTeam(teamID.value, teamClassID.value);
     game.value = games.value.find((game) => game.gID === gameID.value);
     loading.value = false;

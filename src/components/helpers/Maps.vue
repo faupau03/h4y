@@ -22,9 +22,12 @@
 
 <script setup>
 import { LocationMarkerIcon } from "@heroicons/vue/outline";
+import { useRouter } from "vue-router";
 
 const navigator = window.navigator;
 const props = defineProps(["location", "name", "town", "id"]);
+
+const router = useRouter();
 
 const maps = () => {
     console.log(props.location);
@@ -53,5 +56,6 @@ const gym = () => {
     // redirecting to gym
     console.log("gym");
     console.log(props.id);
+    router.push("/gym#" + props.id);
 }
 </script>

@@ -10,7 +10,7 @@ const fetchTeamGames = async(teamID, classID, clubMatches, showAll) => {
 
 
     const response = await fetch(
-        "https://spo.handball4all.de/service/if_g_json.php?ca=0&cmd=ps&cl=" +
+        "https://spo.handball4all.de/service/if_g_json.php?ca=1&cmd=ps&cl=" +
         classID +
         "&ct=" +
         teamID
@@ -39,6 +39,17 @@ const fetchTeamGames = async(teamID, classID, clubMatches, showAll) => {
     });
 };
 
+const fetchClassGames = async(classID) => {
+    const response = await fetch(
+        "https://spo.handball4all.de/service/if_g_json.php?ca=0&cmd=ps&cl=" +
+        classID
+    );
+    const json = await response.json();
+    //console.log(json);
+    const class_games = json[0]["content"]["futureGames"]["games"];
+    return class_games;
+};
+
 const fetchTeam = async(teamID, classID, clubMatches) => {
     if (!teamID) {
         // no scoreboard, so no teamid
@@ -50,7 +61,7 @@ const fetchTeam = async(teamID, classID, clubMatches) => {
 
 
     const response = await fetch(
-        "https://spo.handball4all.de/service/if_g_json.php?ca=0&cmd=ps&cl=" +
+        "https://spo.handball4all.de/service/if_g_json.php?ca=1&cmd=ps&cl=" +
         classID +
         "&ct=" +
         teamID
@@ -97,4 +108,4 @@ const fetchTicker = async(token) => {
     return json;
 }
 
-export { fetchTeamGames, fetchTeamID, fetchTeam, fetchTickerInfo, fetchTicker };
+export { fetchTeamGames, fetchClassGames, fetchTeamID, fetchTeam, fetchTickerInfo, fetchTicker };
