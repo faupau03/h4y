@@ -1,6 +1,6 @@
 const fetchTeamGames = async(teamID, classID, clubMatches, showAll) => {
     if (!teamID) {
-        console.log("no teamid");
+        //console.log("no teamid");
         // no scoreboard, so no teamid
         // setting matches to mobile api data
         return clubMatches.find(
@@ -18,8 +18,8 @@ const fetchTeamGames = async(teamID, classID, clubMatches, showAll) => {
     const json = await response.json();
     //console.log(json);
     const team_games = json[0]["content"]["futureGames"]["games"];
-    console.log(team_games);
-    console.log(showAll);
+    //console.log(team_games);
+    //console.log(showAll);
     if (showAll) {
         return team_games;
     }
@@ -45,8 +45,9 @@ const fetchClassGames = async(classID, showAll) => {
         classID
     );
     const json = await response.json();
-    //console.log(json);
+    
     const class_games = json[0]["content"]["futureGames"]["games"];
+    //console.log(class_games);
     if (showAll) {
         return class_games;
     }

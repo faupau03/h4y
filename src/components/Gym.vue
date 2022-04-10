@@ -48,7 +48,6 @@
             <div
                 class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2"
             >
-                {{ teams }}
                 <Disclosure
                     v-for="team in teams"
                     :key="team.gClassID"
@@ -183,9 +182,6 @@ const hideOther = (id) => {
     items.forEach((elm) => elm.click());
 };
 
-const log = (message) => {
-    console.log(message);
-};
 
 const fetchGym = async () => {
     if (props.gym_id) {
@@ -210,6 +206,8 @@ const fetchMatches = async () => {
     teams.value = json[0].content.gList;
 };
 
+//TODO: implement this fix again
+/*
 const club_no_ref = toRef(props, "club_no");
 watch(club_no_ref, async (newValue, oldValue) => {
     console.log("update club");
@@ -217,6 +215,7 @@ watch(club_no_ref, async (newValue, oldValue) => {
         forceUpdate();
     }
 });
+*/
 
 onMounted(async () => {
     await fetchGym();

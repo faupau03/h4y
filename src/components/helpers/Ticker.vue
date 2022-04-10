@@ -568,6 +568,6 @@ const setGameToken = async () => {
 onMounted(async () => {
     await setGameToken();
     await tickerInit();
-    console.log(screenWidth());
+    //console.log(screenWidth());
 });
 </script>

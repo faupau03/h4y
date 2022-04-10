@@ -1,6 +1,5 @@
 <template>
     <div class="w-full h-full">
-
         <div class="ml-5 pt-3 mb-3">
             <h1 class="text-3xl font-bold">Spiel</h1>
             <p class="text-sm text-gray-500 uppercase font-bold">Info</p>
@@ -9,7 +8,13 @@
             id="game-header"
             class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
         >
-            <Header :type="'match'" :game="game" :game_id="gameID" :team_id="teamID" :class_id="teamClassID"></Header>
+            <Header
+                :type="'match'"
+                :game="game"
+                :game_id="gameID"
+                :team_id="teamID"
+                :class_id="teamClassID"
+            ></Header>
 
             <div id="game-info" class="">
                 <div class="justify-center grid mx-2">
@@ -30,13 +35,13 @@
                     class="font-bold text-3xl sm:text-4xl my-4 justify-center flex"
                 >
                     {{
-                        (tickerScore && tickerScore.game_score)
+                        tickerScore && tickerScore.game_score
                             ? tickerScore.gameScore.home_score
                             : game.gHomeGoals
                     }}
                     :
                     {{
-                        (tickerScore && tickerScore.game_score)
+                        tickerScore && tickerScore.game_score
                             ? tickerScore.gameScore.guest_score
                             : game.gGuestGoals
                     }}
@@ -58,51 +63,66 @@
                         :town="game.gGymnasiumTown"
                         :id="game.gGymnasiumID"
                     />
-                    <MapsLoading
-                        v-else
-                        class="w-full"
-                    />
-
+                    <MapsLoading v-else class="w-full" />
                 </div>
             </div>
         </div>
         <div id="wrapper" class="pb-24">
-            <Ticker v-if="!loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live" />
+            <Ticker
+                v-if="!loading"
+                ref="tickerScore"
+                :game_token="game.gToken"
+                :game_live="game.live"
+            />
             <div
                 id="scores"
                 class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-2"
             >
-                <div v-show="loading ? true : scores.content.score.length" class="flex mt-1">
+                <div
+                    v-show="loading ? true : scores.content.score.length"
+                    class="flex mt-1"
+                >
                     <span class="font-bold ml-2"> Tabelle </span>
                     <span class="hidden sm:block ml-auto mr-9"> Tore </span>
                     <span class="sm:ml-0 ml-auto mr-5"> Spiele </span>
                     <span class="mr-2"> Punkte </span>
                 </div>
-                <TableLoading v-if="loading" v-for="i in 10" :key="i"> </TableLoading>
-                <Table
-                    v-else
-                    v-for="team_score in scores.content.score"
-                    :key="team_score.tabTeamID"
-                    :team_score="team_score"
-                >
-                </Table>
-            </div>
-            <div class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-10 p-1">
-                <div class="mt-3 flex justify-between">
-                <h2 class="font-bold text-base m-1">Spiele in dieser Klasse</h2>
-                <div class="text-sm m-2">
-                    Alle Spiele
-                    <input
-                        class="ml-1 mb-1 rounded"
-                        type="checkbox"
-                        name=""
-                        id=""
-                        v-model="showAll"
-                        @click="teamClassID ? getData(teamClassID) : null"
-                    />
+                <div v-if="loading">
+                    <TableLoading v-for="i in 10" :key="i"> </TableLoading>
+                </div>
+                <div v-else>
+                    <Table
+                        v-for="team_score in scores.content.score"
+                        :key="team_score.tabTeamID"
+                        :team_score="team_score"
+                    >
+                    </Table>
                 </div>
             </div>
-                <ClassGames :games="classGames" :loading="loading" :showAll="showAll"></ClassGames>
+            <div
+                class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-10 p-1"
+            >
+                <div class="mt-3 flex justify-between">
+                    <h2 class="font-bold text-base m-1">
+                        Spiele in dieser Klasse
+                    </h2>
+                    <div class="text-sm m-2">
+                        Alle Spiele
+                        <input
+                            class="ml-1 mb-1 rounded"
+                            type="checkbox"
+                            name=""
+                            id=""
+                            v-model="showAll"
+                            @click="teamClassID ? getData(teamClassID) : null"
+                        />
+                    </div>
+                </div>
+                <ClassGames
+                    :games="classGames"
+                    :loading="loading"
+                    :showAll="showAll"
+                ></ClassGames>
             </div>
         </div>
     </div>
@@ -141,7 +161,11 @@ import {
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 // helper functions
-import { fetchClassGames, fetchTeam, fetchTeamGames } from "./functions/fetchData.js";
+import {
+    fetchClassGames,
+    fetchTeam,
+    fetchTeamGames,
+} from "./functions/fetchData.js";
 import { filterGames } from "./functions/misc.js";
 
 const route = useRoute();
@@ -155,7 +179,6 @@ const game = ref({});
 const classGames = ref([]);
 const showAll = ref(false);
 
-
 const tickerScore = ref(null);
 
 const pressText = ref({});
@@ -164,8 +187,6 @@ const showText = ref(false);
 const teamClassID = ref(null);
 const teamID = ref(null);
 const gameID = ref(null);
-
-
 
 const game_id_ref = toRef(props, "game_id");
 watch(game_id_ref, async (newValue, oldValue) => {
@@ -189,18 +210,18 @@ const setGameID = async () => {
         teamID.value = params[1];
         teamClassID.value = params[2];
     }
-    console.log("gameID: " + gameID.value);
-    console.log("teamID: " + teamID.value);
-    console.log("teamClassID: " + teamClassID.value);
+    //console.log("gameID: " + gameID.value);
+    //console.log("teamID: " + teamID.value);
+    //console.log("teamClassID: " + teamClassID.value);
 };
 
 const getData = async () => {
     loading.value = true;
     games.value = await fetchClassGames(teamClassID.value, true);
-    console.log(games.value);
+    //console.log(games.value);
     classGames.value = filterGames(games.value, showAll.value);
 
-    if (teamID.value) {
+    if (teamID.value && teamID.value != "null") {
         games.value = await fetchTeamGames(
             teamID.value,
             teamClassID.value,
@@ -208,7 +229,7 @@ const getData = async () => {
             true
         );
     }
-    
+
     scores.value = await fetchTeam(teamID.value, teamClassID.value);
     game.value = games.value.find((game) => game.gID === gameID.value);
     loading.value = false;
@@ -219,4 +240,3 @@ onMounted(async () => {
     await getData();
 });
 </script>
-
