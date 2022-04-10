@@ -10,7 +10,7 @@ const fetchTeamGames = async(teamID, classID, clubMatches, showAll) => {
 
 
     const response = await fetch(
-        "https://spo.handball4all.de/service/if_g_json.php?ca=1&cmd=ps&cl=" +
+        "https://spo.handball4all.de/service/if_g_json.php?ca=0&cmd=ps&cl=" +
         classID +
         "&ct=" +
         teamID
@@ -39,15 +39,31 @@ const fetchTeamGames = async(teamID, classID, clubMatches, showAll) => {
     });
 };
 
-const fetchClassGames = async(classID) => {
+const fetchClassGames = async(classID, showAll) => {
     const response = await fetch(
-        "https://spo.handball4all.de/service/if_g_json.php?ca=0&cmd=ps&cl=" +
+        "https://spo.handball4all.de/service/if_g_json.php?ca=1&cmd=ps&cl=" +
         classID
     );
     const json = await response.json();
     //console.log(json);
     const class_games = json[0]["content"]["futureGames"]["games"];
-    return class_games;
+    if (showAll) {
+        return class_games;
+    }
+    return class_games.filter((game) => {
+        const date_split = game.gDate.split(".");
+        const time_split = game.gTime.split(":");
+        //TODO: this date is hardcoded to the 21st century
+        const date = new Date(
+            "20" + date_split[2],
+            date_split[1] - 1,
+            date_split[0],
+            time_split[0],
+            time_split[1]
+        );
+        date.setHours(date.getHours() + 2);     // 2 hour puffertime
+        return date > new Date();
+    });
 };
 
 const fetchTeam = async(teamID, classID, clubMatches) => {

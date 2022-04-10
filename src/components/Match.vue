@@ -58,23 +58,27 @@
                         :town="game.gGymnasiumTown"
                         :id="game.gGymnasiumID"
                     />
+                    <MapsLoading
+                        v-else
+                        class="w-full"
+                    />
+
                 </div>
             </div>
         </div>
         <div id="wrapper" class="pb-24">
             <Ticker v-if="!loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live" />
             <div
-                v-if="!loading && scores.content.score.length"
                 id="scores"
                 class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-2"
             >
-                <div class="flex mt-1">
+                <div v-show="loading ? true : scores.content.score.length" class="flex mt-1">
                     <span class="font-bold ml-2"> Tabelle </span>
                     <span class="hidden sm:block ml-auto mr-9"> Tore </span>
                     <span class="sm:ml-0 ml-auto mr-5"> Spiele </span>
                     <span class="mr-2"> Punkte </span>
                 </div>
-                <TableLoading v-if="loading"> </TableLoading>
+                <TableLoading v-if="loading" v-for="i in 10" :key="i"> </TableLoading>
                 <Table
                     v-else
                     v-for="team_score in scores.content.score"
@@ -82,6 +86,23 @@
                     :team_score="team_score"
                 >
                 </Table>
+            </div>
+            <div class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-10 p-1">
+                <div class="mt-3 flex justify-between">
+                <h2 class="font-bold text-base m-1">Spiele in dieser Klasse</h2>
+                <div class="text-sm m-2">
+                    Alle Spiele
+                    <input
+                        class="ml-1 mb-1 rounded"
+                        type="checkbox"
+                        name=""
+                        id=""
+                        v-model="showAll"
+                        @click="teamClassID ? getData(teamClassID) : null"
+                    />
+                </div>
+            </div>
+                <ClassGames :games="classGames" :loading="loading" :showAll="showAll"></ClassGames>
             </div>
         </div>
     </div>
@@ -99,9 +120,10 @@ import MatchLoading from "./helpers/MatchLoading.vue";
 import Table from "./helpers/Table.vue";
 import TableLoading from "./helpers/TableLoading.vue";
 import Maps from "./helpers/Maps.vue";
+import MapsLoading from "./helpers/MapsLoading.vue";
 import Ticker from "./helpers/Ticker.vue";
 import Header from "./helpers/Header.vue";
-
+import ClassGames from "./helpers/ClassGames.vue";
 
 import {
     ChevronUpIcon,
@@ -120,6 +142,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 // helper functions
 import { fetchClassGames, fetchTeam, fetchTeamGames } from "./functions/fetchData.js";
+import { filterGames } from "./functions/misc.js";
 
 const route = useRoute();
 const props = defineProps(["team_id", "team_class", "game_id"]);
@@ -129,6 +152,8 @@ const scores = ref({});
 const loading = ref(true);
 const game = ref({});
 
+const classGames = ref([]);
+const showAll = ref(false);
 
 
 const tickerScore = ref(null);
@@ -171,11 +196,11 @@ const setGameID = async () => {
 
 const getData = async () => {
     loading.value = true;
-    if (!teamID.value) {
-        games.value = await fetchClassGames(teamClassID.value);
-        console.log(games.value);
-    }
-    else {
+    games.value = await fetchClassGames(teamClassID.value, true);
+    console.log(games.value);
+    classGames.value = filterGames(games.value, showAll.value);
+
+    if (teamID.value) {
         games.value = await fetchTeamGames(
             teamID.value,
             teamClassID.value,
@@ -192,7 +217,6 @@ const getData = async () => {
 onMounted(async () => {
     await setGameID();
     await getData();
-    
 });
 </script>
 
