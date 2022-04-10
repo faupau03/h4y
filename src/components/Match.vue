@@ -30,13 +30,13 @@
                     class="font-bold text-3xl sm:text-4xl my-4 justify-center flex"
                 >
                     {{
-                        tickerScore
+                        tickerScore.game_score
                             ? tickerScore.gameScore.home_score
                             : game.gHomeGoals
                     }}
                     :
                     {{
-                        tickerScore
+                        tickerScore.game_score
                             ? tickerScore.gameScore.guest_score
                             : game.gGuestGoals
                     }}
@@ -62,7 +62,7 @@
             </div>
         </div>
         <div id="wrapper" class="pb-24">
-            <Ticker ref="tickerScore" :game_token="game.gTickerToken" :game_live="game.gLive" />
+            <Ticker v-if="!loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live" />
             <div
                 id="scores"
                 class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-2"

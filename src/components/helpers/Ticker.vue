@@ -60,13 +60,13 @@
                 </div>
                 {{ gameTickerInfo["team_home"]["club"] }}
             </div>
-            <div class="grid justify-center mt-2">
-                <div class="flex justify-center">
+            <div class="grid justify-center mt-1">
+                <div class="flex justify-center md:text-xl">
                     <ClockIcon class="h-6 w-6" />
                     <!-- {{ getTime(gameTicker[0]["game_time"]) }} -->
                     {{ getTime(gameTickerTime) }}
                 </div>
-                <div class="justify-center flex font-bold text-xl">
+                <div class="justify-center flex font-bold text-xl sm:text-3xl md:text-5xl">
                     {{ gameTicker[0]["home_score"] }}
                     :
                     {{ gameTicker[0]["guest_score"] }}
@@ -282,7 +282,7 @@ const getTime = (time) => {
 };
 
 const screenHeight = () => {
-    console.log(window.innerHeight);
+    //console.log(window.innerHeight);
     return window.innerHeight;
 };
 
@@ -441,7 +441,7 @@ const get2min = (player_no) => {
 const tickerInit = async () => {
     gameTickerLoading.value = true;
     if (gameLive.value) {
-        console.log("game is live");
+        //console.log("game is live");
 
         // Set fetch interval
         setInterval(async () => {
@@ -553,16 +553,16 @@ const removeDuplicates = (array) => {
 
 // needs game token and live boolean
 const setGameToken = async () => {
-    console.log(props.game_live);
+    //console.log(props.game_live);
     if (props.game_token && props.game_live) {
-        console.log("props");
+        //console.log("props");
         gameToken.value = props.game_token;
         gameLive.value = props.game_live;
     } else {
-        console.log("not live or no game token");
+        //console.log("not live or no game token");
     }
-    console.log("gameToken: " + gameToken.value);
-    console.log("gameLive: " + gameLive.value);
+    //console.log("gameToken: " + gameToken.value);
+    //console.log("gameLive: " + gameLive.value);
 };
 
 onMounted(async () => {

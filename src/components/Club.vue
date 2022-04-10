@@ -113,6 +113,7 @@
                                 :class="index === 0 ? '-mt-3' : ''"
                             />
                             <router-link
+                                v-if="teamID"
                                 :to="
                                     'team#' +
                                     teamID[index] +
@@ -131,7 +132,7 @@
                                 v-for="match in subTeam"
                                 :key="match.gID"
                                 :match="match"
-                                :teamID="teamID[index]"
+                                :teamID="teamID ? teamID[index] : null"
                                 :teamClassID="team.gClassID"
                             ></Match>
                             <div
@@ -154,7 +155,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted } from "vue";
 import { ref, toRef } from "vue";
 import { watch } from "vue";
@@ -269,7 +270,14 @@ const fetchMatches = async () => {
 const getData = async (teamClassID) => {
     teamLoading.value = true;
     teamID.value = await fetchTeamID(teamClassID, club.value.lname);
-    //console.log("There are " + teamID.value.length + " teams of this club in this class.");
+    if (!teamID.value) {
+        console.log("no team id available");
+        console.log("listing games from mobile api");
+        teamMatches.value[0] = await fetchTeamGames(null,teamClassID, teams.value, showAll.value);
+        teamLoading.value = false;
+        return;
+    }
+    console.log("There are " + teamID.value.length + " teams of this club in this class.");
     teamMatches.value = {};
     for (const team of teamID.value) {
         teamMatches.value[team] = await fetchTeamGames(

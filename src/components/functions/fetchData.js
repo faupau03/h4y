@@ -1,5 +1,6 @@
 const fetchTeamGames = async(teamID, classID, clubMatches, showAll) => {
     if (!teamID) {
+        console.log("no teamid");
         // no scoreboard, so no teamid
         // setting matches to mobile api data
         return clubMatches.find(
