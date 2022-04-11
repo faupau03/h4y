@@ -9,19 +9,28 @@
             class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
         >
             <Header
+                v-if="!loading"
                 :type="'match'"
                 :game="game"
                 :game_id="gameID"
                 :team_id="teamID"
                 :class_id="teamClassID"
             ></Header>
+            <HeaderLoading v-else/>
 
             <div id="game-info" class="">
                 <div class="justify-center grid mx-2">
-                    <div class="font-bold text-xl sm:text-2xl">
+                    <div v-if="!loading" class="font-bold text-xl sm:text-2xl">
                         {{ game.gHomeTeam }}
                         :
                         {{ game.gGuestTeam }}
+                    </div>
+                    <div v-else class="flex font-bold text-xl sm:text-2xl rounded">
+                        <div class="h-6 w-20 mt-2 mx-1 bg-gray-400 rounded-lg">
+
+                        </div>
+                        :
+                        <div class="h-6 w-20 mt-2 mx-1 bg-gray-400 rounded-lg"></div>
                     </div>
                     <div>
                         {{ !loading ? scores.head.name : "" }}
@@ -33,6 +42,7 @@
                 ></div>
                 <div
                     class="font-bold text-3xl sm:text-4xl my-4 justify-center flex"
+                    v-if="!loading"
                 >
                     {{
                         tickerScore && tickerScore.game_score
@@ -46,10 +56,19 @@
                             : game.gGuestGoals
                     }}
                 </div>
+                <div v-else class="font-bold text-3xl sm:text-4xl my-4 justify-center flex">
+                    <div class="h-8 w-10 bg-gray-300 rounded-lg mt-2 mx-1">
+
+                    </div>
+                    :
+                    <div class="h-8 w-10 bg-gray-300 rounded-lg mt-2 mx-1">
+
+                    </div>
+                </div>
                 <div class="m-1 sm:m-5">
-                    <Maps
+                    <div v-if="game">
+                        <Maps
                         class="w-full"
-                        v-if="!loading"
                         :location="
                             game.gGymnasiumName +
                             '+' +
@@ -63,13 +82,14 @@
                         :town="game.gGymnasiumTown"
                         :id="game.gGymnasiumID"
                     />
+                    </div>
                     <MapsLoading v-else class="w-full" />
                 </div>
             </div>
         </div>
         <div id="wrapper" class="pb-24">
             <Ticker
-                v-if="!loading"
+                v-if="game"
                 ref="tickerScore"
                 :game_token="game.gToken"
                 :game_live="game.live"
@@ -123,8 +143,10 @@
                     :games="classGames"
                     :loading="loading"
                     :showAll="showAll"
+                    :teamClassID="teamClassID"
+                    @gameUpdate="(gID,tID,cID) => forceUpdate(gID,tID,cID)"
                 ></ClassGames>
-                <ClassGamesLoading v-else class="w-full" />
+                <ClassGamesLoading v-else />
             </div>
         </div>
     </div>
@@ -166,6 +188,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 // helper functions
 import {
     fetchClassGames,
+    fetchClass,
     fetchTeam,
     fetchTeamGames,
 } from "./functions/fetchData.js";
@@ -221,10 +244,13 @@ const setGameID = async () => {
 const getData = async () => {
     loading.value = true;
     games.value = await fetchClassGames(teamClassID.value, true);
-    //console.log(games.value);
-    classGames.value = filterGames(games.value, showAll.value);
+    console.log("games value");
+    console.log(games.value);
+    classGames.value = games.value
+    classGames.value = filterGames(classGames.value, showAll.value);
 
-    if (teamID.value && teamID.value != "null") {
+    console.log(teamID.value);
+    if (teamID.value && teamID.value != "null" && teamID.value != "undefined") {
         games.value = await fetchTeamGames(
             teamID.value,
             teamClassID.value,
@@ -233,9 +259,25 @@ const getData = async () => {
         );
     }
 
-    scores.value = await fetchTeam(teamID.value, teamClassID.value);
+    scores.value = await fetchClass(teamClassID.value);
+    console.log(games.value);
     game.value = games.value.find((game) => game.gID === gameID.value);
+    console.log(gameID.value);
+    console.log(games.value);
+    console.log(game.value);
     loading.value = false;
+};
+
+const forceUpdate = async(gID,tID,cID) => {
+    console.log("force update");
+    console.log(gID);
+    console.log(tID);
+    console.log(cID);
+
+    gameID.value = gID;
+    teamID.value = tID;
+    teamClassID.value = cID;
+    await getData();
 };
 
 onMounted(async () => {

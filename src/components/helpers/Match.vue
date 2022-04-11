@@ -4,7 +4,8 @@
         @click="
             $router.push(
                 'match#' + match.gID + ';' + teamID + ';' + teamClassID
-            )
+            ),
+            $emit('gameUpdate',match.gID,teamID,teamClassID)
         "
     >
         <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
@@ -77,5 +78,6 @@ import {
     InformationCircleIcon,
 } from "@heroicons/vue/solid";
 
+const emits = defineEmits(["gameUpdate"]);
 const props = defineProps(["match", "teamID", "teamClassID"]);
 </script>

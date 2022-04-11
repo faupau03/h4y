@@ -6,7 +6,7 @@
                     {{ group[0]["gGroupsortTxt"] }}
                 </div>
                 <div v-if="group.length">
-                    <Match v-for="game in group" :key="game.gID" :match="game"></Match>
+                    <Match v-for="game in group" :key="game.gID" :match="game" :teamClassID="teamClassID" @gameUpdate="(gID,tID,cID) => $emit('gameUpdate',gID,tID,cID)"></Match>
                 </div>
                 <div v-else>
                     Keine Spiele in dieser Gruppe
@@ -15,7 +15,7 @@
             </div>
         </div>
         <div v-else>
-            <Match v-for="game in games" :key="game.gID" :match="game"></Match>
+            <Match v-for="game in games" :key="game.gID" :match="game" :teamClassID="teamClassID"   @gameUpdate="(gID,tID,cID) => $emit('gameUpdate',gID,tID,cID)"></Match>
             <div v-show="!games.length && !showAll">
                 Keine zukünftigen Spiele in dieser Klasse
             </div>
@@ -30,18 +30,18 @@
     import { onMounted, ref } from "vue";
 
     const groups = ref({});
-
-    const props = defineProps(["games","loading","showAll"]);
+    const emits = defineEmits(["gameUpdate"]);
+    const props = defineProps(["games","loading","showAll","teamClassID"]);
     onMounted(() => {
-        console.log(props.games);
-        console.log(props.games[0]["gGroupsortTxt"]);
+        //console.log(props.games);
+        //console.log(props.games[0]["gGroupsortTxt"]);
         if(!props.games.length) {
             return;
         }
         if (props.games[0]["gGroupsortTxt"]) {
-            console.log("grouped");
+            //console.log("grouped");
             for (let game of props.games) {
-                console.log(game);
+                //console.log(game);
                 if (groups.value[game["gGroupsortTxt"]]) {
                     groups.value[game["gGroupsortTxt"]].push(game);
                 } else {
@@ -50,6 +50,6 @@
             }
             
         }
-        console.log(groups.value);
+        //console.log(groups.value);
     });
 </script>
