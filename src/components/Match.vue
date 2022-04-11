@@ -119,16 +119,18 @@
                     </div>
                 </div>
                 <ClassGames
+                    v-if="!loading"
                     :games="classGames"
                     :loading="loading"
                     :showAll="showAll"
                 ></ClassGames>
+                <ClassGamesLoading v-else class="w-full" />
             </div>
         </div>
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted } from "vue";
 import { ref, toRef } from "vue";
 import { watch } from "vue";
@@ -144,6 +146,7 @@ import MapsLoading from "./helpers/MapsLoading.vue";
 import Ticker from "./helpers/Ticker.vue";
 import Header from "./helpers/Header.vue";
 import ClassGames from "./helpers/ClassGames.vue";
+import ClassGamesLoading from "./helpers/ClassGamesLoading.vue";
 
 import {
     ChevronUpIcon,
