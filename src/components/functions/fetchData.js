@@ -47,10 +47,10 @@ const fetchClassGames = async(classID, showAll) => {
     const json = await response.json();
     
     const class_games = json[0]["content"]["futureGames"]["games"];
-    console.log(class_games);
-    console.log(showAll);
+    //console.log(class_games);
+    //console.log(showAll);
     if (showAll) {
-        console.log("show all");
+        //console.log("show all");
         return class_games;
     }
     return class_games.filter((game) => {
@@ -121,6 +121,25 @@ const fetchTeamID = async(classID, clubName) => {
     return ids;
 }
 
+const fetchClubClasses = async(club_id) => {
+    const json = await fetchClub(club_id);
+    return json[0]["content"]["classes"];
+}
+
+const getClubClasses = async(json) => {
+    return json[0]["content"]["classes"];
+}
+
+const fetchClub = async(club_id) => {
+    const response = await fetch(
+        "https://spo.handball4all.de/service/if_g_json.php?cmd=pcu&c="
+        + club_id
+    );
+    const json = await response.json();
+    return json;
+}
+
+
 const fetchTickerInfo = async(token) => {
     const response = await fetch(
         "https://spo.handball4all.de/service/if_ticker_data.php?token=" + token + "&cmd=getAllGameInfo"
@@ -137,4 +156,4 @@ const fetchTicker = async(token) => {
     return json;
 }
 
-export { fetchTeamGames, fetchClassGames, fetchClass, fetchTeamID, fetchTeam, fetchTickerInfo, fetchTicker };
+export { fetchTeamGames, fetchClassGames, fetchClub, getClubClasses, fetchClass, fetchTeamID, fetchTeam, fetchTickerInfo, fetchTicker };
