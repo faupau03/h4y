@@ -16,13 +16,15 @@ function isBot (useragent) {
 
 const uAgentMiddleware = async (req, res, next) => {
     const local_url = 'h4y.paffnet.de';
-    console.log("This is a bot");
 
     if (!isBot(req.headers['user-agent'])) {
         next ()
     } else {
 
         try {
+            console.log("This is a bot");
+            console.log("URL", `${req.protocol}://${req.get('host')}${req.originalUrl}`);
+
             const browser = await puppeteer.launch({
               'args' : [
                 '--no-sandbox',
@@ -38,7 +40,7 @@ const uAgentMiddleware = async (req, res, next) => {
                 return document.documentElement.innerHTML;
             });
             await browser.close();
-
+            console.log("HTML", html);
             res.send(html);
         } catch (err) {
             res.send(err)
