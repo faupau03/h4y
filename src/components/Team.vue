@@ -156,8 +156,8 @@ const getData = async () => {
         [],
         showAll.value
     );
+    teamMatches.value.reverse();
     matchesLoading.value = false;
-    console.log(teamMatches.value);
 };
 
 

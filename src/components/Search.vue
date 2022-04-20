@@ -24,7 +24,7 @@
         </div>
         <div class="rounded-lg w-full mt-5 text-sm text-gray-500 uppercase font-bold">Halle</div>
         <div id="gyms">
-            <div v-for="item in data_gyms" class="transform transition-all duration-300 scale-100 hover:scale-95 rounded-lg w-full border-neutral-300 border p-2 my-2" @click="$router.push('gym#' + item.no)">
+            <div v-for="item in data_gyms" class="transform transition-all duration-300 scale-100 hover:scale-95 rounded-lg w-full border-neutral-300 border p-2 my-2" @click="$router.push('gym#' + item.id)">
                 {{ item.lname }}
             </div>
             <div v-show="data_gyms.length < 1" class="text-sm text-gray-500">

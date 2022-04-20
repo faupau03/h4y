@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './index.css'
 import { createRouter, createWebHistory } from 'vue-router'
+import {createHead} from '@vueuse/head'
 
 import { registerSW } from 'virtual:pwa-register'
 
@@ -73,5 +74,7 @@ const router = createRouter({
 })
 
 const app = createApp(App)
+app.config.globalProperties.$location = window.location;
 app.use(router)
+app.use(createHead())
 app.mount('#app')

@@ -1,22 +1,28 @@
 <template>
+    <Head>
+        <meta name="description" :content="'Handballspiel am ' + game.gDate + ', ' + game.gHomeTeam + 'gegen' + game.gGuestTeam">
+
+        <!-- Social -->
+        <meta property="og:title" content="Handballspiel">
+        <meta property="og:description" :content="'Handballspiel am ' + game.gDate + ', ' + game.gHomeTeam + ' gegen ' + game.gGuestTeam">
+        <meta property="og:image" content="og.png">
+        <meta property="og:url" :content="$location.href">
+
+        <!-- Twitter -->
+        <meta name="twitter:title" content="Handballspiel">
+        <meta name="twitter:description" :content="'Handballspiel am ' + game.gDate + ', ' + game.gHomeTeam + ' gegen ' + game.gGuestTeam">
+        <meta name="twitter:image" content="og.png">
+        <meta name="twitter:card" content="summary_large_image">
+    </Head>
     <div class="w-full h-full">
         <div class="ml-5 pt-3 mb-3">
             <h1 class="text-3xl font-bold">Spiel</h1>
             <p class="text-sm text-gray-500 uppercase font-bold">Info</p>
         </div>
-        <div
-            id="game-header"
-            class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
-        >
-            <Header
-                v-if="!loading"
-                :type="'match'"
-                :game="game"
-                :game_id="gameID"
-                :team_id="teamID"
-                :class_id="teamClassID"
-            ></Header>
-            <HeaderLoading v-else/>
+        <div id="game-header" class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative">
+            <Header v-if="!loading" :type="'match'" :game="game" :game_id="gameID" :team_id="teamID"
+                :class_id="teamClassID"></Header>
+            <HeaderLoading v-else />
 
             <div id="game-info" class="">
                 <div class="justify-center grid mx-2">
@@ -38,14 +44,8 @@
                     </div>
                     <span v-else class="rounded h-4 w-40 bg-gray-300 m-1 animate-pulse"></span>
                 </div>
-                <div
-                    id="game-class"
-                    class="text-md sm:text-sl justify-center flex"
-                ></div>
-                <div
-                    class="font-bold text-3xl sm:text-4xl my-4 justify-center flex"
-                    v-if="!loading"
-                >
+                <div id="game-class" class="text-md sm:text-sl justify-center flex"></div>
+                <div class="font-bold text-3xl sm:text-4xl my-4 justify-center flex" v-if="!loading">
                     {{
                         tickerScore && tickerScore.game_score
                             ? tickerScore.gameScore.home_score
@@ -69,9 +69,7 @@
                 </div>
                 <div class="m-1 sm:m-5">
                     <div v-if="game">
-                        <Maps
-                        class="w-full"
-                        :location="
+                        <Maps class="w-full" :location="
                             game.gGymnasiumName +
                             '+' +
                             game.gGymnasiumStreet +
@@ -79,31 +77,16 @@
                             game.gGymnasiumPostal +
                             '+' +
                             game.gGymnasiumTown
-                        "
-                        :name="game.gGymnasiumName"
-                        :town="game.gGymnasiumTown"
-                        :id="game.gGymnasiumID"
-                    />
+                        " :name="game.gGymnasiumName" :town="game.gGymnasiumTown" :id="game.gGymnasiumID" />
                     </div>
                     <MapsLoading v-else class="w-full" />
                 </div>
             </div>
         </div>
         <div id="wrapper" class="pb-24">
-            <Ticker
-                v-if="game"
-                ref="tickerScore"
-                :game_token="game.gToken"
-                :game_live="game.live"
-            />
-            <div
-                id="scores"
-                class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-2"
-            >
-                <div
-                    v-show="loading ? true : scores.content.score.length"
-                    class="flex mt-1"
-                >
+            <Ticker v-if="game" ref="tickerScore" :game_token="game.gToken" :game_live="game.live" />
+            <div id="scores" class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-2">
+                <div v-show="loading ? true : scores.content.score.length" class="flex mt-1">
                     <span class="font-bold ml-2"> Tabelle </span>
                     <span class="hidden sm:block ml-auto mr-9"> Tore </span>
                     <span class="sm:ml-0 ml-auto mr-5"> Spiele </span>
@@ -113,41 +96,24 @@
                     <TableLoading v-for="i in 10" :key="i"> </TableLoading>
                 </div>
                 <div v-else>
-                    <Table
-                        v-for="team_score in scores.content.score"
-                        :key="team_score.tabTeamID"
-                        :team_score="team_score"
-                    >
+                    <Table v-for="team_score in scores.content.score" :key="team_score.tabTeamID"
+                        :team_score="team_score">
                     </Table>
                 </div>
             </div>
-            <div
-                class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-10 p-1"
-            >
+            <div class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-10 p-1">
                 <div class="mt-3 flex justify-between">
                     <h2 class="font-bold text-base m-1">
                         Spiele in dieser Klasse
                     </h2>
                     <div class="text-sm m-2">
                         Alle Spiele
-                        <input
-                            class="ml-1 mb-1 rounded"
-                            type="checkbox"
-                            name=""
-                            id=""
-                            v-model="showAll"
-                            @click="teamClassID ? getData(teamClassID) : null"
-                        />
+                        <input class="ml-1 mb-1 rounded" type="checkbox" name="" id="" v-model="showAll"
+                            @click="teamClassID ? getData(teamClassID) : null" />
                     </div>
                 </div>
-                <ClassGames
-                    v-if="!loading"
-                    :games="classGames"
-                    :loading="loading"
-                    :showAll="showAll"
-                    :teamClassID="teamClassID"
-                    @gameUpdate="(gID,tID,cID) => forceUpdate(gID,tID,cID)"
-                ></ClassGames>
+                <ClassGames v-if="!loading" :games="classGames" :loading="loading" :showAll="showAll"
+                    :teamClassID="teamClassID" @gameUpdate="(gID, tID, cID) => forceUpdate(gID, tID, cID)"></ClassGames>
                 <ClassGamesLoading v-else />
             </div>
         </div>
@@ -172,6 +138,9 @@ import Header from "./helpers/Header.vue";
 import HeaderLoading from "./helpers/HeaderLoading.vue";
 import ClassGames from "./helpers/ClassGames.vue";
 import ClassGamesLoading from "./helpers/ClassGamesLoading.vue";
+
+//Head component
+import { Head } from '@vueuse/head';
 
 import {
     ChevronUpIcon,
@@ -271,7 +240,7 @@ const getData = async () => {
     loading.value = false;
 };
 
-const forceUpdate = async(gID,tID,cID) => {
+const forceUpdate = async (gID, tID, cID) => {
     console.log("force update");
     console.log(gID);
     console.log(tID);

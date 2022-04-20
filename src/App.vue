@@ -24,7 +24,11 @@ onMounted(() => {
 <template>
     <div class="h-screen w-screen overflow-x-hidden">
         <ReloadPWA/>
-        <router-view></router-view>
+        <router-view v-slot="{ Component }">
+            <keep-alive>
+                <component :is="Component" />
+            </keep-alive>
+        </router-view>
 
         <div
             class="z-10 bg-white fixed bottom-0 w-full border-t border-gray-200 flex"

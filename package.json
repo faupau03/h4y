@@ -12,6 +12,7 @@
     "@headlessui/vue": "^1.5.0",
     "@heroicons/vue": "^1.0.6",
     "@vueform/multiselect": "^2.3.3",
+    "@vueuse/head": "^0.7.6",
     "express": "^4.17.3",
     "ical-generator": "^3.4.0",
     "vue": "^3.2.25",
