@@ -62,6 +62,7 @@
             <div
                 id="info"
                 class="col-span-3 text-xs text-gray-600"
+                v-if="match.gComment"
                 :class="match.gComment.length > 1 ? 'flex' : 'hidden'"
             >
                 <InformationCircleIcon class="h-4 w-4 mr-1" />

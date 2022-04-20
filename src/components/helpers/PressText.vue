@@ -48,7 +48,9 @@ const showPressText = async () => {
 watch(
     () => props.getText,
     (newVal, oldVal) => {
-        showPressText();
+        if (newVal != null) {
+            showPressText();
+        }
     },
     { immediate: true }
 );
