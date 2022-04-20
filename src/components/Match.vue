@@ -25,16 +25,18 @@
                         :
                         {{ game.gGuestTeam }}
                     </div>
-                    <div v-else class="flex font-bold text-xl sm:text-2xl rounded">
-                        <div class="h-6 w-20 mt-2 mx-1 bg-gray-400 rounded-lg">
+                    <div v-else class="flex font-bold text-xl sm:text-2xl rounded animate-pulse">
+                        <div class="h-8 w-24 mx-1 bg-gray-400 rounded-lg">
 
                         </div>
                         :
-                        <div class="h-6 w-20 mt-2 mx-1 bg-gray-400 rounded-lg"></div>
+                        <div class="h-8 w-24 mx-1 bg-gray-400 rounded-lg"></div>
                     </div>
-                    <div>
-                        {{ !loading ? scores.head.name : "" }}
+
+                    <div v-if="!loading">
+                        {{ scores.head.name }}
                     </div>
+                    <span v-else class="rounded h-4 w-40 bg-gray-300 m-1 animate-pulse"></span>
                 </div>
                 <div
                     id="game-class"
@@ -56,7 +58,7 @@
                             : game.gGuestGoals
                     }}
                 </div>
-                <div v-else class="font-bold text-3xl sm:text-4xl my-4 justify-center flex">
+                <div v-else class="font-bold text-3xl sm:text-4xl my-4 justify-center flex animate-pulse">
                     <div class="h-8 w-10 bg-gray-300 rounded-lg mt-2 mx-1">
 
                     </div>
@@ -167,6 +169,7 @@ import Maps from "./helpers/Maps.vue";
 import MapsLoading from "./helpers/MapsLoading.vue";
 import Ticker from "./helpers/Ticker.vue";
 import Header from "./helpers/Header.vue";
+import HeaderLoading from "./helpers/HeaderLoading.vue";
 import ClassGames from "./helpers/ClassGames.vue";
 import ClassGamesLoading from "./helpers/ClassGamesLoading.vue";
 
@@ -248,7 +251,7 @@ const getData = async () => {
     console.log(games.value);
     classGames.value = games.value
     classGames.value = filterGames(classGames.value, showAll.value);
-
+    classGames.value = classGames.value.reverse();  // 
     console.log(teamID.value);
     if (teamID.value && teamID.value != "null" && teamID.value != "undefined") {
         games.value = await fetchTeamGames(

@@ -27,7 +27,7 @@
         <AnnotationIcon
             v-if="type == 'match'"
             v-show="game.robotextstate == 'generated'"
-            class="h-6 mt-1 hover:text-indigo-500"
+            class="h-6 mt-1 hover:text-indigo-500 cursor-pointer"
             @click="getText = !getText"
         />
         <a
@@ -45,7 +45,7 @@
         </a>
         <Cal
             v-if="type == 'match'"
-            class=""
+            class="cursor-pointer"
             :class="game.sGID ? '' : 'ml-auto'"
             :game="game"
         />
@@ -54,18 +54,18 @@
             id="favorite"
         >
             <StarIconOutline
-                class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500"
+                class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 cursor-pointer"
                 v-show="!isFavorite()"
                 @click="addFavorite"
             />
             <StarIcon
-                class="h-6 w-6 mt-1 ml-2 text-indigo-500 hover:text-black"
+                class="h-6 w-6 mt-1 ml-2 text-indigo-500 hover:text-black cursor-pointer"
                 v-show="isFavorite()"
                 @click="removeFavorite"
             />
         </div>
         <ShareIcon
-            class="h-6 w-6 mt-1 hover:text-indigo-500 float-right"
+            class="h-6 w-6 mt-1 hover:text-indigo-500 float-right cursor-pointer"
             @click="share"
         />
     </div>
@@ -87,7 +87,7 @@ import {
 } from "@heroicons/vue/outline";
 import { DocumentIcon, AnnotationIcon, StarIcon } from "@heroicons/vue/solid";
 
-const getText = ref(false);
+const getText = ref(null);
 const favorites = ref([]);
 
 const emit = defineEmits(["updateFavorites"]);
