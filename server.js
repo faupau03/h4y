@@ -43,6 +43,7 @@ const uAgentMiddleware = async (req, res, next) => {
             console.log("HTML", html);
             res.send(html);
         } catch (err) {
+            console.log("Error", err);
             res.send(err)
         }
     }
