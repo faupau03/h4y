@@ -31,7 +31,7 @@ const uAgentMiddleware = async (req, res, next) => {
             })
             const page = await browser.newPage();
             await page.setUserAgent('Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36');
-            await page.goto(local_url, {
+            await page.goto(`${req.protocol}://${req.get('host')}${req.originalUrl}`, {
                 waitUntil: "networkidle0",
             });
             const html = await page.evaluate(() => {
