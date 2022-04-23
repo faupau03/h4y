@@ -4,7 +4,7 @@
 
         <!-- Social -->
         <meta property="og:title" content="Handballspiel">
-        <meta property="og:description" :content="'Handballspiel am ' + game.gDate + ', ' + game.gHomeTeam + ' gegen ' + game.gGuestTeam">
+        <meta id="og_description" property="og:description" :content="'Handballspiel am ' + game.gDate + ', ' + game.gHomeTeam + ' gegen ' + game.gGuestTeam">
         <meta property="og:image" content="og.png">
         <meta property="og:url" :content="$location.href">
 
