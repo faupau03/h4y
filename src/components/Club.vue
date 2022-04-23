@@ -269,7 +269,7 @@ const initData = async () => {
             for (let team_id of team_ids) {
                 const team_json = await fetchTeamGames(team_id, club_class.gClassID, null, true);
                 let team_obj = {};
-                team_obj[team_id] = team_json.reverse();    //reverse to get most recent games first
+                team_obj[team_id] = team_json; //.reverse();    //reverse to get most recent games first
                 class_teams.push(team_obj);
             }
             club_class.games = await class_teams;

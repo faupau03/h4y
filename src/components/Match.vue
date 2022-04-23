@@ -220,7 +220,7 @@ const getData = async () => {
     console.log(games.value);
     classGames.value = games.value
     classGames.value = filterGames(classGames.value, showAll.value);
-    classGames.value = classGames.value.reverse();  // 
+    //classGames.value = classGames.value.reverse();  // 
     console.log(teamID.value);
     if (teamID.value && teamID.value != "null" && teamID.value != "undefined") {
         games.value = await fetchTeamGames(
