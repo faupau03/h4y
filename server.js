@@ -27,6 +27,8 @@ const uAgentMiddleware = async (req, res, next) => {
 
             const browser = await puppeteer.launch({
               'args' : [
+                '--disable-gpu',
+                '--disable-dev-shm-usage',
                 '--no-sandbox',
                 '--disable-setuid-sandbox'
               ]
