@@ -47,14 +47,14 @@
                 <div id="game-class" class="text-md sm:text-sl justify-center flex"></div>
                 <div class="font-bold text-3xl sm:text-4xl my-4 justify-center flex" v-if="!loading">
                     {{
-                        tickerScore && tickerScore.game_score
-                            ? tickerScore.gameScore.home_score
+                        !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.home_score
+                            ?  tickerScore.gameScore.home_score
                             : game.gHomeGoals
                     }}
                     :
                     {{
-                        tickerScore && tickerScore.game_score
-                            ? tickerScore.gameScore.guest_score
+                        !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.guest_score
+                            ?  tickerScore.gameScore.guest_score
                             : game.gGuestGoals
                     }}
                 </div>
@@ -84,7 +84,7 @@
             </div>
         </div>
         <div id="wrapper" class="pb-24">
-            <Ticker v-if="game" ref="tickerScore" :game_token="game.gToken" :game_live="game.live" />
+            <Ticker v-if="game && !loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live" />
             <div id="scores" class="w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative mt-2">
                 <div v-show="loading ? true : scores.content.score.length" class="flex mt-1">
                     <span class="font-bold ml-2"> Tabelle </span>
@@ -251,6 +251,7 @@ const forceUpdate = async (gID, tID, cID) => {
     teamClassID.value = cID;
     await getData();
 };
+
 
 onMounted(async () => {
     await setGameID();

@@ -25,7 +25,7 @@ onMounted(() => {
     <div class="h-screen w-screen overflow-x-hidden">
         <ReloadPWA/>
         <router-view v-slot="{ Component }">
-            <keep-alive>
+            <keep-alive include="['search', 'favorites']">
                 <component :is="Component" />
             </keep-alive>
         </router-view>

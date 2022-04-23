@@ -46,7 +46,7 @@
                 @click="fullscreenTicker = false"
             />
         </div>
-        <div id="header" class="flex justify-between">
+        <div id="header" class="flex justify-between mt-2 md:mt-0">
             <div
                 class="h-20 bg-indigo-500 text-sm sm:text-base text-white relative font-bold flex items-center justify-center p-2 w-1/3"
                 @click="infoTicker ? (selectedTeam = 'team_home') : null"
@@ -59,6 +59,7 @@
                     ></div>
                 </div>
                 {{ gameTickerInfo["team_home"]["club"] }}
+                <div class="text-indigo-900 absolute right-0 sm:-top-7 -top-5 sm:text-lg">Heim</div>
             </div>
             <div class="grid justify-center mt-1">
                 <div class="flex justify-center md:text-xl">
@@ -77,6 +78,7 @@
                 @click="infoTicker ? (selectedTeam = 'team_guest') : null"
             >
                 {{ gameTickerInfo["team_guest"]["club"] }}
+                <div class="text-indigo-900 absolute left-0 sm:-top-7 -top-5 sm:text-lg">Gast</div>
                 <div
                     class="h-20 w-5 -scale-x-100 absolute -left-5 overflow-hidden inline-block"
                 >
@@ -553,16 +555,16 @@ const removeDuplicates = (array) => {
 
 // needs game token and live boolean
 const setGameToken = async () => {
-    //console.log(props.game_live);
+    console.log(props.game_live);
     if (props.game_token && props.game_live) {
         //console.log("props");
         gameToken.value = props.game_token;
         gameLive.value = props.game_live;
     } else {
-        //console.log("not live or no game token");
+        console.log("not live or no game token");
     }
-    //console.log("gameToken: " + gameToken.value);
-    //console.log("gameLive: " + gameLive.value);
+    console.log("gameToken: " + gameToken.value);
+    console.log("gameLive: " + gameLive.value);
 };
 
 onMounted(async () => {
