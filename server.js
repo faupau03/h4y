@@ -38,7 +38,7 @@ const uAgentMiddleware = async (req, res, next) => {
             await page.goto(`${req.protocol}://${req.get('host')}${req.originalUrl}`, {
                 waitUntil: "networkidle0",
             });
-            await page.waitForSelector("#og_description");
+            await page.waitForFunction('loading === false');
             const html = await page.evaluate(() => {
                 return document.documentElement.innerHTML;
             });
