@@ -24,32 +24,32 @@ const uAgentMiddleware = async (req, res, next) => {
         console.log("Bot detected");
         if (req.path == "/match") {
             await ejs
-                .renderFile(__dirname + '/dist/og/match.ejs', { name: req.hostname })
+                .renderFile(__dirname + '/dist/og/match.ejs', { name: req.protocol + "://" + req.hostname })
                 .then(output => res.send(output));
         }
         else if (req.path == "/gym") {
             await ejs
-                .renderFile(__dirname + '/dist/og/gym.ejs', { name: req.hostname })
+                .renderFile(__dirname + '/dist/og/gym.ejs', { name: req.protocol + "://" + req.hostname })
                 .then(output => res.send(output));
         }
         else if (req.path == "/team") {
             await ejs
-                .renderFile(__dirname + '/dist/og/team.ejs', { name: req.hostname })
+                .renderFile(__dirname + '/dist/og/team.ejs', { name: req.protocol + "://" + req.hostname })
                 .then(output => res.send(output));
         }
         else if (req.path == "/club") {
             await ejs
-                .renderFile(__dirname + '/dist/og/club.ejs', { name: req.hostname })
+                .renderFile(__dirname + '/dist/og/club.ejs', { name: req.protocol + "://" + req.hostname })
                 .then(output => res.send(output));
         }
         else if (req.path == "/search") {
             await ejs
-                .renderFile(__dirname + '/dist/og/search.ejs', { name: req.hostname })
+                .renderFile(__dirname + '/dist/og/search.ejs', { name: req.protocol + "://" + req.hostname })
                 .then(output => res.send(output));
         }
         else if (req.path == "/favorites") {
             await ejs
-                .renderFile(__dirname + '/dist/og/favorites.ejs', { name: req.hostname })
+                .renderFile(__dirname + '/dist/og/favorites.ejs', { name: req.protocol + "://" + req.hostname })
                 .then(output => res.send(output));
         }
         else {
