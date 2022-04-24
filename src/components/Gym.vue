@@ -18,22 +18,46 @@
                 @updateFavorites="emit('updateFavorites')"
             ></Header>
             <div id="gym-content" class="flex mb-5">
-                <div id="club-info" class="m-5 line-clamp-4 break-words">
-                    <div class="font-bold">
-                        {{ gym.lname }}
+                <div id="club-info" class="mx-5 line-clamp-4 break-words w-full">
+                    
+                    <div class="font-bold text-lg">
+                        {{ gym.name }}
                     </div>
-                    <div class="text-gray-800">
-                        Postleitzahl: {{ gym.postal }}
+                    <div class="text-gray-700 -mt-1">
+                        {{ gym.org }}
                     </div>
                     <div class="text-gray-800">Nummer: {{ gym.no }}</div>
+                    <div>
+                        Straße: {{ gym.street }}
+                    </div>
                     <div class="text-gray-800">Ort: {{ gym.town }}</div>
+                    <div>
+                        Telefon: {{ gym.phone }}
+                    </div>
+                    <button @click="maps()" class="rounded flex w-fit p-1  sm:text-base text-xs underline-none text-white items-center hover:bg-indigo-300 hover:text-indigo-900 bg-indigo-500">
+                            Öffnen in
+                            <img class="h-6 ml-1" src="/icons/maps.png" alt="">
+                    </button>
+                    <div class="flex text-gray-700 my-2">
+                        <InformationCircleIcon class="h-5 mt-0.5 mr-1"/>{{ gym.wax}}
+                    </div>
+                    <div class="text-gray-800">
+                        Dateien:
+                    </div>
+                    <div class="bg-indigo-100 rounded w-full flex">
+                        <a  v-for="file in gym.files" :href="file.file" class="flex bg-indigo-200 p-1 rounded m-2 hover:bg-indigo-300">
+                            <DocumentIcon class="h-5 text-gray-700 mt-0.5"/>
+                            {{ file.type }}
+                        </a>
+
+                    </div>
                 </div>
             </div>
         </div>
         <div class="w-5/6 m-auto pb-24">
             <div class="mt-3 flex justify-between">
                 <h2 class="font-bold text-lg m-1">Spiele</h2>
-                <div class="text-sm m-2">
+                <!-- <div class="text-sm m-2">
                     Alle Spiele
                     <input
                         class="ml-1 mb-1 rounded"
@@ -43,6 +67,15 @@
                         v-model="showAll"
                         @click="teamClassID ? getData(teamClassID) : null"
                     />
+                </div> -->
+                <div class="flex shadow-large rounded-lg bg-indigo-100 items-center">
+                    <button @click="goDateBack" class="p-2 rounded-lg hover:bg-indigo-200"><ChevronLeftIcon class="h-5"/></button>
+                    <div>
+                        {{ selected }}
+                    </div>
+                    <button @click="goDateForward" class="p-2 rounded-lg hover:bg-indigo-200">
+                        <ChevronRightIcon class="h-5"/>
+                    </button>
                 </div>
             </div>
             <div
@@ -149,6 +182,9 @@ import {
     ClockIcon,
     LocationMarkerIcon,
     InformationCircleIcon,
+    DocumentIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
 } from "@heroicons/vue/solid";
 import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/outline";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
@@ -166,6 +202,8 @@ const gym = ref({});
 const gym_id = ref(null);
 const teamID = ref(null);
 const teams = ref([]);
+const dateList = ref([]);
+const selected = ref(null);
 const teamClassID = ref(null);
 const props = defineProps(["club_no"]);
 
@@ -174,6 +212,46 @@ const emit = defineEmits(["updateFavorites", "disclosure-update"]);
 gym.value = {};
 
 const elements = ref([]);
+
+const goDateBack = () => {
+    console.log(dateList.value);
+    const index = Object.keys(dateList.value).findIndex((element) => element == selected.value);
+    console.log(index);
+    selected.value = Object.keys(dateList.value)[index - 1];
+    console.log(selected.value);
+    fetchMatches();
+};
+const goDateForward = () => {
+    const index =  Object.keys(dateList.value).findIndex((element) => element == selected.value);
+    selected.value = Object.keys(dateList.value)[index + 1];
+    fetchMatches();
+};
+
+const maps = () => {
+    console.log(gym.value.geolat);
+    console.log(gym.value.geolon);
+    if (
+        /* if we're on iOS, open in Apple Maps */
+        navigator.platform.indexOf("iPhone") != -1 ||
+        navigator.platform.indexOf("iPad") != -1 ||
+        navigator.platform.indexOf("iPod") != -1 ||
+        (navigator.userAgentData &&
+            (navigator.userAgentData.platform.indexOf("iOS") != -1 ||
+                navigator.userAgentData.platform.indexOf("iPadOS") != -1))
+    ) {
+        console.log("iOS");
+        window.open(
+            "maps://www.google.com/maps/search/?api=1&query=" + gym.value.geolat + "," + gym.value.geolon
+        );
+    } else {
+        window.open(
+            "https://www.google.com/maps/search/?api=1&query=" + gym.value.geolat + "," + gym.value.geolon
+        );
+        console.log("Not iOS");
+    }
+};
+
+
 
 const hideOther = (id) => {
     const items = elements.value.filter((elm) => {
@@ -198,12 +276,24 @@ const fetchGym = async () => {
 };
 
 const fetchMatches = async () => {
-    const response = await fetch(
-        "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
-            gym_id.value
-    );
+    let response;
+    if (selected.value) {
+        response = await fetch(
+            "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
+                gym_id.value + "&do=" + selected.value
+        );
+    }
+    else {
+        response = await fetch(
+            "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
+                gym_id.value
+        );
+    }
+    
     const json = await response.json();
     teams.value = json[0].content.gList;
+    selected.value = json[0].menu.dt.selected;
+    dateList.value = json[0].menu.dt.list;
 };
 
 //TODO: implement this fix again
