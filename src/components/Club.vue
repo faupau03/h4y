@@ -38,6 +38,15 @@
         <div class="w-5/6 m-auto pb-24">
             <div class="mt-3 flex justify-between">
                 <h2 class="font-bold text-lg m-1">Spiele</h2>
+                <div class="flex shadow-large rounded-lg bg-indigo-100 items-center">
+                    <button @click="goPeriodBack" class="p-2 rounded-lg hover:bg-indigo-200"><ChevronLeftIcon class="h-5"/></button>
+                    <div>
+                        {{ periods[period] }}
+                    </div>
+                    <button @click="goPeriodForward" class="p-2 rounded-lg hover:bg-indigo-200">
+                        <ChevronRightIcon class="h-5"/>
+                    </button>
+                </div>
                 <div class="text-sm m-2">
                     Alle Spiele
                     <input
@@ -169,6 +178,8 @@ import {
     ClockIcon,
     LocationMarkerIcon,
     InformationCircleIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
 } from "@heroicons/vue/solid";
 import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/outline";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
@@ -185,6 +196,8 @@ import { filterGames } from "./functions/misc.js";
 const route = useRoute();
 
 const club_id = ref({});
+const period = ref(null);
+const periods = ref([]);
 const club = ref({});
 const clubInfo = ref({});
 const loading = ref(true);
@@ -200,6 +213,25 @@ const emit = defineEmits(["updateFavorites","disclosure-update"]);
 club.value = {};
 
 const elements = ref([]);
+
+const goPeriodBack = () => {
+    const index = Object.keys(periods.value).indexOf(period.value);
+    const newPeriod = Object.keys(periods.value)[index - 1];
+    //console.log(periods.value[newPeriod]);
+    period.value = newPeriod;
+    forceUpdate();
+};
+
+const goPeriodForward = () => {
+    const index = Object.keys(periods.value).indexOf(period.value);
+    const newPeriod = Object.keys(periods.value)[index + 1];
+    //console.log(periods.value[newPeriod]);
+    period.value = newPeriod;
+    forceUpdate();
+};
+
+
+
 
 const hideOther = (id) => {
     const items = elements.value.filter((elm) => {
@@ -254,7 +286,10 @@ const fetchAddress = async () => {
 
 const initData = async () => {
     loading.value = true;
-    const club_json = await fetchClub(clubInfo.value.id);
+    const club_json = await fetchClub(clubInfo.value.id, period.value);
+    periods.value = club_json[0].menu.period.list;
+    period.value = club_json[0].menu.period.selectedID;
+    console.log(period.value);
     club.value = club_json[0];
     club.value.content.classes = await Promise.all(club_json[0].content.classes.map( async(club_class) => {
 
@@ -296,29 +331,6 @@ const initData = async () => {
     loading.value = false;
 }
 
-const getData = async (teamClassID) => {
-    teamLoading.value = true;
-    teamID.value = await fetchTeamID(teamClassID, club.value.lname);
-    if (!teamID.value) {
-        console.log("no team id available");
-        console.log("listing games from mobile api");
-        teamMatches.value[0] = await fetchTeamGames(null,teamClassID, teams.value, showAll.value);
-        teamLoading.value = false;
-        return;
-    }
-    console.log("There are " + teamID.value.length + " teams of this club in this class.");
-    teamMatches.value = {};
-    for (const team of teamID.value) {
-        teamMatches.value[team] = await fetchTeamGames(
-            team,
-            teamClassID,
-            teams.value,
-            showAll.value
-        );
-    }
-    teamLoading.value = false;
-};
-
 
 
 const club_no_ref = toRef(props, "club_no");
@@ -338,4 +350,10 @@ onMounted(async () => {
     await fetchAddress();
     await initData();
 });
+
+const forceUpdate = async() => {
+    await fetchClubInfo();
+    await fetchAddress();
+    await initData();
+};
 </script>

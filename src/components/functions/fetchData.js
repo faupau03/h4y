@@ -130,11 +130,20 @@ const getClubClasses = async(json) => {
     return json[0]["content"]["classes"];
 }
 
-const fetchClub = async(club_id) => {
-    const response = await fetch(
-        "https://spo.handball4all.de/service/if_g_json.php?cmd=pcu&c="
-        + club_id
-    );
+const fetchClub = async(club_id, period) => {
+    let response;
+    if (period) {
+        response = await fetch(
+            "https://spo.handball4all.de/service/if_g_json.php?cmd=pcu&c="
+            + club_id + "&p=" + period
+        );
+    }
+    else {
+        response = await fetch(
+            "https://spo.handball4all.de/service/if_g_json.php?cmd=pcu&c="
+            + club_id
+        );
+    }
     const json = await response.json();
     return json;
 }
