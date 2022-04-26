@@ -70,7 +70,14 @@ const getName = () => {
             console.log("O:", json[element][object].o);
 
             if (json[element][object].o == o.value || json[element][object].og == og.value) {
-                name.value = object + ' (' + json[element][object].name + ')';
+                console.log(json[element][object].name);
+                if (!json[element][object].name) {
+                    name.value = object;
+                }
+                else {
+                    name.value = object + ' (' + json[element][object].name + ')';
+                }
+                
                 league.value = element;
                 return;
             }
