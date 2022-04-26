@@ -44,6 +44,7 @@
                 <span class="hidden sm:block ml-auto mr-9"> Tore </span>
                 <span class="sm:ml-0 ml-auto mr-5"> Spiele </span>
                 <span class="mr-2"> Punkte </span>
+                <span class="sm:block hidden">+/-</span>
             </div>
             <div v-if="matchesLoading">
                 <TableLoading v-for="i in 10" :key="i"> </TableLoading>
