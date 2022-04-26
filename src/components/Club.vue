@@ -36,14 +36,27 @@
             </div>
         </div>
         <div class="w-5/6 m-auto pb-24">
-            <div class="mt-3 flex justify-between">
+            <div class="mt-3 flex">
                 <h2 class="font-bold text-lg m-1">Spiele</h2>
-                <div class="flex shadow-large rounded-lg bg-indigo-100 items-center">
-                    <button @click="goPeriodBack" class="p-2 rounded-lg hover:bg-indigo-200"><ChevronLeftIcon class="h-5"/></button>
+                <div v-if="!loading" class="flex shadow-large rounded-lg bg-indigo-100 items-center mb-1 ml-5 mr-auto">
+                    <button @click="goPeriodBack" :disabled="Object.keys(periods).indexOf(period) == 0" class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400">
+                        <ChevronLeftIcon class="h-5"/>
+                    </button>
                     <div>
                         {{ periods[period] }}
                     </div>
-                    <button @click="goPeriodForward" class="p-2 rounded-lg hover:bg-indigo-200">
+                    <button @click="goPeriodForward" :disabled="Object.keys(periods).indexOf(period) == Object.keys(periods).length" class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-200">
+                        <ChevronRightIcon class="h-5"/>
+                    </button>
+                </div>
+                <div v-else class="flex shadow-large rounded-lg bg-indigo-100 items-center mb-1 ml-5 mr-auto bg-gray-300 text-gray-400">
+                    <button disabled class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400">
+                        <ChevronLeftIcon class="h-5"/>
+                    </button>
+                    <div >
+                        {{ periods[period] }}
+                    </div>
+                    <button disabled class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400">
                         <ChevronRightIcon class="h-5"/>
                     </button>
                 </div>
@@ -215,17 +228,20 @@ club.value = {};
 const elements = ref([]);
 
 const goPeriodBack = () => {
-    const index = Object.keys(periods.value).indexOf(period.value);
+    console.log("Objects", periods.value);
+    console.log("Array", Object.keys(periods.value));
+    const index = Object.keys(periods.value).indexOf(String(period.value));
     const newPeriod = Object.keys(periods.value)[index - 1];
-    //console.log(periods.value[newPeriod]);
+    console.log(index);
+    if (!newPeriod) return;
     period.value = newPeriod;
     forceUpdate();
 };
 
 const goPeriodForward = () => {
-    const index = Object.keys(periods.value).indexOf(period.value);
+    const index = Object.keys(periods.value).indexOf(String(period.value));
     const newPeriod = Object.keys(periods.value)[index + 1];
-    //console.log(periods.value[newPeriod]);
+    if (!newPeriod) return;
     period.value = newPeriod;
     forceUpdate();
 };
@@ -288,7 +304,9 @@ const initData = async () => {
     loading.value = true;
     const club_json = await fetchClub(clubInfo.value.id, period.value);
     periods.value = club_json[0].menu.period.list;
-    period.value = club_json[0].menu.period.selectedID;
+    if (!period.value) {
+        period.value = club_json[0].menu.period.selectedID;
+    }
     console.log(period.value);
     club.value = club_json[0];
     club.value.content.classes = await Promise.all(club_json[0].content.classes.map( async(club_class) => {
