@@ -68,79 +68,41 @@
                         @click="teamClassID ? getData(teamClassID) : null"
                     />
                 </div> -->
-                <div class="flex shadow-large rounded-lg bg-indigo-100 items-center">
-                    <button @click="goDateBack" class="p-2 rounded-lg hover:bg-indigo-200"><ChevronLeftIcon class="h-5"/></button>
-                    <div>
-                        {{ selected }}
-                    </div>
-                    <button @click="goDateForward" class="p-2 rounded-lg hover:bg-indigo-200">
-                        <ChevronRightIcon class="h-5"/>
-                    </button>
-                </div>
+                <Week @goDateForward="goDateForward" @goDateBack="goDateBack" :selected="selected" :date_list="dateList" :loading="loading"/>
             </div>
             <div
                 class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2"
             >
                 <Disclosure
-                    v-for="team in teams"
-                    :key="team.gClassID"
-                    v-slot="{ open }"
+                    v-for="team, index in teams"
+                    :key="team.gClassID + selected"
+                    
+                    
                 >
                     <DisclosureButton
-                        class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-indigo-900 bg-indigo-100 rounded-t-lg hover:bg-indigo-200 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75"
-                        :class="[
-                            !team.games.length
-                                ? '!text-gray-600 !bg-gray-200'
-                                : '',
-                            team.gClassID !== teamClassID
-                                ? 'my-1 rounded-lg'
-                                : '',
-                        ]"
-                        @click="
-                            team.gClassID !== teamClassID
-                                ? ((teamClassID = team.gClassID),
-                                  (open = true))
-                                : ((teamClassID = null), (open = false))
-                        "
-                        :disabled="!team.games.length"
+                      
+                        class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-indigo-900 bg-indigo-100 rounded-t-lg focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75"
+                        :class="index == 0 ? '' : 'mt-1'"
                     >
                         <span>{{ team.gClassSname }}</span>
-                        <span class="mr-4 ml-auto text-opacity-75">{{
-                            team.games.length ? "" : "spielfrei"
-                        }}</span>
-                        <ChevronUpIcon
+                        <!-- <ChevronUpIcon
                             class="w-5 h-5 text-indigo-900"
                             :class="[
                                 open ? 'transform rotate-180' : '',
                                 team.games.length ? '' : '!text-gray-500',
                             ]"
-                        />
+                        /> -->
                     </DisclosureButton>
                     <DisclosurePanel
+                        
                         static
-                        v-show="team.gClassID === teamClassID"
                         v-if="team"
                         class="px-4 pt-4 pb-2 text-sm text-gray-500 bg-indigo-100 rounded-b-lg"
                     >
                         <div>
                             <hr
-                                class="bg-gray-400 text-black h-[1.5px]"
-                                :class="index === 0 ? '-mt-3' : ''"
+                                class="bg-gray-400 text-black h-[1.5px] -mt-3"
                             />
-
-                            <router-link
-                                v-if="teamID"
-                                :to="
-                                    'team#' +
-                                    teamID[index] +
-                                    ';' +
-                                    team.gClassID +
-                                    ';' +
-                                    club.no
-                                "
-                                class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900"
-                                >Zum Team</router-link
-                            >
                             <div id="league-info">
                                 <!-- Information about how many games and button to team component -->
                             </div>
@@ -148,7 +110,7 @@
                                 v-for="match in team.games"
                                 :key="match.gID"
                                 :match="match"
-                                :teamID="teamID ? teamID[index] : null"
+                                :teamID="null"
                                 :teamClassID="team.gClassID"
                             ></Match>
                             <div
@@ -156,12 +118,7 @@
                                 v-show="!team.games.length"
                                 class="mb-2"
                             >
-                                <div id="no-future-matches" v-show="!showAll">
-                                    Keine zukünftigen Spiele
-                                </div>
-                                <div v-show="showAll">
-                                    Keine Spiele in dieser Klasse
-                                </div>
+                                Keine Spiele
                             </div>
                         </div>
                     </DisclosurePanel>
@@ -193,12 +150,15 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
 import Header from "./helpers/Header.vue";
+import Week from "./helpers/Week.vue";
 import { fetchTeamID } from "./functions/fetchData";
+import MapsLoadingVue from "./helpers/MapsLoading.vue";
 
 // helper functions
 
 const route = useRoute();
 const gym = ref({});
+const loading = ref(true);
 const gym_id = ref(null);
 const teamID = ref(null);
 const teams = ref([]);
@@ -276,6 +236,7 @@ const fetchGym = async () => {
 };
 
 const fetchMatches = async () => {
+    loading.value = true;
     let response;
     if (selected.value) {
         response = await fetch(
@@ -294,6 +255,7 @@ const fetchMatches = async () => {
     teams.value = json[0].content.gList;
     selected.value = json[0].menu.dt.selected;
     dateList.value = json[0].menu.dt.list;
+    loading.value = false;
 };
 
 //TODO: implement this fix again
