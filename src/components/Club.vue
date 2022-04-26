@@ -45,7 +45,7 @@
                     <div>
                         {{ periods[period] }}
                     </div>
-                    <button @click="goPeriodForward" :disabled="Object.keys(periods).indexOf(period) == Object.keys(periods).length" class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-200">
+                    <button @click="goPeriodForward" :disabled="Object.keys(periods).indexOf(period) == Object.keys(periods).length -1" class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-200 disabled:text-gray-400">
                         <ChevronRightIcon class="h-5"/>
                     </button>
                 </div>
@@ -60,10 +60,13 @@
                         <ChevronRightIcon class="h-5"/>
                     </button>
                 </div>
-                <div class="text-sm m-2">
-                    Alle Spiele
+                <div class="text-sm m-2 flex">
+                    Alle
+                    <span class="sm:block hidden ml-1">
+                         Spiele
+                    </span>
                     <input
-                        class="ml-1 mb-1 rounded"
+                        class="ml-1 mt-0.5 rounded"
                         type="checkbox"
                         name=""
                         id=""
