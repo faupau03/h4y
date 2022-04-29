@@ -18,7 +18,7 @@ const route = useRoute();
 
 //watch route change
 watch(route, (newVal, oldVal) => {
-    console.log("route changed", newVal, oldVal);
+    //console.log("route changed", newVal, oldVal);
   updateTab();
 });
 

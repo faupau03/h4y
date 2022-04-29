@@ -100,7 +100,7 @@ const getSelectedFavorite = () => {
     } else {
         selectedFavorite.value = {};
     }
-    console.log(selectedFavoriteLoc);
+    //console.log(selectedFavoriteLoc);
     let isFavorite = false;
     favorites.value.forEach((favorite) => {
         if (

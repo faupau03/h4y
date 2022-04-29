@@ -4,6 +4,24 @@
             "o": "1"
         }
     },
+    "Oberligen": {
+        "Baden-Württemberg": {
+            "og": "4",
+            "name": "HBBW"
+        },
+        "Hamburg/Schleswig-Holstein": {
+            "og": "77",
+            "name": "HHVSH"
+        },
+        "Rheinland-Pfalz/Saar": {
+            "og": "79",
+            "name": "RPS"
+        },
+        "Westfalen": {
+            "og": "78",
+            "name": "HVWF"
+        }
+    },
     "Landesverbände": {
         "Württemberg": {
             "og": "3",
@@ -48,24 +66,6 @@
         "Vorarlberg": {
             "og": "76",
             "name": "VHV"
-        }
-    },
-    "Oberligen": {
-        "Baden-Württemberg": {
-            "og": "4",
-            "name": "HBBW"
-        },
-        "Hamburg/Schleswig-Holstein": {
-            "og": "77",
-            "name": "HHVSH"
-        },
-        "Rheinland-Pfalz/Saar": {
-            "og": "79",
-            "name": "RPS"
-        },
-        "Westfalen": {
-            "og": "78",
-            "name": "HVWF"
         }
     }
 }

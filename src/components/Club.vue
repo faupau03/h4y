@@ -36,10 +36,10 @@
             </div>
         </div>
         <div class="w-5/6 m-auto pb-24">
-            <div class="mt-3 flex">
+            <div class="mt-3 flex overflow-x-auto">
                 <h2 class="font-bold text-lg m-1">Spiele</h2>
-                <Period @goPeriodBack="goPeriodBack" @goPeriodForward="goPeriodForward" :loading="loading" :period="period" :periods="periods"/>
-                <div class="text-sm m-2 flex">
+                <Period class="sm:ml-5 ml-2 mr-auto" @goPeriodBack="goPeriodBack" @goPeriodForward="goPeriodForward" :loading="loading" :period="period" :periods="periods"/>
+                <div class="text-sm m-2 mr-5 flex">
                     Alle
                     <span class="sm:block hidden ml-1">
                          Spiele
@@ -259,7 +259,7 @@ const fetchClubInfo = async () => {
 
 const updateFilter = (show) => {
     const all_classes = JSON.parse(JSON.stringify(club.value.content.classes));
-    console.log("Before:", JSON.stringify(club.value.content.classes).length);
+    //console.log("Before:", JSON.stringify(club.value.content.classes).length);
 
     classes.value = all_classes.map((club_class) => {
          //console.log(club_class);
@@ -271,7 +271,7 @@ const updateFilter = (show) => {
         })
          return club_class;
      });
-     console.log("After:", JSON.stringify(classes.value).length);
+     //console.log("After:", JSON.stringify(classes.value).length);
 }
 
 
@@ -288,7 +288,7 @@ const initData = async () => {
     if (!period.value) {
         period.value = club_json[0].menu.period.selectedID;
     }
-    console.log(period.value);
+    //console.log(period.value);
     club.value = club_json[0];
     club.value.content.classes = await Promise.all(club_json[0].content.classes.map( async(club_class) => {
 
@@ -341,7 +341,7 @@ watch(club_no_ref, async (newValue, oldValue) => {
 });
 
 watch(club, async (newValue, oldValue) => {
-    console.log("updated club", JSON.stringify(newValue).length);
+    //console.log("updated club", JSON.stringify(newValue).length);
 });
 
 onMounted(async () => {
