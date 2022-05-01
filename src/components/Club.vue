@@ -38,7 +38,7 @@
         <div class="w-5/6 m-auto pb-24">
             <div class="mt-3 flex overflow-x-auto">
                 <h2 class="font-bold text-lg m-1">Spiele</h2>
-                <Period class="sm:ml-5 ml-2 mr-auto" @goPeriodBack="goPeriodBack" @goPeriodForward="goPeriodForward" :loading="loading" :period="period" :periods="periods"/>
+                <Period class="sm:ml-5 ml-2 mr-auto" @updatePeriod="(id) => updatePeriod(id)" :loading="loading" :selected="period_selected" :list="period_list"/>
                 <div class="text-sm m-2 mr-5 flex">
                     Alle
                     <span class="sm:block hidden ml-1">
@@ -190,8 +190,8 @@ import { filterGames } from "./functions/misc.js";
 const route = useRoute();
 
 const club_id = ref({});
-const period = ref(null);
-const periods = ref([]);
+const period_selected = ref(null);
+const period_list = ref([]);
 const club = ref({});
 const clubInfo = ref({});
 const loading = ref(true);
@@ -208,22 +208,8 @@ club.value = {};
 
 const elements = ref([]);
 
-const goPeriodBack = () => {
-    console.log("Objects", periods.value);
-    console.log("Array", Object.keys(periods.value));
-    const index = Object.keys(periods.value).indexOf(String(period.value));
-    const newPeriod = Object.keys(periods.value)[index - 1];
-    console.log(index);
-    if (!newPeriod) return;
-    period.value = newPeriod;
-    forceUpdate();
-};
-
-const goPeriodForward = () => {
-    const index = Object.keys(periods.value).indexOf(String(period.value));
-    const newPeriod = Object.keys(periods.value)[index + 1];
-    if (!newPeriod) return;
-    period.value = newPeriod;
+const updatePeriod = (id) => {
+    period_selected.value = id;
     forceUpdate();
 };
 
@@ -283,10 +269,10 @@ const fetchAddress = async () => {
 
 const initData = async () => {
     loading.value = true;
-    const club_json = await fetchClub(clubInfo.value.id, period.value);
-    periods.value = club_json[0].menu.period.list;
-    if (!period.value) {
-        period.value = club_json[0].menu.period.selectedID;
+    const club_json = await fetchClub(clubInfo.value.id, period_selected.value);
+    period_list.value = club_json[0].menu.period.list;
+    if (!period_selected.value) {
+        period_selected.value = club_json[0].menu.period.selectedID;
     }
     //console.log(period.value);
     club.value = club_json[0];
