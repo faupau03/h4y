@@ -68,14 +68,14 @@
                         @click="teamClassID ? getData(teamClassID) : null"
                     />
                 </div> -->
-                <Week @goDateForward="goDateForward" @goDateBack="goDateBack" :selected="selected" :date_list="dateList" :loading="loading"/>
+                <Week @updateWeek="(id) => updateWeek(id)" :selected="week_selected" :list="week_list" :loading="loading"/>
             </div>
             <div
                 class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2"
             >
                 <Disclosure
                     v-for="team, index in teams"
-                    :key="team.gClassID + selected"
+                    :key="team.gClassID + week_selected"
                     
                     
                 >
@@ -162,8 +162,8 @@ const loading = ref(true);
 const gym_id = ref(null);
 const teamID = ref(null);
 const teams = ref([]);
-const dateList = ref([]);
-const selected = ref(null);
+const week_list = ref([]);
+const week_selected = ref(null);
 const teamClassID = ref(null);
 const props = defineProps(["club_no"]);
 
@@ -184,6 +184,11 @@ const goDateBack = () => {
 const goDateForward = () => {
     const index =  Object.keys(dateList.value).findIndex((element) => element == selected.value);
     selected.value = Object.keys(dateList.value)[index + 1];
+    fetchMatches();
+};
+
+const updateWeek = (id) => {
+    week_selected.value = id;
     fetchMatches();
 };
 
@@ -238,10 +243,10 @@ const fetchGym = async () => {
 const fetchMatches = async () => {
     loading.value = true;
     let response;
-    if (selected.value) {
+    if (week_selected.value) {
         response = await fetch(
             "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
-                gym_id.value + "&do=" + selected.value
+                gym_id.value + "&do=" + week_selected.value
         );
     }
     else {
@@ -253,8 +258,8 @@ const fetchMatches = async () => {
     
     const json = await response.json();
     teams.value = json[0].content.gList;
-    selected.value = json[0].menu.dt.selected;
-    dateList.value = json[0].menu.dt.list;
+    week_selected.value = json[0].menu.dt.selected;
+    week_list.value = json[0].menu.dt.list;
     loading.value = false;
 };
 
