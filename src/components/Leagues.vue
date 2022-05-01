@@ -2,7 +2,7 @@
     <div class="w-full h-full flex text-3xl">
         <div class="w-full pb-20 overflow-x-hidden">
 
-            <div v-if="!og && !o" id="overview" class="mx-5 sm:mx-10">
+            <div v-if="!og && !o" id="overview" class="mx-3 sm:mx-10">
                 <h1 class="text-3xl font-bold mt-4">Übersicht</h1>
                 <p class="text-sm text-gray-500 uppercase font-bold mb-4">Ligen</p>
                 <!-- all registered organizations from handball4all  -->
@@ -14,30 +14,38 @@
                     </div>
                 </div>
             </div>
-            <div v-else class="sm:mx-10 mx-5">
-                <div v-if="!loading">
+            <div v-else class="sm:mx-10 mx-3">
+                <div v-if="!games_loading">
                     <h1 class="text-3xl font-bold mt-4">{{ name }}</h1>
-                    <p  class="text-sm text-gray-500 uppercase font-bold mb-4">{{ league }}</p>
+                    <p class="text-sm text-gray-500 uppercase font-bold mb-4">{{ league }}</p>
                 </div>
                 <div v-else>
-                    <div class="mt-4 w-40 h-10 rounded-lg bg-gray-300 animate-pulse"></div>
-                    <div class="mb-3 mt-1 w-24 h-4 rounded-lg bg-gray-300 animate-pulse"></div>
-                </div>
-                
-
-                <div id="menu" class="flex sm:text-xl text-sm mb-1 overflow-auto">
-                    <Period class="sm:ml-5" @goPeriodBack="goPeriodBack" @goPeriodForward="goPeriodForward" :loading="games_loading"
-                        :periods="periods" :period="period" />
-                    <Week class="ml-5 mr-auto" @goDateForward="goDateForward" @goDateBack="goDateBack" :loading="games_loading"
-                        :date_list="date_list" :selected="selected" />
-                    <div class="text-sm m-2 flex sm:mr-5">
-                        Alle
-                        <span class="sm:block hidden ml-1">
-                            Spiele
-                        </span>
-                        <input class="ml-1 mt-0.5 rounded" type="checkbox" name="" id=""
-                            @click="showAll = !showAll, updateFilter(showAll)" />
+                    <div class="flex flex-wrap mt-4 gap-2">
+                        <div class="w-60 h-8 rounded-lg bg-gray-300 animate-pulse"></div>
+                        <div class="w-48 h-8 rounded-lg bg-gray-300 animate-pulse"></div>
                     </div>
+                    <div class="flex flex-wrap mb-3 gap-2 mt-1">
+                        <div class="w-64 h-4 rounded-lg bg-gray-300 animate-pulse"></div>
+                        <div class="w-44 h-4 rounded-lg bg-gray-300 animate-pulse"></div>
+
+                    </div>
+                </div>
+
+
+                <div id="menu" class="flex flex-wrap gap-5 sm:text-xl text-sm mb-1 overflow-auto">
+                        <RegionSelect @updateRegion="(id) => updateRegion(id)" :list="region_list" :selected="region_selected" :loading="games_loading" />
+                        <Period class="" @updatePeriod="(id) => updatePeriod(id)"
+                            :loading="games_loading" :list="period_list" :selected="period_selected" />
+                        <Week class="mr-auto" @updateWeek="(id) => updateWeek(id)"
+                            :loading="games_loading" :list="week_list" :selected="week_selected" />
+                        <div class="text-sm m-2 flex">
+                            Alle
+                            <span class="sm:block hidden ml-1">
+                                Spiele
+                            </span>
+                            <input class="ml-1 mt-0.5 rounded" type="checkbox" name="" id=""
+                                @click="showAll = !showAll, updateFilter(showAll)" />
+                        </div>
                 </div>
                 <div v-if="!games_loading"
                     class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2">
@@ -46,13 +54,12 @@
                             class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-indigo-900 bg-indigo-100 rounded-t-lg hover:bg-indigo-200 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75 disabled:bg-gray-200 disabled:text-gray-500"
                             :class="[
                                 (team.gClassID !== teamClassID) ? 'my-1 rounded-lg' : '',
-                            ]" 
-                            @click="
-                                team.gClassID !== teamClassID
-                                    ? (teamClassID = team.gClassID,
-                                        open = true)
-                                    : (teamClassID = null, open = false)
-                            "
+                            ]" @click="
+    team.gClassID !== teamClassID
+        ? (teamClassID = team.gClassID,
+            open = true)
+        : (teamClassID = null, open = false)
+"
                             :disabled="classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1)">
                             <span class="sm:hidden block">{{ team.gClassSname }}</span>
                             <span class="hidden sm:block">{{ team.gClassLname }}</span>
@@ -90,8 +97,8 @@
                                 <div id="league-info">
                                     <!-- Information about how many games and button to team component -->
                                 </div>
-                                <Match v-for="match in team.games" :key="match.gID" :match="match"
-                                    :teamID="null" :teamClassID="team.gClassID"></Match>
+                                <Match v-for="match in team.games" :key="match.gID" :match="match" :teamID="null"
+                                    :teamClassID="team.gClassID"></Match>
                                 <div id="no-data" v-show="!team.games.length" class="mb-2">
                                     <div id="no-future-matches" v-show="!showAll">
                                         Keine zukünftigen Spiele
@@ -123,29 +130,33 @@
 
 <script setup>
 import { ref, onMounted, onUpdated, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import {
     ChevronUpIcon,
 } from "@heroicons/vue/solid";
 
-import { filterGames } from  "./functions/misc.js";
+import { filterGames } from "./functions/misc.js";
 
 import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
 
 import Period from "./helpers/Period.vue";
 import Week from "./helpers/Week.vue";
+import RegionSelect from "./helpers/RegionSelect.vue";
 
 const route = useRoute();
+const router = useRouter();
 
 const games_loading = ref(true);
 const games_data = ref(null);
-const periods = ref([]);
-const period = ref(null);
-const date_list = ref({});
-const selected = ref(null);
+const period_list = ref([]);
+const period_selected = ref(null);
+const region_list = ref([]);
+const region_selected = ref(null);
+const week_list = ref({});
+const week_selected = ref(null);
 const classes = ref([]);
 
 const teamClassID = ref(null);
@@ -162,13 +173,21 @@ const og = ref(null);
 watch(route, async (newVal, oldVal) => {
     console.log("route changed", newVal.hash);
     if (newVal.hash) {
-        o.value = newVal.hash.replace("#","").split(';')[0];
+        o.value = newVal.hash.replace("#", "").split(';')[0];
         if (o.value == "undefined") {
             o.value = null;
         }
-        og.value = newVal.hash.replace("#","").split(';')[1];
+        og.value = newVal.hash.replace("#", "").split(';')[1];
         if (og.value == "undefined") {
             og.value = null;
+        }
+        period_selected.value = newVal.hash.replace("#", "").split(';')[2];
+        if (period_selected.value == "undefined") {
+            period_selected.value = null;
+        }
+        week_selected.value = newVal.hash.replace("#", "").split(';')[3];
+        if (week_selected.value == "undefined") {
+            week_selected.value = null;
         }
     }
     else {
@@ -179,8 +198,29 @@ watch(route, async (newVal, oldVal) => {
     if (og.value || o.value) {
         await fetchGames();
     }
-    
+
 });
+
+const updateRegion = (id) => {
+    console.log("updateRegion");
+    console.log(region_list.value[id]);
+    region_selected.value = id;
+    o.value = id;
+    router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value+ ';' + period_selected.value + ';' + week_selected.value });
+}
+const updateWeek = (id) => {
+    console.log("updateWeek");
+    console.log(week_list.value[id]);
+    week_selected.value = id;
+    router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value+ ';' + period_selected.value + ';' + week_selected.value });
+}
+
+const updatePeriod = (id) => {
+    console.log("updatePeriod");
+    console.log(period_list.value[id]);
+    period_selected.value = id;
+    router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value+ ';' + period_selected.value + ';' + week_selected.value });
+}
 
 const updateFilter = (show) => {
     const all_classes = JSON.parse(JSON.stringify(games_data.value.content.classes));
@@ -189,7 +229,7 @@ const updateFilter = (show) => {
     classes.value = all_classes.map((club_class) => {
         club_class.games = filterGames(club_class.games, show);
         return club_class;
-     });
+    });
     //console.log("After:", JSON.stringify(classes.value).length);
 }
 
@@ -202,20 +242,26 @@ const fetchGames = async () => {
     //console.log(selected.value);
     //console.log(period.value);
     let response;
-    if (selected.value || period.value) {
-        if (o.value) {
-            response = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=po&o=" + o.value + "&do=" + selected.value + "&p=" + period.value);
+    if (week_selected.value || period_selected.value) {
+        if (o.value && og.value) {
+            response = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=po&o=" + o.value + "&og=" + og.value + "&do=" + week_selected.value + "&p=" + period_selected.value);
+        }
+        else if (og.value) {
+            response = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=po&og=" + og.value + "&do=" + week_selected.value + "&p=" + period_selected.value);
         }
         else {
-            response = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=po&og=" + og.value + "&do=" + selected.value + "&p=" + period.value);
+            response = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=po&o=" + o.value + "&do=" + week_selected.value + "&p=" + period_selected.value);
         }
     }
     else {
-        if (o.value) {
-            response = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=po&o=" + o.value);
+        if (o.value && og.value) {
+            response = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=po&o=" + o.value + "&og=" + og.value);
+        }
+        else if (og.value) {
+            response = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=po&og=" + og.value);
         }
         else {
-            response = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=po&og=" + og.value);
+            response = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=po&o=" + o.value);
         }
     }
 
@@ -223,18 +269,24 @@ const fetchGames = async () => {
     const data = await response.json();
     games_data.value = data[0];
 
-    periods.value = games_data.value.menu.period.list;
-    period.value = games_data.value.menu.period.selectedID;
+    period_list.value = games_data.value.menu.period.list;
+    period_selected.value = games_data.value.menu.period.selectedID;
 
     //console.log("periods", periods.value);
     //console.log("period", period.value);
 
-    date_list.value = games_data.value.menu.dt.list;
-    selected.value = games_data.value.menu.dt.selected;
+    week_list.value = games_data.value.menu.dt.list;
+    week_selected.value = games_data.value.menu.dt.selected;
+
+    region_list.value = games_data.value.menu.org.list;
+    region_selected.value = games_data.value.menu.org.selectedID;
+
     classes.value = games_data.value.content.classes;
 
+    name.value = region_list.value[Object.keys(region_list.value)[0]];
+    league.value = games_data.value.head.headline2;
     updateFilter(showAll.value);
-    
+
     games_loading.value = false;
 };
 
@@ -273,38 +325,11 @@ const goDateForward = () => {
     fetchGames();
 };
 
-
-const getName = () => {
-    const json = leagues.value;
-    //console.log(json);
-    for (let element of Object.keys(json)) {
-        //console.log(element);
-        for (let object of Object.keys(json[element])) {
-            //console.log("O:", element, json[element][object].o);
-
-            if (json[element][object].o == o.value || json[element][object].og == og.value) {
-                //console.log(json[element][object].name);
-                if (!json[element][object].name) {
-                    name.value = object;
-                }
-                else {
-                    name.value = object + ' (' + json[element][object].name + ')';
-                }
-
-                league.value = element;
-                return;
-            }
-        }
-    }
-
-}
-
 const getLeagues = async () => {
     loading.value = true;
     const response = await fetch("/organizations.json");
     const data = await response.json();
     leagues.value = data;
-    getName();
     loading.value = false;
 }
 
@@ -314,7 +339,7 @@ onMounted(async () => {
         if (o.value == "undefined") {
             o.value = null;
         }
-        og.value = route.hash.replace("#","").split(';')[1];
+        og.value = route.hash.replace("#", "").split(';')[1];
         if (og.value == "undefined") {
             og.value = null;
         }
@@ -323,8 +348,12 @@ onMounted(async () => {
         o.value = null;
         og.value = null;
     }
+
+    console.log("o", o.value);
+    console.log("og", og.value);
     await getLeagues();
-    
+    console.log("leagues", leagues.value);
+
 
     if (o.value || og.value) {
         await fetchGames();
