@@ -1,0 +1,71 @@
+{
+    "Deutschland-Cup": {
+        "Deutschland-Cup": {
+            "o": "1"
+        }
+    },
+    "Oberligen": {
+        "Baden-Württemberg": {
+            "og": "4",
+            "name": "HBBW"
+        },
+        "Hamburg/Schleswig-Holstein": {
+            "og": "77",
+            "name": "HHVSH"
+        },
+        "Rheinland-Pfalz/Saar": {
+            "og": "79",
+            "name": "RPS"
+        },
+        "Westfalen": {
+            "og": "78",
+            "name": "HVWF"
+        }
+    },
+    "Landesverbände": {
+        "Württemberg": {
+            "og": "3",
+            "name": "HVW"
+        },
+        "Westfalen": {
+            "og": "78",
+            "name": "HVWF"
+        },
+        "Baden": {
+            "og": "35",
+            "name": "BHV"
+        },
+        "Hamburg": {
+            "og": "81",
+            "name": "HHV"
+        },
+        "Luxemburg": {
+            "og": "95",
+            "name": "LUX"
+        },
+        "Pfalz": {
+            "og": "171",
+            "name": "PfHV"
+        },
+        "Rheinhessen": {
+            "og": "83",
+            "name": "HVRh"
+        },
+        "Saarland": {
+            "og": "80",
+            "name": "HVS"
+        },
+        "Schleswig-Holstein": {
+            "og": "56",
+            "name": "HVSH"
+        },
+        "Südbaden": {
+            "og": "28",
+            "name": "SHV"
+        },
+        "Vorarlberg": {
+            "og": "76",
+            "name": "VHV"
+        }
+    }
+}

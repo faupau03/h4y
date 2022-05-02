@@ -217,6 +217,7 @@ const updateWeek = (id) => {
 
 const updatePeriod = (id) => {
     console.log("updatePeriod");
+    console.log(id);
     console.log(period_list.value[id]);
     period_selected.value = id;
     router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value+ ';' + period_selected.value + ';' + week_selected.value });

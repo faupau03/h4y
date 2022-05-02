@@ -3,7 +3,7 @@
         <button @click="goDateBack" class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400" :disabled="Object.keys(list).indexOf(String(selected)) <= 0">
             <ChevronLeftIcon class="h-5" />
         </button>
-        <select v-model="selected" @change="$emit('updateWeek', selected)" class="m-0 text-xs sm:text-base py-2 border-none bg-indigo-100 rounded-lg hover:bg-indigo-200 !ring-0">
+        <select :value="selected" @change="(event) => $emit('updateWeek', event.target.value)" class="m-0 text-xs sm:text-base py-2 border-none bg-indigo-100 rounded-lg hover:bg-indigo-200 !ring-0">
             <option v-for="date, key in list" :value="key" class="bg-indigo-100 p-0 m-0">{{ date }}</option>
         </select>
 

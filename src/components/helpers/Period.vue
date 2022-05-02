@@ -4,7 +4,7 @@
             class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400">
             <ChevronLeftIcon class="h-5" />
         </button>
-        <select v-model="selected" @change="$emit('updatePeriod', selected)" class="m-0 text-xs sm:text-base py-2 border-none bg-indigo-100 rounded-lg hover:bg-indigo-200 !ring-0">
+        <select :value="selected" @change="(event) => $emit('updatePeriod', event.target.value)" class="m-0 text-xs sm:text-base py-2 border-none bg-indigo-100 rounded-lg hover:bg-indigo-200 !ring-0">
             <option v-for="period, key in list" :value="key" class="bg-indigo-100 p-0 m-0">{{ period }}</option>
         </select>
         <button @click="goPeriodForward"
@@ -40,6 +40,7 @@ const goPeriodBack = () => {
     const index = Object.keys(list).indexOf(String(selected));
     if (index > 0) {
         selected = Object.keys(list)[index - 1];
+        console.log("selected", selected);
         emit("updatePeriod", selected);
     }
 };
@@ -50,6 +51,7 @@ const goPeriodForward = () => {
     const index = Object.keys(list).indexOf(String(selected));
     if (index < Object.keys(list).length - 1) {
         selected = Object.keys(list)[index + 1];
+        console.log("selected", selected);
         emit("updatePeriod", selected);
     }
 };
