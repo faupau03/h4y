@@ -15,7 +15,7 @@ export default defineConfig({
       includeAssets: ['favicon.png', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png', 'icons/*.png', 'logos/clubs/*.png'],
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Handball 4 you',
+        name: 'Handball 4 You',
         short_name: 'H4Y',
         description: 'Handball scores and live ticker from h4a api',
         theme_color: '#30cba0',
