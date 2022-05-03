@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="w-5/6 m-auto pb-24">
-            <div class="mt-3 flex overflow-x-auto">
+            <div class="mt-3 flex flex-wrap">
                 <h2 class="font-bold text-lg m-1">Spiele</h2>
                 <Period class="sm:ml-5 ml-2 mr-auto" @updatePeriod="(id) => updatePeriod(id)" :loading="loading" :selected="period_selected" :list="period_list"/>
                 <div class="text-sm m-2 mr-5 flex">
