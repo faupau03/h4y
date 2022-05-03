@@ -1,0 +1,6 @@
+[{
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target" : { "namespace": "android_app", "package_name": "de.paffnet.h4y.twa",
+                     "sha256_cert_fingerprints": ["3A:58:09:30:E5:3E:01:B3:65:47:34:83:D0:DF:0E:E8:69:4F:ED:5F:28:2E:9E:A6:89:45:E3:5B:D2:73:F9:60"] }
+      }
+]
