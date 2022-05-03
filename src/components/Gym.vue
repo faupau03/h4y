@@ -257,7 +257,21 @@ const fetchMatches = async () => {
     }
     
     const json = await response.json();
-    teams.value = json[0].content.gList;
+    let teams_tmp = json[0].content.gList;
+    teams.value = [];
+    teams_tmp.forEach(element => {
+        if (!teams.value.find(team => team.gClassID == element.gClassID)) {
+            teams.value.push(element);
+        }
+        else {
+            const index = teams.value.findIndex(team => team.gClassID == element.gClassID);
+            element.games.forEach(game => {
+                teams.value[index].games.push(game);
+            });
+        }
+    });
+
+
     week_selected.value = json[0].menu.dt.selected;
     week_list.value = json[0].menu.dt.list;
     loading.value = false;
