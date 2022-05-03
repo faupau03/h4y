@@ -25,11 +25,19 @@
             <HeaderLoading v-else />
 
             <div id="game-info" class="">
-                <div class="justify-center grid mx-2">
-                    <div v-if="!loading" class="font-bold text-xl sm:text-2xl">
-                        {{ game.gHomeTeam }}
-                        :
-                        {{ game.gGuestTeam }}
+                <div class="justify-center mx-2">
+                    <div v-if="!loading" class="font-bold text-base sm:text-2xl">
+                            <div class="flex items-center">
+                                <div class="w-1/2 text-center">
+                            {{ game.gHomeTeam }}
+                        </div>
+                        <div class="text-center h-min">
+                            :
+                        </div>
+                        <div class="w-1/2 text-center">
+                            {{ game.gGuestTeam }}
+                        </div>
+                            </div>
                     </div>
                     <div v-else class="flex font-bold text-xl sm:text-2xl rounded animate-pulse">
                         <div class="h-8 w-24 mx-1 bg-gray-400 rounded-lg">
@@ -39,7 +47,7 @@
                         <div class="h-8 w-24 mx-1 bg-gray-400 rounded-lg"></div>
                     </div>
 
-                    <div v-if="!loading">
+                    <div v-if="!loading" class="ml-2 text-sm sm:text-base">
                         {{ scores.head.name }}
                     </div>
                     <span v-else class="rounded h-4 w-40 bg-gray-300 m-1 animate-pulse"></span>
