@@ -46,8 +46,17 @@
         <Cal
             v-if="type == 'match'"
             class="cursor-pointer"
+            :type="'single'"
             :class="game.sGID ? '' : 'ml-auto'"
             :game="game"
+        />
+        <Cal
+            v-else-if="type == 'team'"
+            class="cursor-pointer ml-auto"
+            :type="'multiple'"
+            :games="games"
+            :club="club"
+            :team="team"
         />
         <div
             v-if="type == 'club' || type == 'team' || type == 'gym'"
@@ -94,6 +103,7 @@ const emit = defineEmits(["updateFavorites"]);
 
 const props = defineProps([
     "game",
+    "games",
     "team",
     "club",
     "gym",

@@ -124,6 +124,8 @@
                             <div class="w-2/5 text-ellipsis overflow-hidden">
                                 <TickerElement
                                     :message="slotProps.node.message"
+                                    :team_home="gameTickerInfo['team_home']"
+                                    :team_guest="gameTickerInfo['team_guest']"
                                     side="left"
                                 />
                             </div>
@@ -143,6 +145,8 @@
                                 <TickerElement
                                     class="flex"
                                     :message="slotProps.node.message"
+                                    :team_home="gameTickerInfo['team_home']"
+                                    :team_guest="gameTickerInfo['team_guest']"
                                     side="right"
                                 />
                             </div>

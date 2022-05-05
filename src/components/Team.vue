@@ -10,7 +10,7 @@
             id="club-header"
             class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
         >
-            <Header @updateFavorites="emit('updateFavorites')" :type="'team'" :team_id="teamID" :class_id="teamClassID" :club_id="teamClubNo" :team="team" :club="club"></Header>
+            <Header @updateFavorites="emit('updateFavorites')" :type="'team'" :games="teamMatches" :team_id="teamID" :class_id="teamClassID" :club_id="teamClubNo" :team="team" :club="club"></Header>
             <div id="content" class="flex mb-5">
                 <img
                     v-if="team"
