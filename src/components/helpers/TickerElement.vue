@@ -39,6 +39,8 @@ const init = () => {
     }
     let team_members = props.team_home.team_members;
 
+    console.log(props.team_home);
+
     if (message.includes("Gastmannschaft")) {
         guest.value = true;
         team_members = props.team_guest.team_members;
@@ -121,8 +123,8 @@ const init = () => {
                 : message
                       .replace("2-min Strafe für die Nummer ", "")
                       .charAt(0));
-        info_long.value = "2-min Strafe für " + (message.match(/\d+/)
-            ? team_members.find(m => m.player_no == message.match(/\d+/)[0]).prename + " " + team_members.find(m => m.player_no == message.match(/\d+/)[0]).name
+        info_long.value = "2-min Strafe für " + (message.replace("2-min", "").match(/\d+/)[0]
+            ? team_members.find(m => m.player_no == message.replace("2-min", "").match(/\d+/)[0]).prename + " " + team_members.find(m => m.player_no == message.replace("2-min", "").match(/\d+/)[0]).name
             : team_members.find(m => m.player_no == message.replace("2-min Strafe für die Nummer ", "").charAt(0)).prename + " " + team_members.find(m => m.player_no == message.replace("2-min Strafe für die Nummer ", "").charAt(0)).name);
         src.value = "https://spo.handball4all.de/service/ticker/V-fktpyp.svg";
     } else {
@@ -138,7 +140,7 @@ init();
 
 const message_ref = toRef(props, "message");
 watch(message_ref, async (newValue, oldValue) => {
-    if (newValue) {
+    if (newValue && props.team_home) {
         init();
     }
 });
