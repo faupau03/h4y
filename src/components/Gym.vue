@@ -26,25 +26,27 @@
                     <div class="text-gray-700 -mt-1">
                         {{ gym.org }}
                     </div>
-                    <div class="text-gray-800">Nummer: {{ gym.no }}</div>
-                    <div>
-                        Straße: {{ gym.street }}
-                    </div>
-                    <div class="text-gray-800">Ort: {{ gym.town }}</div>
-                    <div>
-                        Telefon: {{ gym.phone }}
+                    <div id="info" class="grid text-xs sm:text-base xs:text-sm">
+                        <div>Nummer: {{ gym.no }}</div>
+                        <div>
+                            Straße: {{ gym.street }}
+                        </div>
+                        <div>Ort: {{ gym.town }}</div>
+                        <div>
+                            Telefon: {{ gym.phone }}
+                        </div>
                     </div>
                     <button @click="maps()" class="rounded flex w-fit p-1  sm:text-base text-xs underline-none text-white items-center hover:bg-indigo-300 hover:text-indigo-900 bg-indigo-500">
                             Öffnen in
                             <img class="h-6 ml-1" src="/icons/maps.png" alt="">
                     </button>
-                    <div class="flex text-gray-700 my-2">
+                    <div class="flex text-gray-700 my-2 flex-wrap text-xs sm:text-base xs:text-sm">
                         <InformationCircleIcon class="h-5 mt-0.5 mr-1"/>{{ gym.wax}}
                     </div>
                     <div class="text-gray-800">
                         Dateien:
                     </div>
-                    <div class="bg-indigo-100 rounded w-full flex">
+                    <div class="bg-indigo-100 rounded w-full flex flex-wrap text-xs sm:text-base">
                         <a  v-for="file in gym.files" :href="file.file" class="flex bg-indigo-200 p-1 rounded m-2 hover:bg-indigo-300">
                             <DocumentIcon class="h-5 text-gray-700 mt-0.5"/>
                             {{ file.type }}
