@@ -71,6 +71,7 @@
                     />
                 </div> -->
                 <Week @updateWeek="(id) => updateWeek(id)" :selected="week_selected" :list="week_list" :loading="loading"/>
+                <Period class="sm:ml-5 ml-2 mr-auto" @updatePeriod="(id) => updatePeriod(id)" :loading="loading" :selected="period_selected" :list="period_list"/>
             </div>
             <div
                 class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2"
@@ -153,6 +154,7 @@ import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
 import Header from "./helpers/Header.vue";
 import Week from "./helpers/Week.vue";
+import Period from "./helpers/Period.vue";
 import { fetchTeamID } from "./functions/fetchData";
 import MapsLoadingVue from "./helpers/MapsLoading.vue";
 
@@ -166,6 +168,8 @@ const teamID = ref(null);
 const teams = ref([]);
 const week_list = ref([]);
 const week_selected = ref(null);
+const period_selected = ref(null);
+const period_list = ref([]);
 const teamClassID = ref(null);
 const props = defineProps(["club_no"]);
 
@@ -191,6 +195,11 @@ const goDateForward = () => {
 
 const updateWeek = (id) => {
     week_selected.value = id;
+    fetchMatches();
+};
+
+const updatePeriod = (id) => {
+    period_selected.value = id;
     fetchMatches();
 };
 
@@ -244,19 +253,24 @@ const fetchGym = async () => {
 
 const fetchMatches = async () => {
     loading.value = true;
-    let response;
-    if (week_selected.value) {
-        response = await fetch(
-            "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
-                gym_id.value + "&do=" + week_selected.value
-        );
+    let url;
+    if (week_selected.value && period_selected.value) {
+        url = "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
+                gym_id.value + "&do=" + week_selected.value + "&p=" + period_selected.value;
+    }
+    else  if (week_selected.value) {
+        url = "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
+                gym_id.value + "&do=" + week_selected.value;
+    }
+    else if (period_selected.value) {
+        url = "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
+                gym_id.value + "&p=" + period_selected.value;
     }
     else {
-        response = await fetch(
-            "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
-                gym_id.value
-        );
+        url = "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
+                gym_id.value + "&do=" + week_selected.value;
     }
+    const response = await fetch(url);
     
     const json = await response.json();
     let teams_tmp = json[0].content.gList;
@@ -276,6 +290,8 @@ const fetchMatches = async () => {
 
     week_selected.value = json[0].menu.dt.selected;
     week_list.value = json[0].menu.dt.list;
+    period_selected.value = json[0].menu.period.selectedID;
+    period_list.value = json[0].menu.period.list;
     loading.value = false;
 };
 
