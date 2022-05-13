@@ -3,7 +3,7 @@
     <div
         class="rounded-lg bg-indigo-200 my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
         
-        @click="if (!event || !event.target.classList.contains('gym')) {
+        @click="if (!$event.target.classList.contains('gym')) {
             $router.push(
                 'match#' + match.gID + ';' + teamID + ';' + teamClassID
             );
