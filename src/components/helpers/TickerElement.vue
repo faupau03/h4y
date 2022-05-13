@@ -39,7 +39,7 @@ const init = () => {
     }
     let team_members = props.team_home.team_members;
 
-    console.log(props.team_home);
+    //console.log(props.team_home);
 
     if (message.includes("Gastmannschaft")) {
         guest.value = true;

@@ -20,8 +20,12 @@ import Match from "./components/Match.vue";
 import Club from "./components/Club.vue";
 import Gym from "./components/Gym.vue";
 import Team from "./components/Team.vue";
+import Test from "././components/helpers/Test.vue";
 
 const routes = [
+    {
+        path: import.meta.env.BASE_URL + '/test', component: Test
+    },
     {
         path: import.meta.env.BASE_URL + '/', redirect: import.meta.env.BASE_URL + 'favorites'
     },

@@ -1,11 +1,14 @@
 <template>
+<!-- TODO: fix this -->
     <div
         class="rounded-lg bg-indigo-200 my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
-        @click="
+        
+        @click="if (!event || !event.target.classList.contains('gym')) {
             $router.push(
                 'match#' + match.gID + ';' + teamID + ';' + teamClassID
-            ),
-            $emit('gameUpdate',match.gID,teamID,teamClassID)
+            );
+            $emit('gameUpdate',match.gID,teamID,teamClassID);
+        }
         "
     >
         <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
@@ -32,8 +35,9 @@
             <div id="location" class="flex text-black col-span-2">
                 <!-- Gymnasium -->
                 <LocationMarkerIcon class="h-4 w-4 text-indigo-900 shrink-0" />
-                <span class="truncate text-xs">
-                    {{ match.gGymnasiumName }}
+                <span class="truncate text-xs underline hover:text-indigo-500">
+                    <!-- TODO: add link to gym -->
+                    <router-link class="gym" :to="'/gym#' + match.gGymnasiumID">{{ match.gGymnasiumName }}</router-link>
                 </span>
             </div>
 

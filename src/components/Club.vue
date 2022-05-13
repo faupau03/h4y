@@ -86,6 +86,17 @@
                                     Keine zukünftigen Spiele
                                 </span>
                             </span>
+                            <div
+                                v-if="team.games[0][Object.keys(team.games[0])[0]].some(element => element.live)"
+                                class="rounded-full relative w-4 h-4"
+                            >
+                                <div
+                                    class="animate-ping absolute -mt-0.5 inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75"
+                                ></div>
+                                <div
+                                    class="z-20 mx-auto my-auto mt-1 animate-none rounded-full h-3 w-3 bg-red-500"
+                                ></div>
+                            </div>
                         </span>
                         <ChevronUpIcon
                             class="w-5 h-5"
