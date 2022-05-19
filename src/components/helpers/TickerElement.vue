@@ -7,7 +7,7 @@
             <div class="block sm:hidden">
                 {{ info }}
             </div>
-            
+
             <img class="h-5 w-5 ml-1 sm:mt-1 -mt-0.5" :src="src" alt="" />
         </div>
     </div>
@@ -65,21 +65,36 @@ const init = () => {
         message.includes("7m") &&
         (message.includes("Tor") || message.includes("Erfolgreicher"))
     ) {
+        let player_no = message.replace("7m", "").match(/\d+/)[0];
+        if (!player_no) {
+            player_no = message.charAt(message.length - 1);
+        }
+        const player = team_members.find(m => m.player_no == player_no);
         info.value =
-            "7m Tor durch Nr. " + message.replace("7m", "").match(/\d+/)[0];
-        info_long.value = "7m Tor durch " + team_members.find(m => m.player_no == message.replace("7m", "").match(/\d+/)[0]).prename + " " + team_members.find(m => m.player_no == message.replace("7m", "").match(/\d+/)[0]).name;
+            "7m Tor durch Nr. " + player_no;
+        info_long.value = "7m Tor durch " + player.prename + " " + player.name;
         src.value = "https://spo.handball4all.de/service/ticker/doZSekQl.svg";
     }
     // 7m
     else if (message.includes("7m")) {
-        info.value = "7m von Nr. " + message.replace("7m", "").match(/\d+/)[0];
-        info_long.value = "7m von " + team_members.find(m => m.player_no == message.replace("7m", "").match(/\d+/)[0]).prename + " " + team_members.find(m => m.player_no == message.replace("7m", "").match(/\d+/)[0]).name;
+        let player_no = message.replace("7m", "").match(/\d+/)[0];
+        if (!player_no) {
+            player_no = message.charAt(message.length - 1);
+        }
+        const player = team_members.find(m => m.player_no == player_no);
+        info.value = "7m von Nr. " + player_no;
+        info_long.value = "7m von " + player.prename + " " + player.name;
         src.value = "https://spo.handball4all.de/service/ticker/OBOdJWyJ.svg";
     }
     // Tor
     else if (message.includes("Tor")) {
-        info.value = "Tor durch Nr. " + message.match(/\d+/)[0];
-        info_long.value = "Tor durch " + team_members.find(m => m.player_no == message.match(/\d+/)[0]).prename  + " " + team_members.find(m => m.player_no == message.match(/\d+/)[0]).name;
+        let player_no = message.match(/\d+/)[0];
+        if (!player_no) {
+            player_no = message.charAt(message.length - 1);
+        }
+        const player = team_members.find(m => m.player_no == player_no);
+        info.value = "Tor durch Nr. " + player_no;
+        info_long.value = "Tor durch " + player.prename + " " + player.name;
         src.value = "https://spo.handball4all.de/service/ticker/3GjFnr19.svg";
     }
     // Auszeit
@@ -90,50 +105,48 @@ const init = () => {
     }
     // Verwarnung
     else if (message.includes("Verwarnung")) {
+        let player_no = message.match(/\d+/)[0];
+        if (!player_no) {
+            player_no = message.replace("Verwarnung für die Nummer ", "").charAt(0);
+        }
+        const player = team_members.find(m => m.player_no == player_no);
         info.value =
-            "Verwarnung für Nr. " +
-            (message.match(/\d+/)
-                ? message.match(/\d+/)[0]
-                : message.replace("Verwarnung für die Nummer ", "").charAt(0));
-        info_long.value = "Verwarnung für " + (message.match(/\d+/)
-            ? team_members.find(m => m.player_no == message.match(/\d+/)[0]).prename + " " + team_members.find(m => m.player_no == message.match(/\d+/)[0]).name
-            : team_members.find(m => m.player_no == message.replace("Verwarnung für die Nummer ", "").charAt(0)).prename + " " + team_members.find(m => m.player_no == message.replace("Verwarnung für die Nummer ", "").charAt(0)).name);
+            "Verwarnung für Nr. " + player_no;
+        info_long.value = "Verwarnung für " + player.prename + " " + player.name
+
         src.value = "https://spo.handball4all.de/service/ticker/jAfYIp8x.svg";
     }
     // Disqualifikation
     else if (message.includes("Disqualifikation")) {
-        info.value =
-            "Disqualifikation für Nr. " +
-            (message.match(/\d+/)
-                ? message.match(/\d+/)[0]
-                : message
-                      .replace("Disqualifikation für die Nummer ", "")
-                      .charAt(0));
-        info_long.value = "Disqualifikation für " + (message.match(/\d+/)
-            ? team_members.find(m => m.player_no == message.match(/\d+/)[0]).prename + " " + team_members.find(m => m.player_no == message.match(/\d+/)[0]).name
-            : team_members.find(m => m.player_no == message.replace("Disqualifikation für die Nummer ", "").charAt(0)).prename + " " + team_members.find(m => m.player_no == message.replace("Disqualifikation für die Nummer ", "").charAt(0)).name);
+        let player_no = message.match(/\d+/)[0];
+        if (!player_no) {
+            player_no = message.replace("Disqualifikation für die Nummer ", "").charAt(0);
+        }
+        const player = team_members.find(m => m.player_no == player_no);
+        info.value = "Disqualifikation für Nr. " + player_no;
+        info_long.value = "Disqualifikation für " + player.prename + " " + player.name;
         src.value = "https://spo.handball4all.de/service/ticker/2wU3SwVT.svg";
     }
     // 2-min
     else if (message.includes("2-min")) {
+        let player_no = message.replace("2-min", "").match(/\d+/);
+        if (!player_no) {
+            player_no = message.replace("2-min Strafe für die Nummer ", "").charAt(0);
+        }
+        const player = team_members.find(m => m.player_no == player_no);
         info.value =
-            "2-min Strafe für Nr. " +
-            (message.replace("2-min", "").match(/\d+/)
-                ? message.replace("2-min", "").match(/\d+/)[0]
-                : message
-                      .replace("2-min Strafe für die Nummer ", "")
-                      .charAt(0));
-        info_long.value = "2-min Strafe für " + (message.replace("2-min", "").match(/\d+/)[0]
-            ? team_members.find(m => m.player_no == message.replace("2-min", "").match(/\d+/)[0]).prename + " " + team_members.find(m => m.player_no == message.replace("2-min", "").match(/\d+/)[0]).name
-            : team_members.find(m => m.player_no == message.replace("2-min Strafe für die Nummer ", "").charAt(0)).prename + " " + team_members.find(m => m.player_no == message.replace("2-min Strafe für die Nummer ", "").charAt(0)).name);
+            "2-min Strafe für Nr. " + player_no;
+        info_long.value = "2-min Strafe für " + player.prename + " " + player.name;
         src.value = "https://spo.handball4all.de/service/ticker/V-fktpyp.svg";
-    } else {
+    }
+    // error
+    else {
         info.value = "error";
         info_long.value = "error";
         src.value = "";
     }
 
-    
+
 };
 
 init();

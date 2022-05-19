@@ -1,62 +1,39 @@
 <template>
     <!-- Live ticker with option to fullscreen -->
-    <div
-        v-if="
-            gameLive &&
-            !gameTickerLoading &&
-            gameTickerInfo &&
-            gameTickerInfo['team_home']
-        "
-        id="ticker"
-        class="w-5/6 m-auto border bg-white border-gray-100 shadow-xl rounded-lg relative mt-2"
-        :class="
-            fullscreenTicker
-                ? '!m-0 !z-50 !absolute !right-0 !top-0 !bottom-0 !left-0 !h-screen !w-screen overflow-hidden'
-                : ''
-        "
-    >
+    <div v-if="
+        gameLive &&
+        !gameTickerLoading &&
+        gameTickerInfo &&
+        gameTickerInfo['team_home']
+    " id="ticker" class="w-5/6 m-auto border bg-white border-gray-100 shadow-xl rounded-lg relative mt-2" :class="
+    fullscreenTicker
+        ? '!m-0 !z-50 !absolute !right-0 !top-0 !bottom-0 !left-0 !h-screen !w-screen overflow-hidden'
+        : ''
+">
         <div class="flex py-2">
             <span class="font-bold ml-2"> Ticker </span>
-            <button
-                v-show="infoTicker"
+            <button v-show="infoTicker"
                 class="bg-indigo-300 ml-auto rounded p-1 text-sm sm:text-base hover:bg-indigo-500"
-                @click="infoTicker = false"
-            >
+                @click="infoTicker = false">
                 Spielverlauf
             </button>
-            <button
-                v-show="!infoTicker"
+            <button v-show="!infoTicker"
                 class="bg-indigo-300 ml-auto rounded p-1 text-sm sm:text-base hover:bg-indigo-500"
-                @click="infoTicker = true"
-            >
+                @click="infoTicker = true">
                 Aufstellung
             </button>
-            <img
-                src="/icons/arrows-angle-expand.svg"
-                alt="expand"
-                v-show="!fullscreenTicker"
+            <img src="/icons/arrows-angle-expand.svg" alt="expand" v-show="!fullscreenTicker"
                 class="h-7 w-7 ml-5 hover:bg-indigo-500 bg-indigo-300 rounded-lg p-1.5 mr-5 hover:cursor-pointer"
-                @click="fullscreenTicker = true"
-            />
-            <img
-                src="/icons/arrows-angle-contract.svg"
-                alt="contract"
-                v-show="fullscreenTicker"
+                @click="fullscreenTicker = true" />
+            <img src="/icons/arrows-angle-contract.svg" alt="contract" v-show="fullscreenTicker"
                 class="h-7 w-7 ml-5 hover:bg-indigo-500 bg-indigo-300 rounded-lg p-1.5 mr-5 hover:cursor-pointer"
-                @click="fullscreenTicker = false"
-            />
+                @click="fullscreenTicker = false" />
         </div>
         <div id="header" class="flex justify-between mt-2 md:mt-0">
-            <div
-                class="h-20 bg-indigo-500 text-sm sm:text-base text-white relative font-bold flex items-center justify-center p-2 w-1/3"
-                @click="infoTicker ? (selectedTeam = 'team_home') : null"
-            >
-                <div
-                    class="h-20 w-5 -scale-y-100 absolute -right-5 overflow-hidden inline-block"
-                >
-                    <div
-                        class="h-28 -mt-8 bg-indigo-500 -rotate-12 transform origin-bottom-right"
-                    ></div>
+            <div class="h-20 bg-indigo-500 text-sm sm:text-base text-white relative font-bold flex items-center justify-center p-2 w-1/3"
+                @click="infoTicker ? (selectedTeam = 'team_home') : null">
+                <div class="h-20 w-5 -scale-y-100 absolute -right-5 overflow-hidden inline-block">
+                    <div class="h-28 -mt-8 bg-indigo-500 -rotate-12 transform origin-bottom-right"></div>
                 </div>
                 {{ gameTickerInfo["team_home"]["club"] }}
                 <div class="text-indigo-900 absolute right-0 sm:-top-7 -top-5 sm:text-lg">Heim</div>
@@ -73,98 +50,63 @@
                     {{ gameTicker[0]["guest_score"] }}
                 </div>
             </div>
-            <div
-                class="h-20 bg-indigo-500 text-sm sm:text-base text-white font-bold relative flex items-center justify-center p-2 w-1/3"
-                @click="infoTicker ? (selectedTeam = 'team_guest') : null"
-            >
+            <div class="h-20 bg-indigo-500 text-sm sm:text-base text-white font-bold relative flex items-center justify-center p-2 w-1/3"
+                @click="infoTicker ? (selectedTeam = 'team_guest') : null">
                 {{ gameTickerInfo["team_guest"]["club"] }}
                 <div class="text-indigo-900 absolute left-0 sm:-top-7 -top-5 sm:text-lg">Gast</div>
-                <div
-                    class="h-20 w-5 -scale-x-100 absolute -left-5 overflow-hidden inline-block"
-                >
-                    <div
-                        class="h-28 -mt-8 bg-indigo-500 -rotate-12 transform origin-bottom-right"
-                    ></div>
+                <div class="h-20 w-5 -scale-x-100 absolute -left-5 overflow-hidden inline-block">
+                    <div class="h-28 -mt-8 bg-indigo-500 -rotate-12 transform origin-bottom-right"></div>
                 </div>
             </div>
         </div>
         <div id="ticker" v-show="!infoTicker">
-            <div
-                class="flex justify-evenly p-3 m-2 bg-indigo-200 rounded font-bold text-gray-800"
-            >
+            <div class="flex justify-evenly p-3 m-2 bg-indigo-200 rounded font-bold text-gray-800">
                 <div>Aktion</div>
                 <div>Spielstand</div>
                 <div>Aktion</div>
             </div>
-            <div
-                id="data"
-                class="overflow-auto mb-2 bg-white"
-                :class="fullscreenTicker ? 'pb-4' : 'max-h-80'"
-            >
-                <VirtualisedList
-                    class="h-full"
-                    :nodes="gameTicker"
-                    :viewportHeight="
-                        fullscreenTicker ? screenHeight() - 216 : 320
-                    "
-                    :getNodeHeight="
-                        (node) => {
-                            if (screenWidth() < 640) {
-                                return 56;
-                            }
-                            return 86;
-                        }
-                    "
-                    :get-node-key="(node, index) => index"
-                >
+            <div id="data" class="overflow-auto mb-2 bg-white" :class="fullscreenTicker ? 'pb-4' : 'max-h-80'">
+                <VirtualisedList class="h-full" :nodes="gameTicker" :viewportHeight="
+                    fullscreenTicker ? screenHeight() - 216 : 320
+                " :getNodeHeight="
+    (node) => {
+        if (screenWidth() < 640) {
+            return 56;
+        }
+        return 86;
+    }
+" :get-node-key="(node, index) => index">
                     <template #cell="slotProps">
                         <div
-                            class="flex justify-evenly md:text-xl sm:text-sm text-xs p-2 mx-2 bg-indigo-100 rounded items-center text-gray-800"
-                        >
+                            class="flex justify-evenly md:text-xl sm:text-sm text-xs p-2 mx-2 bg-indigo-100 rounded items-center text-gray-800">
                             <div class="w-2/5 text-ellipsis overflow-hidden">
-                                <TickerElement
-                                    :message="slotProps.node.message"
-                                    :team_home="gameTickerInfo['team_home']"
-                                    :team_guest="gameTickerInfo['team_guest']"
-                                    side="left"
-                                />
+                                <TickerElement :message="slotProps.node.message"
+                                    :team_home="gameTickerInfo['team_home']" :team_guest="gameTickerInfo['team_guest']"
+                                    side="left" />
                             </div>
                             <div>
                                 <div class="flex justify-center">
                                     {{ getTime(slotProps.node["game_time"]) }}
                                 </div>
-                                <div
-                                    class="justify-center flex text-indigo-700 font-bold sm:text-xl"
-                                >
+                                <div class="justify-center flex text-indigo-700 font-bold sm:text-xl">
                                     {{ slotProps.node["home_score"] }}
                                     :
                                     {{ slotProps.node["guest_score"] }}
                                 </div>
                             </div>
                             <div class="w-2/5 text-ellipsis overflow-hidden">
-                                <TickerElement
-                                    class="flex"
-                                    :message="slotProps.node.message"
-                                    :team_home="gameTickerInfo['team_home']"
-                                    :team_guest="gameTickerInfo['team_guest']"
-                                    side="right"
-                                />
+                                <TickerElement class="flex" :message="slotProps.node.message"
+                                    :team_home="gameTickerInfo['team_home']" :team_guest="gameTickerInfo['team_guest']"
+                                    side="right" />
                             </div>
                         </div>
                     </template>
                 </VirtualisedList>
             </div>
         </div>
-        <div
-            id="line_up"
-            class="bg-white"
-            :class="fullscreenTicker ? 'pb-4' : ''"
-            v-show="infoTicker"
-        >
-            <div
-                id="line_up_header"
-                class="grid text-sm sm:text-base text-gray-800 text-center grid-cols-10 p-1 py-2 bg-indigo-200 rounded font-bold m-1"
-            >
+        <div id="line_up" class="bg-white" :class="fullscreenTicker ? 'pb-4' : ''" v-show="infoTicker">
+            <div id="line_up_header"
+                class="grid text-sm sm:text-base text-gray-800 text-center grid-cols-10 p-1 py-2 bg-indigo-200 rounded font-bold m-1">
                 <div>Nr</div>
                 <div class="col-span-2">Name</div>
                 <div class="col-span-1">Tore</div>
@@ -172,11 +114,8 @@
                 <div class="col-span-5">Karten und Strafen</div>
             </div>
             <div id="line_up_player">
-                <div
-                    v-for="player in gameTickerInfo[selectedTeam].team_members"
-                    :key="player.player_no"
-                    class="grid text-xs items-center sm:text-base grid-cols-10 px-1 bg-indigo-100 rounded m-1"
-                >
+                <div v-for="player in gameTickerInfo[selectedTeam].team_members" :key="player.player_no"
+                    class="grid text-xs items-center sm:text-base grid-cols-10 px-1 bg-indigo-100 rounded m-1">
                     <div class="text-center">
                         {{ player.player_no }}
                     </div>
@@ -188,56 +127,46 @@
                     </div>
                     <div>
                         {{
-                            get7m(player.player_no)
-                                ? get7m(player.player_no) +
-                                  "/" +
-                                  get7mScore(player.player_no)
-                                : ""
+                                get7m(player.player_no)
+                                    ? get7m(player.player_no) +
+                                    "/" +
+                                    get7mScore(player.player_no)
+                                    : ""
                         }}
                     </div>
-                    <div
-                        class="bg-yellow-400 h-full text-center grid items-center"
-                    >
+                    <div class="bg-yellow-400 h-full text-center grid items-center">
                         {{
-                            getYellowCard(player.player_no)
-                                ? getTime(getYellowCard(player.player_no))
-                                : ""
+                                getYellowCard(player.player_no)
+                                    ? getTime(getYellowCard(player.player_no))
+                                    : ""
                         }}
                     </div>
-                    <div
-                        class="bg-indigo-200 h-full text-center grid items-center border border-r-[1px]"
-                    >
+                    <div class="bg-indigo-200 h-full text-center grid items-center border border-r-[1px]">
                         {{
-                            get2min(player.player_no)[0]
-                                ? getTime(get2min(player.player_no)[0])
-                                : ""
+                                get2min(player.player_no)[0]
+                                    ? getTime(get2min(player.player_no)[0])
+                                    : ""
                         }}
                     </div>
-                    <div
-                        class="bg-indigo-200 h-full text-center grid items-center border border-r-[1.5px]"
-                    >
+                    <div class="bg-indigo-200 h-full text-center grid items-center border border-r-[1.5px]">
                         {{
-                            get2min(player.player_no)[1]
-                                ? getTime(get2min(player.player_no)[1])
-                                : ""
+                                get2min(player.player_no)[1]
+                                    ? getTime(get2min(player.player_no)[1])
+                                    : ""
                         }}
                     </div>
-                    <div
-                        class="bg-indigo-200 h-full text-center grid items-center"
-                    >
+                    <div class="bg-indigo-200 h-full text-center grid items-center">
                         {{
-                            get2min(player.player_no)[2]
-                                ? getTime(get2min(player.player_no)[2])
-                                : ""
+                                get2min(player.player_no)[2]
+                                    ? getTime(get2min(player.player_no)[2])
+                                    : ""
                         }}
                     </div>
-                    <div
-                        class="bg-red-400 h-full text-center grid items-center"
-                    >
+                    <div class="bg-red-400 h-full text-center grid items-center">
                         {{
-                            getRedCard(player.player_no)
-                                ? getTime(getRedCard(player.player_no))
-                                : ""
+                                getRedCard(player.player_no)
+                                    ? getTime(getRedCard(player.player_no))
+                                    : ""
                         }}
                     </div>
                 </div>
@@ -299,7 +228,7 @@ const screenWidth = () => {
 /*
     Functions for ticker player info
 */
-const getScore = (player_no) => {
+const getScore = (no) => {
     let score = 0;
     for (let i = 0; i < gameTicker.value.length; i++) {
         const message = gameTicker.value[i].message;
@@ -310,43 +239,30 @@ const getScore = (player_no) => {
                 selectedTeam.value == "team_guest")
         ) {
             //console.log("message: " + message);
-            if (
-                (message.includes("Tor") ||
-                    message.includes("Erfolgreicher")) &&
-                message.replace("7m", "").match(/\d+/)[0] == player_no
-            ) {
-                score++;
+            if (message.includes("Tor")) {
+                let player_no = message.match(/\d+/)[0];
+                if (!player_no) {
+                    player_no = message.charAt(message.length - 1);
+                }
+                if (player_no == no) {
+                    score++;
+                }
+            }
+            else if (message.includes("7m") && message.includes("Erfolgreicher")) {
+                let player_no = message.replace("7m", "").match(/\d+/)[0];
+                if (!player_no) {
+                    player_no = message.charAt(message.length - 1);
+                }
+                if (player_no == no) {
+                    score++;
+                }
             }
         }
     }
     return score;
 };
 
-const get7mScore = (player_no) => {
-    let score = 0;
-    for (let i = 0; i < gameTicker.value.length; i++) {
-        const message = gameTicker.value[i].message;
-        if (
-            (message.includes("Heimmannschaft") &&
-                selectedTeam.value == "team_home") ||
-            (message.includes("Gastmannschaft") &&
-                selectedTeam.value == "team_guest")
-        ) {
-            //console.log("message: " + message);
-            if (
-                message.includes("7m") &&
-                (message.includes("Tor") ||
-                    message.includes("Erfolgreicher")) &&
-                message.replace("7m", "").match(/\d+/)[0] == player_no
-            ) {
-                score++;
-            }
-        }
-    }
-    return score;
-};
-
-const get7m = (player_no) => {
+const get7mScore = (no) => {
     let score = 0;
     for (let i = 0; i < gameTicker.value.length; i++) {
         const message = gameTicker.value[i].message;
@@ -359,16 +275,23 @@ const get7m = (player_no) => {
             //console.log("message: " + message);
             if (
                 message.includes("7m") &&
-                message.replace("7m", "").match(/\d+/)[0] == player_no
-            ) {
-                score++;
+                (message.includes("Tor") ||
+                    message.includes("Erfolgreicher"))) {
+                let player_no = message.replace("7m", "").match(/\d+/)[0];
+                if (!player_no) {
+                    player_no = message.charAt(message.length - 1);
+                }
+                if (player_no == no) {
+                    score++;
+                }
             }
         }
     }
     return score;
 };
 
-const getYellowCard = (player_no) => {
+const get7m = (no) => {
+    let score = 0;
     for (let i = 0; i < gameTicker.value.length; i++) {
         const message = gameTicker.value[i].message;
         if (
@@ -378,21 +301,44 @@ const getYellowCard = (player_no) => {
                 selectedTeam.value == "team_guest")
         ) {
             //console.log("message: " + message);
-            if (
-                message.includes("Verwarnung") &&
-                (message.match(/\d+/)
-                    ? message.match(/\d+/)[0]
-                    : message
-                          .replace("Verwarnung für die Nummer ", "")
-                          .charAt(0)) == player_no
-            ) {
-                return gameTicker.value[i].game_time;
+            if (message.includes("7m")) {
+                let player_no = message.replace("7m", "").match(/\d+/)[0];
+                if (!player_no) {
+                    player_no = message.charAt(message.length - 1);
+                }
+                if (player_no == no) {
+                    score++;
+                }
+            }
+        }
+    }
+    return score;
+};
+
+const getYellowCard = (no) => {
+    for (let i = 0; i < gameTicker.value.length; i++) {
+        const message = gameTicker.value[i].message;
+        if (
+            (message.includes("Heimmannschaft") &&
+                selectedTeam.value == "team_home") ||
+            (message.includes("Gastmannschaft") &&
+                selectedTeam.value == "team_guest")
+        ) {
+            //console.log("message: " + message);
+            if (message.includes("Verwarnung")) {
+                let player_no = message.match(/\d+/)[0];
+                if (!player_no) {
+                    player_no = message.replace("Verwarnung für die Nummer ", "").charAt(0);
+                }
+                if (player_no == no) {
+                    return gameTicker.value[i].game_time;
+                }
             }
         }
     }
 };
 
-const getRedCard = (player_no) => {
+const getRedCard = (no) => {
     for (let i = 0; i < gameTicker.value.length; i++) {
         const message = gameTicker.value[i].message;
         if (
@@ -402,15 +348,14 @@ const getRedCard = (player_no) => {
                 selectedTeam.value == "team_guest")
         ) {
             //console.log("message: " + message);
-            if (
-                message.includes("Disqualifikation") &&
-                (message.match(/\d+/)
-                    ? message.match(/\d+/)[0]
-                    : message
-                          .replace("Disqualifikation für die Nummer ", "")
-                          .charAt(0)) == player_no
-            ) {
-                return gameTicker.value[i].game_time;
+            if (message.includes("Disqualifikation")) {
+                let player_no = message.match(/\d+/)[0];
+                if (!player_no) {
+                    player_no = message.replace("Disqualifikation für die Nummer ", "").charAt(0);
+                }
+                if (player_no == no) {
+                    return gameTicker.value[i].game_time;
+                }
             }
         }
     }
@@ -418,7 +363,7 @@ const getRedCard = (player_no) => {
 
 //TODO: whats the message for the blue card event?
 
-const get2min = (player_no) => {
+const get2min = (no) => {
     let penalties = [];
     for (let i = 0; i < gameTicker.value.length; i++) {
         const message = gameTicker.value[i].message;
@@ -429,15 +374,14 @@ const get2min = (player_no) => {
                 selectedTeam.value == "team_guest")
         ) {
             //console.log("message: " + message);
-            if (
-                message.includes("2-min") &&
-                (message.replace("2-min", "").match(/\d+/)
-                    ? message.replace("2-min", "").match(/\d+/)[0]
-                    : message
-                          .replace("2-min Strafe für die Nummer ", "")
-                          .charAt(0)) == player_no
-            ) {
-                penalties.push(gameTicker.value[i].game_time);
+            if (message.includes("2-min")) {
+                let player_no = message.replace("2-min", "").match(/\d+/);
+                if (!player_no) {
+                    player_no = message.replace("2-min Strafe für die Nummer ", "").charAt(0);
+                }
+                if (player_no == no) {
+                    penalties.push(gameTicker.value[i].game_time);
+                }
             }
         }
     }
@@ -470,7 +414,7 @@ const tickerInit = async () => {
                 gameTicker.value[0].stops_time == true ||
                 (gameTicker.value[1].stops_time == true &&
                     gameTicker.value[1].game_time ==
-                        gameTicker.value[0].game_time)
+                    gameTicker.value[0].game_time)
             ) {
                 gameTickerStop.value = true;
             } else {
@@ -544,9 +488,13 @@ const removeDuplicates = (array) => {
         new_array.forEach((new_element) => {
             if (
                 element["message"] === new_element["message"] &&
-                element["game_time"] === new_element["game_time"]
+                element["game_time"] === new_element["game_time"] &&
+                element["guest_score"] === new_element["guest_score"] &&
+                element["home_score"] === new_element["home_score"]
             ) {
-                //console.log("found duplicate");
+                // console.log("found duplicate");
+                // console.log(element);
+                // console.log(new_element);
                 found = true;
             }
         });
