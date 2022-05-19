@@ -1,0 +1,663 @@
+var n = Object.setPrototypeOf || {
+    __proto__: []
+}
+instanceof Array && function(e, t) {
+    e.__proto__ = t
+} || function(e, t) {
+    for (var r in t) t.hasOwnProperty(r) && (e[r] = t[r])
+};
+var o = Object.assign || function(e) {
+    for (var t, r = 1, n = arguments.length; r < n; r++)
+        for (var o in t = arguments[r]) Object.prototype.hasOwnProperty.call(t, o) && (e[o] = t[o]);
+    return e
+};
+
+function i(e) {
+    var t = "function" == typeof Symbol && e[Symbol.iterator],
+        r = 0;
+    return t ? t.call(e) : {
+        next: function() {
+            return e && r >= e.length && (e = void 0), {
+                value: e && e[r++],
+                done: !e
+            }
+        }
+    }
+}
+
+function s(e, t) {
+    var r = "function" == typeof Symbol && e[Symbol.iterator];
+    if (!r) return e;
+    var n, o, i = r.call(e),
+        s = [];
+    try {
+        for (;
+            (void 0 === t || t-- > 0) && !(n = i.next()).done;) s.push(n.value)
+    } catch (e) {
+        o = {
+            error: e
+        }
+    } finally {
+        try {
+            n && !n.done && (r = i.return) && r.call(i)
+        } finally {
+            if (o) throw o.error
+        }
+    }
+    return s
+}
+
+function a(e) {
+    return this instanceof a ? (this.v = e, this) : new a(e)
+}
+}, "./node_modules/webpack/buildin/global.js": function(e, t) {
+    var r;
+    r = function() {
+        return this
+    }();
+    try {
+        r = r || Function("return this")() || (0, eval)("this")
+    } catch (e) {
+        "object" == typeof window && (r = window)
+    }
+    e.exports = r
+}, "./src/API.ts": function(e, t, r) {
+    "use strict";
+    Object.defineProperty(t, "__esModule", {
+        value: !0
+    });
+    var n = function() {
+        function e() {
+            this.url = "https://spo.handball4all.de/service/if_ticker_data.php", this.wantAlert = !0;
+            var e = new URLSearchParams(location.search);
+            this.token = e.get("token")
+        }
+        return e.prototype.setWantAlert = function(e) {
+            return this.wantAlert = e, this
+        }, e.prototype.transactAsync = function(e, t, r) {
+            var n = new XMLHttpRequest,
+                o = '{"errorCode": 1, "errorSubCode": 0, "message": "ajax failed" }',
+                i = this;
+            n.onreadystatechange = function() {
+                if (4 == n.readyState) {
+                    o = n.responseText;
+                    try {
+                        var e = JSON.parse(o)
+                    } catch (t) {
+                        e = {
+                            status: 1
+                        }
+                    }
+                    Array.isArray(e) || 0 == e.status || i.wantAlert && alert("statechange " + n.readyState + ":" + o), r(t, e)
+                }
+            }, n.open("POST", this.url + "?token=" + this.token + "&cmd=" + e, !0), n.send()
+        }, e
+    }();
+    t.API = n
+}, "./src/StatisticManager.ts": function(e, t, r) {
+    "use strict";
+    Object.defineProperty(t, "__esModule", {
+        value: !0
+    });
+    var n = function() {
+        function e() {}
+        return e.reset = function() {
+            this.stats = [], this.stats[0] = [], this.stats[1] = []
+        }, e.indexFromPlayerNo = function(e) {
+            var t = parseInt(e);
+            if (isNaN(t)) {
+                for (var r = 0; r < e.length - 1 && 32 == e.charCodeAt(r);) r++;
+                t = e.charCodeAt(r) + 100
+            }
+            return t
+        }, e.getStats = function(e, t) {
+            void 0 === this.stats[e - 1] && (this.stats[e - 1] = []);
+            var r = this.indexFromPlayerNo(t);
+            return void 0 === this.stats[e - 1][r] && (this.stats[e - 1][r] = {
+                scoredGoals: 0,
+                thrown7m: 0,
+                scored7m: 0,
+                warning: "",
+                disqualify: "",
+                timeouts: []
+            }), this.stats[e - 1][r]
+        }, e.addGoal = function(e, t) {
+            this.getStats(e, t).scoredGoals++
+        }, e.addMissed7m = function(e, t) {
+            this.getStats(e, t).thrown7m++
+        }, e.addScored7m = function(e, t) {
+            var r = this.getStats(e, t);
+            r.thrown7m++, r.scored7m++, r.scoredGoals++
+        }, e.addWarning = function(e, t, r) {
+            this.getStats(e, t).warning = r
+        }, e.addDisqualify = function(e, t, r) {
+            this.getStats(e, t).disqualify = r
+        }, e.addTimeout = function(e, t, r) {
+            this.getStats(e, t).timeouts.push(r)
+        }, e.getGoals = function(e, t) {
+            return "" + this.getStats(e, t).scoredGoals
+        }, e.get7m = function(e, t) {
+            return this.getStats(e, t).thrown7m + "/" + this.getStats(e, t).scored7m
+        }, e.getWarning = function(e, t) {
+            return this.getStats(e, t).thrown7m + "/" + this.getStats(e, t).warning
+        }, e.getDisqualify = function(e, t) {
+            return this.getStats(e, t).thrown7m + "/" + this.getStats(e, t).disqualify
+        }, e.getTimeout = function(e, t, r) {
+            return this.getStats(e, t).thrown7m + "/" + this.getStats(e, t).timeouts[r]
+        }, e
+    }();
+    t.default = n
+}, "./src/img/GelbeKarte.svg": function(e, t, r) {
+    e.exports = r.p + "jAfYIp8x.svg"
+}, "./src/img/GrueneKarte.svg": function(e, t, r) {
+    e.exports = r.p + "3B6Hgy_M.svg"
+}, "./src/img/RoteKarte.svg": function(e, t, r) {
+    e.exports = r.p + "2wU3SwVT.svg"
+}, "./src/img/SiebenMeterDaneben.svg": function(e, t, r) {
+    e.exports = r.p + "OBOdJWyJ.svg"
+}, "./src/img/SiebenMeterTreffer.svg": function(e, t, r) {
+    e.exports = r.p + "doZSekQl.svg"
+}, "./src/img/Tor.svg": function(e, t, r) {
+    e.exports = r.p + "3GjFnr19.svg"
+}, "./src/img/Trophy.svg": function(e, t, r) {
+    e.exports = r.p + "2Vg7rkdR.svg"
+}, "./src/img/ZweiMinuten.svg": function(e, t, r) {
+    e.exports = r.p + "V-fktpyp.svg"
+}, "./src/img/calendar.png": function(e, t, r) {
+    e.exports = r.p + "3-suBAXl.png"
+}, "./src/img/clock-black.png": function(e, t, r) {
+    e.exports = r.p + "3vye3F2P.png"
+}, "./src/img/clock-blue.png": function(e, t, r) {
+    e.exports = r.p + "2Tcn8aMv.png"
+}, "./src/img/reload.png": function(e, t, r) {
+    e.exports = r.p + "NCBqhog5.png"
+}, "./src/main.css": function(e, t) {}, "./src/main.ts": function(e, t, r) {
+    "use strict";
+    Object.defineProperty(t, "__esModule", {
+        value: !0
+    });
+    var n = r("./node_modules/@dojo/widget-core/mixins/Projector.js"),
+        o = r("./src/widgets/Ticker.ts");
+    (new(n.ProjectorMixin(o.default))).append(document.querySelector("app"))
+}, "./src/widgets/ActionList.ts": function(e, t, r) {
+    "use strict";
+    Object.defineProperty(t, "__esModule", {
+        value: !0
+    });
+    var n = r("./node_modules/tslib/tslib.es6.js"),
+        o = r("./node_modules/@dojo/widget-core/WidgetBase.js"),
+        i = r("./node_modules/@dojo/widget-core/d.js"),
+        s = r("./src/widgets/styles/ActionList.m.css"),
+        a = r("./src/widgets/styles/Ticker.m.css"),
+        d = r("./src/StatisticManager.ts"),
+        u = r("./src/img/GelbeKarte.svg"),
+        l = r("./src/img/RoteKarte.svg"),
+        c = r("./src/img/SiebenMeterTreffer.svg"),
+        f = r("./src/img/SiebenMeterDaneben.svg"),
+        p = r("./src/img/Tor.svg"),
+        h = r("./src/img/ZweiMinuten.svg"),
+        m = r("./src/img/GrueneKarte.svg"),
+        g = r("./src/img/Trophy.svg"),
+        y = function(e) {
+            function t() {
+                return null !== e && e.apply(this, arguments) || this
+            }
+            return n.__extends(t, e), t.prototype.render = function() {
+                var e = [],
+                    t = "",
+                    r = "";
+                d.default.reset();
+                for (var n = 0; n < this.properties.actions.actionElements.length; n++) {
+                    var o, y, v = this.properties.actions.actionElements[n],
+                        _ = v.message,
+                        b = v.message,
+                        j = void 0;
+                    if (v.game_time != t || v.message != r) {
+                        if (t = v.game_time, r = v.message, -1 != b.indexOf("Heimmannschaft")) o = 1;
+                        else if (-1 != b.indexOf("Gastmannschaft")) o = 2;
+                        else {
+                            if ("Spielstand" != b.substring(0, 10)) continue;
+                            o = 0
+                        }
+                        var w, S, P = this.format2(Math.floor(Number(v.game_time) / 60)) + ":" + this.format2(Number(v.game_time) % 60); - 1 != v.message.indexOf("Auszeit") ? (b = "Mannschafts-Auszeit", _ = "Auszeit", j = m) : "Tor" == v.message.substring(0, 3) ? (w = v.message.substring(43).trim(), y = this.getPlayerName(w, o), _ = "Tor durch " + v.message.substring(43) + " " + y, b = "Tor durch " + v.message.substring(33) + " " + y, j = p, d.default.addGoal(o, w)) : "Verwarnung" == v.message.substring(0, 10) ? (w = v.message.substring(25, 28).trim(), y = this.getPlayerName(w, o), _ = v.message.substring(0, 14) + v.message.substring(25, 28) + " " + y, b = v.message.substring(0, 28) + " " + y, j = u, d.default.addWarning(o, v.message.substring(25, 28), P)) : "Erfolgreicher 7m" == v.message.substring(0, 16) ? (w = v.message.substring(62).trim(), y = this.getPlayerName(w, o), _ = "7m Tor durch " + v.message.substring(62) + " " + y, b = "7m Tor " + v.message.substring(45) + " " + y, j = c, d.default.addScored7m(o, v.message.substring(62))) : "7m-Wurf" == v.message.substring(0, 7) ? (w = v.message.substring(62).trim(), y = this.getPlayerName(w, o), _ = "7m durch " + v.message.substring(62) + " " + y, b = "7m " + v.message.substring(45) + " " + y, j = f, d.default.addMissed7m(o, v.message.substring(62))) : "2-min Strafe" == v.message.substring(0, 12) ? (w = v.message.substring(27, 30).trim(), y = this.getPlayerName(w, o), _ = "2 min für " + v.message.substring(27, 30) + " " + y, b = v.message.substring(0, 30) + " " + y, j = h, d.default.addTimeout(o, v.message.substring(27, 30), P)) : "Disqualifikation mit Bericht" == v.message.substring(0, 28) ? (w = v.message.substring(43, 46).trim(), y = this.getPlayerName(w, o), _ = "Blaue Karte für" + v.message.substring(31, 34) + " " + y, b = v.message.substring(0, 32) + " " + w + " " + y, j = l, d.default.addDisqualify(o, w, P)) : "Disqualifikation" == v.message.substring(0, 16) ? (w = v.message.substring(31, 34).trim(), y = this.getPlayerName(w, o), _ = "Rote Karte für" + v.message.substring(31, 34) + " " + y, b = v.message.substring(0, 34) + " " + y, j = l, d.default.addDisqualify(o, w, P)) : "Spielstand" == v.message.substring(0, 10) && (b = _ = "Spielstand", v.home_score == v.guest_score ? j = "" : (j = g, o = parseInt(v.home_score) > parseInt(v.guest_score) ? 1 : 2)), S = void 0 == j ? "" : i.v("img", {
+                            src: j,
+                            classes: [a.actioniconimage]
+                        }), this.properties.parent.setResultAndTime(v.home_score, v.guest_score, P), e.unshift(i.v("div", {
+                            classes: [s.tabbodyrow],
+                            key: "action#" + n
+                        }, [i.v("div", {
+                            classes: [a.tabbodycell, a.actiontext, a.right, a.hideifsmall]
+                        }, [2 != o ? b : ""]), i.v("div", {
+                            classes: [a.tabbodycell, a.actiontext, a.left, a.hideifwide]
+                        }, [_]), i.v("div", {
+                            classes: [a.tabbodycell, a.actioniconleft]
+                        }, [1 == o ? S : ""]), i.v("div", {
+                            classes: [a.tabbodycell, a.restime]
+                        }, [i.v("div", {
+                            classes: [a.time]
+                        }, [P]), i.v("div", {
+                            classes: [a.result]
+                        }, [v.home_score + ":" + v.guest_score])]), i.v("div", {
+                            classes: [a.tabbodycell, a.actioniconright]
+                        }, [2 == o ? S : ""]), i.v("div", {
+                            classes: [a.tabbodycell, a.actiontext, a.left, a.hideifsmall]
+                        }, [1 != o ? b : ""])]))
+                    }
+                }
+                return this.properties.actions.isLastRefresh && e.unshift(), i.v("div", {
+                    classes: s.tabbody
+                }, e)
+            }, t.prototype.format2 = function(e) {
+                var t = "0" + e;
+                return t.substring(t.length - 2)
+            }, t.prototype.getPlayerName = function(e, t) {
+                if (null == this.properties.parent || null == this.properties.parent.detailInfo) return "";
+                var r = null;
+                if (1 == t ? r = this.properties.parent.detailInfo.team_home : 2 == t && (r = this.properties.parent.detailInfo.team_guest), null == r) return "";
+                for (var n = 0; n < r.team_members.length; n++)
+                    if (r.team_members[n].player_no == e) {
+                        var o = r.team_members[n].prename,
+                            i = r.team_members[n].name;
+                        return "N.N." == o ? o = "" : o += " ", "N.N." == i && (i = ""), o + i
+                    } return ""
+            }, t
+        }(o.default);
+    t.ActionList = y, t.default = y
+}, "./src/widgets/GameInfo.ts": function(e, t, r) {
+    "use strict";
+    Object.defineProperty(t, "__esModule", {
+        value: !0
+    });
+    var n = r("./node_modules/tslib/tslib.es6.js"),
+        o = r("./node_modules/@dojo/widget-core/WidgetBase.js"),
+        i = r("./node_modules/@dojo/widget-core/d.js"),
+        s = r("./src/widgets/PlayerInfo.ts"),
+        a = r("./src/widgets/styles/GameInfo.m.css"),
+        d = r("./src/widgets/styles/PlayerInfo.m.css"),
+        u = function(e) {
+            function t() {
+                return e.call(this) || this
+            }
+            return n.__extends(t, e), t.prototype.render = function() {
+                if (null == this.properties.detailInfo) return i.v("div", {}, ["Detail Information wird geladen ..."]);
+                var e = this.renderTeam(1, this.properties.detailInfo.team_home.club, this.properties.detailInfo.team_home.team_members, !1),
+                    t = this.renderTeam(2, this.properties.detailInfo.team_guest.club, this.properties.detailInfo.team_guest.team_members, !0);
+                return i.v("div", {
+                    classes: a.gameinfobox
+                }, [i.v("div", {
+                    key: "teamboxleft",
+                    id: "teamboxleft",
+                    classes: a.teamboxleft
+                }, e), i.v("div", {
+                    key: "teamboxright",
+                    id: "teamboxright",
+                    classes: a.teamboxright
+                }, t)])
+            }, t.prototype.renderTeam = function(e, t, r, o) {
+                var u, l, c = [];
+                c.push(i.v("div", {
+                    classes: a.teamname
+                }, [t])), c.push(i.v("div", {
+                    classes: [d.playerhead]
+                }, [i.v("div", {
+                    title: "Rückennummer",
+                    classes: [d.playerno]
+                }, ["Nr"]), i.v("div", {
+                    title: "Spielername",
+                    classes: [d.playername]
+                }, ["Name"]), i.v("div", {
+                    title: "Geworfene Tore",
+                    classes: [d.playergoals]
+                }, ["Tore"]), i.v("div", {
+                    title: "Geworfene und getroffene 7 Meter",
+                    classes: [d.player7m]
+                }, ["7m"]), i.v("div", {
+                    title: "Karten und Strafen",
+                    classes: [d.playerpenalties]
+                }, ["Karten und Strafen"])])), r = r.sort(this.membercompare.bind(this));
+                try {
+                    for (var f = n.__values(r), p = f.next(); !p.done; p = f.next()) {
+                        var h = p.value;
+                        c.push(i.w(s.default, {
+                            player: h,
+                            rightToLeft: o,
+                            team: e
+                        }))
+                    }
+                } catch (e) {
+                    u = {
+                        error: e
+                    }
+                } finally {
+                    try {
+                        p && !p.done && (l = f.return) && l.call(f)
+                    } finally {
+                        if (u) throw u.error
+                    }
+                }
+                return c
+            }, t.prototype.logMembercompare = function(e, t) {
+                var r = this.membercompare(e, t);
+                return console.log("memberCompare '" + e.player_no + "' to '" + t.player_no + "' is " + r), r
+            }, t.prototype.membercompare = function(e, t) {
+                var r = parseInt(e.player_no),
+                    n = parseInt(t.player_no);
+                return isNaN(r) && isNaN(n) ? e.player_no == t.player_no ? 0 : e.player_no > t.player_no ? 1 : -1 : isNaN(r) ? 1 : isNaN(n) ? -1 : r - n
+            }, t
+        }(o.default);
+    t.default = u
+}, "./src/widgets/GameTimeScoreWidget.ts": function(e, t, r) {
+    "use strict";
+    Object.defineProperty(t, "__esModule", {
+        value: !0
+    });
+    var n = r("./node_modules/tslib/tslib.es6.js"),
+        o = r("./node_modules/@dojo/widget-core/WidgetBase.js"),
+        i = r("./node_modules/@dojo/widget-core/d.js"),
+        s = r("./src/widgets/styles/Ticker.m.css"),
+        a = r("./src/img/clock-black.png"),
+        d = function(e) {
+            function t() {
+                return e.call(this) || this
+            }
+            return n.__extends(t, e), t.prototype.render = function() {
+                return this.properties.parent.gametimewidget = this, i.v("div", {
+                    classes: [s.box, s.timeresult]
+                }, [i.v("div", {
+                    classes: [s.timeresulttime]
+                }, [i.v("img", {
+                    classes: s.timeresultclock,
+                    src: a
+                }), this.properties.parent.game_time]), i.v("div", {
+                    classes: [s.timeresultscore]
+                }, [this.properties.parent.home_score, ":", this.properties.parent.guest_score])])
+            }, t
+        }(o.default);
+    t.GameTimeScoreWidget = d, t.default = d
+}, "./src/widgets/PlayerInfo.ts": function(e, t, r) {
+    "use strict";
+    Object.defineProperty(t, "__esModule", {
+        value: !0
+    });
+    var n = r("./node_modules/tslib/tslib.es6.js"),
+        o = r("./node_modules/@dojo/widget-core/WidgetBase.js"),
+        i = r("./node_modules/@dojo/widget-core/d.js"),
+        s = r("./src/widgets/styles/PlayerInfo.m.css"),
+        a = r("./src/StatisticManager.ts"),
+        d = function(e) {
+            function t() {
+                return null !== e && e.apply(this, arguments) || this
+            }
+            return n.__extends(t, e), t.prototype.render = function() {
+                for (var e = a.default.getStats(this.properties.team, this.properties.player.player_no), t = i.v("div", {
+                        title: "Rückennummer",
+                        classes: [s.playerno]
+                    }, [this.properties.player.player_no]), r = i.v("div", {
+                        title: "Spielername",
+                        classes: [s.playername]
+                    }, [this.properties.player.prename, " ", this.properties.player.name]), n = i.v("div", {
+                        title: "Geworfene Tore",
+                        classes: [s.playergoals]
+                    }, ["" + (e.scoredGoals || "")]), o = i.v("div", {
+                        title: "Geworfene und getroffene 7 Meter",
+                        classes: [s.player7m]
+                    }, [0 == e.thrown7m ? " / " : e.thrown7m + "/" + e.scored7m]), d = i.v("div", {
+                        title: "Gelbe Karte",
+                        classes: [s.playerwarn]
+                    }, [e.warning]), u = [], l = 0; l < 3; l++) u[l] = i.v("div", {
+                    title: "2-Minuten Strafen",
+                    classes: [s.player2m]
+                }, [e.timeouts[l]]);
+                var c, f = i.v("div", {
+                    title: "Rote Karte",
+                    classes: [s.playerdisq]
+                }, [e.disqualify]);
+                return c = (this.properties.rightToLeft, s.forwards), i.v("div", {
+                    classes: [s.playerbox, c]
+                }, [t, r, n, o, d, u[0], u[1], u[2], f])
+            }, t
+        }(o.default);
+    t.default = d
+}, "./src/widgets/Ticker.ts": function(e, t, r) {
+    "use strict";
+    Object.defineProperty(t, "__esModule", {
+        value: !0
+    });
+    var n = r("./node_modules/tslib/tslib.es6.js"),
+        o = r("./node_modules/@dojo/widget-core/WidgetBase.js"),
+        i = r("./node_modules/@dojo/widget-core/d.js"),
+        s = r("./src/widgets/styles/Ticker.m.css"),
+        a = r("./src/widgets/ActionList.ts"),
+        d = r("./src/API.ts"),
+        u = r("./src/widgets/GameTimeScoreWidget.ts"),
+        l = r("./src/widgets/GameInfo.ts"),
+        c = r("./src/img/calendar.png"),
+        f = r("./src/img/clock-blue.png"),
+        p = r("./src/img/reload.png"),
+        h = function(e) {
+            function t() {
+                var t = e.call(this) || this;
+                return t.game = {
+                    class_lname: "",
+                    guest_lname: "",
+                    home_lname: "",
+                    datetime: "__.__.____ __:__:__",
+                    gym_name: "",
+                    gym_town: "",
+                    report: {
+                        refereeA: {
+                            name: "",
+                            prename: ""
+                        },
+                        refereeB: {
+                            name: "",
+                            prename: ""
+                        }
+                    },
+                    status: 0,
+                    status_description: "",
+                    loaded: !1
+                }, t.showDetails = !1, t.actions = {
+                    actionElements: [],
+                    loaded: !1,
+                    isLastRefresh: !1
+                }, t.reloadCount = 10, t.loadActions(), t.loadGameInfo(), t.loadDetailInfo(), t
+            }
+            return n.__extends(t, e), t.prototype.render = function() {
+                if (!this.game.datetime) return i.v("div", {
+                    key: "loaderror",
+                    classes: [s.reloadbutton]
+                }, ["Error loading game"]);
+                if (!(this.actions && this.actions.loaded && this.game && this.game.loaded)) return i.v("div", {
+                    key: "loadinfo",
+                    classes: [s.reloadbutton]
+                }, ["Loading game scores"]);
+                var e = i.w(u.default, {
+                        parent: this
+                    }),
+                    t = i.w(a.default, {
+                        parent: this,
+                        actions: this.actions
+                    }),
+                    r = [];
+                return this.showDetails ? r[0] = i.w(l.default, {
+                    parent: this,
+                    actions: this.actions,
+                    detailInfo: this.detailInfo
+                }) : (this.actions.isLastRefresh && (r[0] = i.v("div", {
+                    classes: [s.reloadcontainer],
+                    key: "reloadReminder"
+                }, [i.v("div", {
+                    classes: [s.reloadbutton],
+                    onclick: this.reloadDocument
+                }, [i.v("img", {
+                    src: p,
+                    classes: [s.reloadimage]
+                }), i.v("div", {
+                    classes: [s.reloadtext]
+                }, [i.v("div", {}, ["Bitte laden Sie die Seite neu,"]), i.v("div", {}, ["um neue Ergebnisse zu sehen"])])])])), r[1] = i.v("div", {
+                    key: "tickertabhead",
+                    classes: [s.box, s.tabhead]
+                }, [i.v("div", {
+                    classes: [s.tabheadcell, s.actiontext, s.hideifsmall]
+                }, ["Aktion"]), i.v("div", {
+                    classes: [s.tabheadcell, s.actiontext, s.hideifwide]
+                }, ["Aktion"]), i.v("div", {
+                    classes: [s.tabheadcell, s.actionicon]
+                }, [""]), i.v("div", {
+                    classes: [s.tabheadcell, s.restimehead]
+                }, ["Spielstand"]), i.v("div", {
+                    classes: [s.tabheadcell, s.actionicon]
+                }, [""]), i.v("div", {
+                    classes: [s.tabheadcell, s.actiontext, s.hideifsmall]
+                }, ["Aktion"])]), r[2] = t), i.v("div", {
+                    key: "centering",
+                    classes: s.centerpage
+                }, [i.v("div", {
+                    key: "mainpage#" + this.showDetails,
+                    classes: s.root
+                }, [i.v("div", {
+                    classes: [s.box, s.inforow]
+                }, [i.v("div", {
+                    classes: [s.box]
+                }, [this.userFriendlyTime()]), i.v("div", {
+                    classes: [s.box, s.league]
+                }, [this.game.class_lname]), i.v("div", {
+                    classes: [s.linkbox]
+                }, [i.v("div", {
+                    classes: [s.box, s.link],
+                    onclick: this.toggleDetails
+                }, [this.showDetails ? "Spielverlauf" : "Aufstellung"])])]), i.v("div", {
+                    classes: [s.box, s.inforow]
+                }, [i.v("div", {
+                    classes: [s.box, s.club, s.left, this.showDetails ? s.clubbutton : null],
+                    id: "teambutton_left",
+                    onclick: this.switchTeamToHome
+                }, [this.game.home_lname]), e, i.v("div", {
+                    classes: [s.box, s.club, s.right, this.showDetails ? s.clubbutton : null],
+                    id: "teambutton_right",
+                    onclick: this.switchTeamToGuest
+                }, [this.game.guest_lname])]), r[0], r[1], r[2]])])
+            }, t.prototype.userFriendlyTime = function() {
+                return i.v("span", {
+                    classes: [s.datetime]
+                }, [i.v("img", {
+                    classes: [s.datetimeicon],
+                    src: c
+                }), this.game.datetime.substr(8, 2) + "." + this.game.datetime.substr(5, 2), i.v("img", {
+                    classes: [s.datetimeicon],
+                    src: f
+                }), this.game.datetime.substr(11, 5)])
+            }, t.prototype.loadGameInfo = function() {
+                (new d.API).transactAsync("getGameInfo", this, this.gameLoaded)
+            }, t.prototype.gameLoaded = function(e, t) {
+                e.game = t, e.game.loaded = !0, e.game && e.actions && e.game.loaded && e.actions.loaded && e.invalidate()
+            }, t.prototype.loadDetailInfo = function() {
+                (new d.API).transactAsync("getAllGameInfo", this, this.detailsLoaded)
+            }, t.prototype.detailsLoaded = function(e, t) {
+                e.detailInfo = t, e.invalidate()
+            }, t.prototype.setResultAndTime = function(e, t, r) {
+                this.home_score = e, this.guest_score = t, this.game_time = r, this.gametimewidget.invalidate()
+            }, t.prototype.toggleDetails = function() {
+                this.showDetails = !this.showDetails, this.invalidate()
+            }, t.prototype.loadActions = function() {
+                (new d.API).transactAsync("getAllTickerMessages", this, this.actionsLoaded)
+            }, t.prototype.actionsLoaded = function(e, t) {
+                e.actions = {
+                    actionElements: t,
+                    loaded: !0,
+                    isLastRefresh: !0
+                }, e.reloadCount--, e.reloadCount > 0 && (setTimeout(function() {
+                    (new d.API).transactAsync("getAllTickerMessages", e, e.actionsLoaded)
+                }, 15e3), e.actions.isLastRefresh = !1), e.game && e.game.loaded && e.actions.loaded && e.invalidate()
+            }, t.prototype.reloadDocument = function() {
+                location.reload(!0)
+            }, t.prototype.switchTeamToHome = function() {
+                this.switchTeamTo("left", "right")
+            }, t.prototype.switchTeamToGuest = function() {
+                this.switchTeamTo("right", "left")
+            }, t.prototype.switchTeamTo = function(e, t) {
+                if (!(window.innerWidth > 1200)) {
+                    var r, n = document.getElementById("teambox" + e),
+                        o = document.getElementById("teambox" + t);
+                    if (null != n && null != o) n.style.display = "inline-block", o.style.display = "none", null != (r = document.getElementById("teambutton_" + e)) && (r.style.backgroundColor = "#ff6d00"), null != (r = document.getElementById("teambutton_" + t)) && (r.style.backgroundColor = "#1e88e5")
+                }
+            }, t
+        }(o.default);
+    t.Ticker = h, t.default = h
+}, "./src/widgets/styles/ActionList.m.css": function(e, t) {
+    e.exports = {
+        " _key": "ticker/ActionList",
+        tabbody: "_1jiPndWA",
+        tabbodyrow: "_1cBVonE_"
+    }
+}, "./src/widgets/styles/GameInfo.m.css": function(e, t) {
+    e.exports = {
+        " _key": "ticker/GameInfo",
+        gameinfobox: "_1aZEq0Cs",
+        teamboxleft: "FvPXEGWZ",
+        teamboxright: "_75d4ALm1",
+        teamname: "_3os-5FwD"
+    }
+}, "./src/widgets/styles/PlayerInfo.m.css": function(e, t) {
+    e.exports = {
+        " _key": "ticker/PlayerInfo",
+        playerhead: "_3Q2CPSHy",
+        playergoals: "QsCjOPBJ",
+        playerbox: "_37w5Xa0T",
+        forwards: "spuc3_99",
+        backwards: "_2I_mmuOu",
+        playerno: "_1mL20lI4",
+        playername: "_1ltw7GEa",
+        player7m: "UCnEFjOz",
+        playerpenalties: "_1jaeS-TH",
+        playerwarn: "Td3PSAg-",
+        player2m: "_6t_zBnl-",
+        playerdisq: "_32jrMXai",
+        debugcells: "_2Lu-dmj-"
+    }
+}, "./src/widgets/styles/Ticker.m.css": function(e, t) {
+    e.exports = {
+        " _key": "ticker/Ticker",
+        centerpage: "N2sNt_dV",
+        root: "gyK9EnDx",
+        box: "EEPjKaZT",
+        advertisement: "_2HLtT8b6",
+        inforow: "_1v6zSJxX",
+        datetime: "_4TDEhy6",
+        datetimeicon: "uvzk1kyi",
+        league: "_31FnN1HH",
+        linkbox: "_88YdCNHx",
+        link: "_QPBZCE-",
+        club: "_2xsmQsgt",
+        left: "_13KcWGfe",
+        right: "_3c00zuAg",
+        clubbutton: "_68a17R2J",
+        timeresult: "_3NHA9f7S",
+        timeresulttime: "_3cuMHHpV",
+        timeresultscore: "_3kTvN78f",
+        timeresultclock: "_2sEpLJiP",
+        reloadcontainer: "_1T6Y9ScC",
+        reloadbutton: "_2-xOdIJm",
+        reloadimage: "_2TmHGXsZ",
+        reloadtext: "_2UMp8hp_",
+        tabhead: "syOJdg0k",
+        tabheadcell: "_2n3bZs8o",
+        tabbodycell: "_1aShKuYh",
+        time: "_1KXOeNRW",
+        result: "_1g9dczyX",
+        actioniconleft: "_37oIzeqA",
+        actioniconright: "_2c19lUYJ",
+        actioniconimage: "_2QuS0Apk",
+        actiontext: "_85L0MJtT",
+        restime: "_1WwbpzLd",
+        restimehead: "_1x9Flf2d",
+        hideifwide: "_3FRhFByQ",
+        hideifsmall: "_3pBNymtW",
+        actionicon: "_1f0xScXZ"
+    }
+}, 0: function(e, t, r) {
+    r("./node_modules/@dojo/webpack-contrib/build-time-render/hasBuildTimeRender.js"), r("./src/main.css"), e.exports = r("./src/main.ts")
+}
+}, [0])
+});
