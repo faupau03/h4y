@@ -52,6 +52,17 @@
                         @click="showAll = !showAll, updateFilter(showAll)"
                     />
                 </div>
+                <div v-if="loading_net">
+                    <svg class="animate-spin mt-2 h-5 w-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
+                <div v-else>
+                    <button @click="refreshData" class="hover:bg-indigo-200 rounded mt-2 text-indigo-500 hover:text-indigo-900">
+                        <RefreshIcon class="h-5"/>
+                    </button>
+                </div>
             </div>
             <div
                 v-if="!loading"
@@ -184,6 +195,7 @@ import {
     ClockIcon,
     LocationMarkerIcon,
     InformationCircleIcon,
+    RefreshIcon,
 } from "@heroicons/vue/solid";
 import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/outline";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
@@ -206,6 +218,7 @@ const period_list = ref([]);
 const club = ref({});
 const clubInfo = ref({});
 const loading = ref(true);
+const loading_net = ref(true);
 
 const classes = ref([]);
 
@@ -280,14 +293,19 @@ const fetchAddress = async () => {
 
 const initData = async () => {
     loading.value = true;
+    loading_net.value = true;
+    if (localStorage.getItem("club_info_" + clubInfo.value.no)) {
+        emit.updateFavorites(JSON.parse(localStorage.getItem("favorites")));
+    }
     const club_json = await fetchClub(clubInfo.value.id, period_selected.value);
+    localStorage.setItem("club_info_" + club.value.id, JSON.stringify(club_json));
     period_list.value = club_json[0].menu.period.list;
     if (!period_selected.value) {
         period_selected.value = club_json[0].menu.period.selectedID;
     }
     //console.log(period.value);
     club.value = club_json[0];
-    club.value.content.classes = await Promise.all(club_json[0].content.classes.map( async(club_class) => {
+    Promise.all(club_json[0].content.classes.map( async(club_class) => {
 
         const team_ids = await fetchTeamID(club_class.gClassID, club.value.head.name);
         //console.log(team_ids);
@@ -320,11 +338,69 @@ const initData = async () => {
             club_class.games.push({ null: result});
         }
         return club_class;
-    }));
+    }))
+    .then((data) => {
+        club.value.content.classes = data;
+        localStorage.setItem("club_" + clubInfo.value.id, JSON.stringify(club.value));
+        updateFilter(showAll.value);
+        loading.value = false;
+        loading_net.value = false;
+    });
+    
+    if (localStorage.getItem("club_" + clubInfo.value.id)) {
+        console.log("Loaded from localStorage");
+        club.value = JSON.parse(localStorage.getItem("club_" + clubInfo.value.id));
+        updateFilter(showAll.value);
+        loading.value = false;
+    }
+    
 
-    updateFilter(showAll.value);
+    
+}
 
-    loading.value = false;
+const refreshData = async() => {
+    loading_net.value = true;
+    Promise.all(club.value.content.classes.map( async(club_class) => {
+
+        const team_ids = await fetchTeamID(club_class.gClassID, club.value.head.name);
+        //console.log(team_ids);
+        //console.log(club_class.games);
+        
+        let class_teams = [];
+
+        if (team_ids && team_ids.length > 0) {
+            //fetch game for each team
+            for (let team_id of team_ids) {
+                const team_json = await fetchTeamGames(team_id, club_class.gClassID, null, true);
+                let team_obj = {};
+                team_obj[team_id] = team_json; //.reverse();    //reverse to get most recent games first
+                class_teams.push(team_obj);
+            }
+            club_class.games = await class_teams;
+        }
+        else {
+            let class_games = await fetchClassGames(club_class.gClassID, true);
+            const result = class_games.filter(function(game) {
+                if (game.gHomeTeam.includes(club.value.head.sname)) {
+                    return true;
+                }
+                if (game.gGuestTeam.includes(club.value.head.sname)) {
+                    return true;
+                }
+                return false;
+            })
+            club_class.games = [];
+            club_class.games.push({ null: result});
+        }
+        return club_class;
+    }))
+    .then((data) => {
+        club.value.content.classes = data;
+        localStorage.setItem("club_" + clubInfo.value.id, JSON.stringify(club.value));
+        updateFilter(showAll.value);
+        loading.value = false;
+        loading_net.value = false;
+    });
 }
 
 
