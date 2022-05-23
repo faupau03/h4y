@@ -65,14 +65,16 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Leagues](img/Leagues.jpeg)
-![Favorites](img/Favorites.jpeg)
-![Search](img/Search.jpeg)
-![Club](img/Club.jpeg)
-![Team](img/Team.jpeg)
-![Match](img/Ticker.jpeg)
-![Match lineup](img/Ticker_lineup.jpeg)
-![Ticker](img/Ticker_full.jpeg)
+<p>
+  <img src="img/Leagues.jpeg" alt="Leagues" width="100"/>
+  <img src="img/Favorites.jpeg" alt="Favorites" width="100"/>
+  <img src="img/Search.jpeg" alt="Search" width="100"/>
+  <img src="img/Club.jpeg" alt="Club" width="100"/>
+  <img src="img/Team.jpeg" alt="Team" width="100"/>
+  <img src="img/Ticker.jpeg" alt="Match" width="100"/>
+  <img src="img/Ticker_lineup.jpeg" alt="Match Lineup" width="100"/>
+  <img src="img/Ticker_full.jpeg" alt="Ticker" width="300"/>
+</p>
 
 This app makes it easy for everyone to check match results, view the life ticker of a game or search for their favorites teams.
 
