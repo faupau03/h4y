@@ -341,15 +341,15 @@ const initData = async () => {
     }))
     .then((data) => {
         club.value.content.classes = data;
-        localStorage.setItem("club_" + clubInfo.value.id, JSON.stringify(club.value));
+        localStorage.setItem("club_" + clubInfo.value.id + (period_selected.value ? "_" + period_selected.value : ""), JSON.stringify(club.value));
         updateFilter(showAll.value);
         loading.value = false;
         loading_net.value = false;
     });
     
-    if (localStorage.getItem("club_" + clubInfo.value.id)) {
+    if (localStorage.getItem("club_" + clubInfo.value.id + (period_selected.value ? "_" + period_selected.value : ""))) {
         console.log("Loaded from localStorage");
-        club.value = JSON.parse(localStorage.getItem("club_" + clubInfo.value.id));
+        club.value = JSON.parse(localStorage.getItem("club_" + clubInfo.value.id + (period_selected.value ? "_" + period_selected.value : "")));
         updateFilter(showAll.value);
         loading.value = false;
     }
