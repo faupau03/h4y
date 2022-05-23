@@ -65,7 +65,14 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![H4Y Leagues](img/Leagues.jpeg)
+![Leagues](img/Leagues.jpeg)
+![Favorites](img/Favorites.jpeg)
+![Search](img/Search.jpeg)
+![Club](img/Club.jpeg)
+![Team](img/Team.jpeg)
+![Match](img/Ticker.jpeg)
+![Match lineup](img/Ticker_lineup.jpeg)
+![Ticker](img/Ticker_full.jpeg)
 
 This app makes it easy for everyone to check match results, view the life ticker of a game or search for their favorites teams.
 
