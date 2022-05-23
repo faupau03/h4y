@@ -65,7 +65,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://h4y.netlify.app)
+![H4Y Leagues](img/Leagues.jpeg)
 
 This app makes it easy for everyone to check match results, view the life ticker of a game or search for their favorites teams.
 
