@@ -55,8 +55,7 @@
             class="cursor-pointer ml-auto"
             :type="'multiple'"
             :games="games"
-            :club="club"
-            :team="team"
+            :name="club ? club.lname + '  ' + team.head.name : ''"
         />
         <div
             v-if="type == 'club' || type == 'team' || type == 'gym'"

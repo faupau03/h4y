@@ -13,7 +13,7 @@ import { getDate } from '../functions/misc.js';
 import { CalendarIcon } from '@heroicons/vue/solid';
 import { ref } from 'vue';
 
-const props = defineProps(["game", "type", "games", "team", "club"]);
+const props = defineProps(["game", "type", "games", "name"]);
 const download = ref(null);
 
 const createIcal = () => {
@@ -96,7 +96,7 @@ const createIcal = () => {
         download.value.setAttribute('download', props.game.gDate + ", " + props.game.gHomeTeam + " - " + props.game.gGuestTeam + ".ics");
     }
     else {
-        download.value.setAttribute('download', props.club.lname + " " +  props.team.head.name + ".ics");
+        download.value.setAttribute('download', props.name + ".ics");
     }
     download.value.click();
 }

@@ -115,6 +115,7 @@
                     <h2 class="font-bold text-base m-1">
                         Spiele in dieser Klasse
                     </h2>
+                    <Cal class="ml-auto mr-1 mt-1" :games="classGames" :name="scores.head ? scores.head.name + (showAll ? ' (Alle Spiele)' : '') : ''" type="multiple"/>
                     <div class="text-sm m-2">
                         Alle Spiele
                         <input class="ml-1 mb-1 rounded" type="checkbox" name="" id="" v-model="showAll"
@@ -147,6 +148,8 @@ import Header from "./helpers/Header.vue";
 import HeaderLoading from "./helpers/HeaderLoading.vue";
 import ClassGames from "./helpers/ClassGames.vue";
 import ClassGamesLoading from "./helpers/ClassGamesLoading.vue";
+import Cal from "./helpers/Cal.vue";                    
+                    
 
 //Head component
 import { Head } from '@vueuse/head';
