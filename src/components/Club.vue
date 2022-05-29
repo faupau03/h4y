@@ -11,7 +11,7 @@
                 @updateFavorites="emit('updateFavorites')"></Header>
             <HeaderLoading v-else />
             <div id="club-content" class="flex mb-5">
-                {{ JSON.stringify(club).length }}
+                <!-- {{ JSON.stringify(club).length }} -->
                 <img v-if="clubInfo" :src="'logos/clubs/' + clubInfo.no + '.png'" alt=""
                     class="w-1/3 ml-5 rounded-lg border border-gray-500" />
 
