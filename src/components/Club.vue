@@ -236,6 +236,8 @@ const fetchClubInfo = async () => {
     if (localStorage.getItem("club_info_" + club_num)) {
         console.log("club_info_" + club_num + " found in localStorage");
         clubInfo.value = JSON.parse(localStorage.getItem("club_info_" + club_num));
+        console.log("FETCHCLUBINFO: " + clubInfo.value.name);
+        return;
     }
     await fetch(
         "https://spo.handball4all.de/service/if_g_json.php?cmd=cs&cs=" +
@@ -258,6 +260,7 @@ const fetchClubInfo = async () => {
             console.log("Probably no internet connection");
             offline.value = true;
         });
+    console.log("FETCHCLUBINFO: finished");
 };
 
 
@@ -296,6 +299,22 @@ const fetchAddress = async () => {
         });
 };
 
+const updateShow = () => {
+    let period_default = false;
+    if (!period_selected.value) {
+        //The period is not selected, so the new period will be the default one
+        period_default = true;
+    }
+    console.log("Trying to fetch data from local storage");
+    if (localStorage.getItem("club_" + clubInfo.value.id + (!period_default ? "_" + period_selected.value : ""))) {
+        console.log("Loaded from localStorage");
+        club.value = JSON.parse(localStorage.getItem("club_" + clubInfo.value.id + (period_selected.value ? "_" + period_selected.value : "")));
+        console.log("club_length:", JSON.stringify(club.value).length);
+        updateFilter(showAll.value);
+        loading.value = false;
+    }
+}
+
 const initData = async () => {
     loading.value = true;
     loading_net.value = true;
@@ -322,13 +341,16 @@ const initData = async () => {
 
 
     let club_json = await fetchClub(clubInfo.value.id, period_selected.value);
-
+    let period = period_selected.value;
     period_list.value = club_json[0].menu.period.list;
-    if (!period_selected.value) {
-        period_selected.value = club_json[0].menu.period.selectedID;
+    if (!period) {
+        period = club_json[0].menu.period.selectedID;
     }
     console.log("This gets executed");
     club_json = club_json[0];
+
+    period_selected.value = period;
+    
     Promise.all(club_json.content.classes.map(async (club_class) => {
 
         const team_ids = await fetchTeamID(club_class.gClassID, club_json.head.name);
@@ -364,18 +386,18 @@ const initData = async () => {
         return club_class;
     }))
         .then((data) => {
-            club.value = club_json;
-            club.value.content.classes = data;
-            const name = "club_" + clubInfo.value.id + (!period_default ? "_" + period_selected.value : "");
+            let club_val = club_json;
+            club_val.content.classes = data;
+            const name = "club_" + clubInfo.value.id + (!period_default ? "_" + period : "");
             console.log("Saving as: " + name);
-            localStorage.setItem(name, JSON.stringify(club.value));
-            console.log("club_length:", JSON.stringify(club.value).length);
-            updateFilter(showAll.value);
+            localStorage.setItem(name, JSON.stringify(club_val));
+            console.log("club_length:", JSON.stringify(club_val).length);
+            updateShow();
             loading.value = false;
             loading_net.value = false;
         })
         .catch((error) => {
-            //console.error("Error:", error);
+            console.error("Error:", error);
             console.log("Probably no internet connection");
             loading.value = false;
             loading_net.value = false;
@@ -450,13 +472,13 @@ watch(club, async (newValue, oldValue) => {
 onMounted(async () => {
     await fetchClubInfo();
     console.log("ClubInfo No: " + clubInfo.value.no);
-    await fetchAddress();
+    fetchAddress();
     await initData();
 });
 
 const forceUpdate = async () => {
     await fetchClubInfo();
-    await fetchAddress();
+    fetchAddress();
     await initData();
 };
 </script>
