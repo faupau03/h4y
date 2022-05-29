@@ -237,7 +237,7 @@ const fetchClubInfo = async () => {
         console.log("club_info_" + club_num + " found in localStorage");
         clubInfo.value = JSON.parse(localStorage.getItem("club_info_" + club_num));
     }
-    fetch(
+    await fetch(
         "https://spo.handball4all.de/service/if_g_json.php?cmd=cs&cs=" +
         club_num
     )
@@ -449,6 +449,7 @@ watch(club, async (newValue, oldValue) => {
 
 onMounted(async () => {
     await fetchClubInfo();
+    console.log("ClubInfo No: " + clubInfo.value.no);
     await fetchAddress();
     await initData();
 });
