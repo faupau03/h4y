@@ -244,6 +244,13 @@ const fetchClubInfo = async () => {
         .then((response) => response.json())
         .then((data) => {
             clubInfo.value = data[0].searchResult.list[0];
+            if (clubInfo.value.no != club_num) {
+                data[0].searchResult.list.forEach((club) => {
+                    if (club.no == club_num) {
+                        clubInfo.value = club;
+                    }
+                });
+            }
             localStorage.setItem("club_info_" + club_num, JSON.stringify(clubInfo.value));
         })
         .catch((error) => {
