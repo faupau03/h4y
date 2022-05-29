@@ -7,8 +7,9 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
-      mode: 'development',
       base: '/',
+      start_url: '/',
+      id: '/',
       srcDir: 'src',
       filename: 'sw.ts',
       strategies: 'injectManifest',

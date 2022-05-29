@@ -72,7 +72,10 @@ const init = () => {
         const player = team_members.find(m => m.player_no == player_no);
         info.value =
             "7m Tor durch Nr. " + player_no;
-        info_long.value = "7m Tor durch " + player.prename + " " + player.name;
+        info_long.value = "7m Tor durch die Nummer" + player_no;
+        if (player.prename != "N.N." && player.name != "N.N.") {
+            info_long.value = "7m Tor durch " + player.prename + " " + player.name + "(" + player_no + ")";
+        }
         src.value = "https://spo.handball4all.de/service/ticker/doZSekQl.svg";
     }
     // 7m
@@ -83,7 +86,10 @@ const init = () => {
         }
         const player = team_members.find(m => m.player_no == player_no);
         info.value = "7m von Nr. " + player_no;
-        info_long.value = "7m von " + player.prename + " " + player.name;
+        info_long.value = "7m von der Nummer " + player_no;
+        if (player.prename != "N.N." && player.name != "N.N.") {
+            info_long.value = "7m von " + player.prename + " " + player.name + "(" + player_no + ")";
+        }
         src.value = "https://spo.handball4all.de/service/ticker/OBOdJWyJ.svg";
     }
     // Tor
@@ -94,7 +100,10 @@ const init = () => {
         }
         const player = team_members.find(m => m.player_no == player_no);
         info.value = "Tor durch Nr. " + player_no;
-        info_long.value = "Tor durch " + player.prename + " " + player.name;
+        info_long.value = "Tor durch die Nummer " + player_no;
+        if (player.prename != "N.N." && player.name != "N.N.") {
+            info_long.value = "Tor durch " + player.prename + " " + player.name + "(" + player_no + ")";
+        }
         src.value = "https://spo.handball4all.de/service/ticker/3GjFnr19.svg";
     }
     // Auszeit
@@ -112,8 +121,10 @@ const init = () => {
         const player = team_members.find(m => m.player_no == player_no);
         info.value =
             "Verwarnung für Nr. " + player_no;
-        info_long.value = "Verwarnung für " + player.prename + " " + player.name
-
+        info_long.value = "Verwarnung für die Nummer " + player_no;
+        if (player.prename != "N.N." && player.name != "N.N.") {
+            info_long.value = "Verwarnung für " + player.prename + " " + player.name + "(" + player_no + ")";
+        }
         src.value = "https://spo.handball4all.de/service/ticker/jAfYIp8x.svg";
     }
     // Disqualifikation
@@ -124,7 +135,10 @@ const init = () => {
         }
         const player = team_members.find(m => m.player_no == player_no);
         info.value = "Disqualifikation für Nr. " + player_no;
-        info_long.value = "Disqualifikation für " + player.prename + " " + player.name;
+        info_long.value = "Disqualifikation für die Nummer " + player_no;
+        if (player.prename != "N.N." && player.name != "N.N.") {
+            info_long.value = "Disqualifikation für " + player.prename + " " + player.name + "(" + player_no + ")";
+        }
         src.value = "https://spo.handball4all.de/service/ticker/2wU3SwVT.svg";
     }
     // 2-min
@@ -136,7 +150,10 @@ const init = () => {
         const player = team_members.find(m => m.player_no == player_no);
         info.value =
             "2-min Strafe für Nr. " + player_no;
-        info_long.value = "2-min Strafe für " + player.prename + " " + player.name;
+        info_long.value = "2-min Strafe für die Nummer " + player_no;
+        if (player.prename != "N.N." && player.name != "N.N.") {
+            info_long.value = "2-min Strafe für " + player.prename + " " + player.name + "(" + player_no + ")";
+        }
         src.value = "https://spo.handball4all.de/service/ticker/V-fktpyp.svg";
     }
     // error

@@ -385,7 +385,7 @@ const get2min = (no) => {
             }
         }
     }
-    return penalties;
+    return penalties.reverse();
 };
 
 const tickerInit = async () => {
