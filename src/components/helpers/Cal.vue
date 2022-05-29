@@ -1,7 +1,10 @@
 <template>
-    <div class="">
+    <div v-if="game || games.length" class="">
         <CalendarIcon @click="createIcal" class="h-6 mt-0.5 hover:text-indigo-500" />
         <a class="hidden" ref="download"></a>
+    </div>
+    <div v-else>
+        <!-- TODO: Disabled icon -->
     </div>
 </template>
 <script setup>
@@ -19,9 +22,12 @@ const createIcal = () => {
     if (props.type == "single") {
 
         let dateEnd = getDate(props.game);
-        dateEnd.setMinutes(dateEnd.getMinutes() + 90);
+        if (dateEnd.getMinutes() != 0 || dateEnd.getHours() != 0) {
+            dateEnd.setMinutes(dateEnd.getMinutes() + 90);
+        }
+        let dateStart = getDate(props.game);
         const event = cal.createEvent({
-            start: getDate(props.game),
+            start: dateStart,
             end: dateEnd,
             summary: 'Handball Spiel, ' + props.game.gHomeTeam + ' - ' + props.game.gGuestTeam,
 
@@ -45,11 +51,16 @@ const createIcal = () => {
     }
 
     else if (props.type == "multiple") {
+        console.log(props.games);
         for (let game of props.games) {
+            let dateStart = getDate(game);
             let dateEnd = getDate(game);
-            dateEnd.setMinutes(dateEnd.getMinutes() + 90);
+            if (dateEnd.getMinutes() != 0 || dateEnd.getHours() != 0) {
+                dateEnd.setMinutes(dateEnd.getMinutes() + 90);
+            }
+            console.log(dateStart);
             const event = cal.createEvent({
-                start: getDate(game),
+                start: dateStart,
                 end: dateEnd,
                 summary: 'Handball Spiel, ' + game.gHomeTeam + ' - ' + game.gGuestTeam,
 
