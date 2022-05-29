@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!loading" class="flex shadow-large rounded-lg bg-indigo-100 items-center">
+    <div v-if="!loading && list && Object.keys(list).length > 1" class="flex shadow-large rounded-lg bg-indigo-100 items-center">
         <button @click="goPeriodBack" :disabled="Object.keys(list).indexOf(String(selected)) == 0"
             class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400">
             <ChevronLeftIcon class="h-5" />
@@ -10,6 +10,16 @@
         <button @click="goPeriodForward"
             :disabled="Object.keys(list).indexOf(String(selected)) == Object.keys(list).length - 1"
             class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-200 disabled:text-gray-400">
+            <ChevronRightIcon class="h-5" />
+        </button>
+    </div>
+    <div v-else-if="!loading" class="flex shadow-large rounded-lg bg-indigo-100 items-center bg-gray-300 text-gray-400 animate-pulse">
+        <button disabled class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400">
+            <ChevronLeftIcon class="h-5" />
+        </button>
+        <div class="sm:w-28 w-24 h-8 bg-gray-300">
+        </div>
+        <button disabled class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400">
             <ChevronRightIcon class="h-5" />
         </button>
     </div>
