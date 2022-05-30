@@ -334,6 +334,8 @@ const initData = async () => {
         club.value = JSON.parse(localStorage.getItem("club_" + clubInfo.value.id + (period_selected.value ? "_" + period_selected.value : "")));
         console.log("club_length:", JSON.stringify(club.value).length);
         updateFilter(showAll.value);
+        period_selected.value = club.value.menu.period.selectedID;
+        period_list.value = club.value.menu.period.list;
         loading.value = false;
     }
 
