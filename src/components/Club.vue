@@ -32,7 +32,7 @@
                 <h2 class="font-bold text-lg m-1">Spiele</h2>
                 <Period class="sm:ml-5 ml-2 mr-auto" @updatePeriod="(id) => updatePeriod(id)" :loading="loading"
                     :selected="period_selected" :list="period_list" />
-                <div class="text-sm m-2 mr-5 flex">
+                <div class="text-sm m-2 mr-5 flex items-center">
                     Alle
                     <span class="sm:block hidden ml-1">
                         Spiele
@@ -56,14 +56,13 @@
                         <RefreshIcon class="h-5" />
                     </button>
                     <Popover v-else class="relative">
-                        <PopoverButton>
-                            <InformationCircleIcon class="h-5 text-red-600" />
+                        <PopoverButton class="flex items-center">
+                            <StatusOfflineIcon class="h-5 text-red-600" />
                         </PopoverButton>
 
                         <PopoverPanel
-                            class="absolute z-10 bg-indigo-200 rounded-lg p-2 shadow-2xl border-indigo-300 border-1">
-                            <StatusOfflineIcon class="h-7" />
-                            <p class="text-sm">
+                            class="absolute z-10 bg-indigo-100 outline-1 outline outline-indigo-200 rounded-lg p-2 shadow-2xl border-indigo-300 border-1">
+                            <p class="text-xs">
                                 Du bist offline. Dir werden zuvor gespeicherte Daten gezeigt.
                             </p>
                         </PopoverPanel>
@@ -299,16 +298,13 @@ const fetchAddress = async () => {
         });
 };
 
-const updateShow = () => {
-    let period_default = false;
-    if (!period_selected.value) {
-        //The period is not selected, so the new period will be the default one
-        period_default = true;
-    }
+const updateShow = (period_default) => {
     console.log("Trying to fetch data from local storage");
-    if (localStorage.getItem("club_" + clubInfo.value.id + (!period_default ? "_" + period_selected.value : ""))) {
+    const name = "club_" + clubInfo.value.id + (!period_default ? "_" + period_selected.value : "");
+    console.log("Name: " + name);
+    if (localStorage.getItem(name)) {
         console.log("Loaded from localStorage");
-        club.value = JSON.parse(localStorage.getItem("club_" + clubInfo.value.id + (period_selected.value ? "_" + period_selected.value : "")));
+        club.value = JSON.parse(localStorage.getItem(name));
         console.log("club_length:", JSON.stringify(club.value).length);
         updateFilter(showAll.value);
         loading.value = false;
@@ -325,6 +321,7 @@ const initData = async () => {
 
     if (!period_selected.value) {
         //The period is not selected, so the new period will be the default one
+        console.log("Period default");
         period_default = true;
     }
 
@@ -394,7 +391,8 @@ const initData = async () => {
             console.log("Saving as: " + name);
             localStorage.setItem(name, JSON.stringify(club_val));
             console.log("club_length:", JSON.stringify(club_val).length);
-            updateShow();
+            console.log("club value: " + localStorage.getItem(name));
+            updateShow(period_default);
             loading.value = false;
             loading_net.value = false;
         })
@@ -467,8 +465,15 @@ watch(club_no_ref, async (newValue, oldValue) => {
     }
 });
 
-watch(club, async (newValue, oldValue) => {
-    //console.log("updated club", JSON.stringify(newValue).length);
+
+window.addEventListener('online', () => {
+    console.log("online");
+    offline.value = false;
+    refreshData();
+});
+window.addEventListener('offline', () => {
+    console.log("offline");
+    offline.value = true;
 });
 
 onMounted(async () => {
@@ -483,4 +488,5 @@ const forceUpdate = async () => {
     fetchAddress();
     await initData();
 };
+
 </script>
