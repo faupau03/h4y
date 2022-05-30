@@ -479,7 +479,7 @@ watch(club_no_ref, async (newValue, oldValue) => {
     }
 });
 
-
+offline.value = !navigator.onLine;
 window.addEventListener('online', () => {
     console.log("online");
     offline.value = false;
