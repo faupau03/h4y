@@ -238,6 +238,12 @@ const fetchClubInfo = async () => {
         console.log("FETCHCLUBINFO: " + clubInfo.value.name);
         return;
     }
+
+    // return if offline
+    if (offline.value) {
+        console.log("offline");
+        return;
+    }
     await fetch(
         "https://spo.handball4all.de/service/if_g_json.php?cmd=cs&cs=" +
         club_num
@@ -257,7 +263,6 @@ const fetchClubInfo = async () => {
         .catch((error) => {
             //console.error("Error:", error);
             console.log("Probably no internet connection");
-            offline.value = true;
         });
     console.log("FETCHCLUBINFO: finished");
 };
@@ -285,6 +290,12 @@ const fetchAddress = async () => {
     if (localStorage.getItem("club_addresses")) {
         console.log("club_addresses found in localStorage");
         club.value.webadress = JSON.parse(localStorage.getItem("club_addresses"))[clubInfo.value.club_no];
+    }
+
+    // return if offline
+    if (offline.value) {
+        console.log("offline");
+        return;
     }
     fetch("/club_address.json")
         .then((response) => response.json())
@@ -336,8 +347,11 @@ const initData = async () => {
         loading.value = false;
     }
 
-
-
+    // return if offline
+    if (offline.value) {
+        console.log("offline");
+        return;
+    }
 
     let club_json = await fetchClub(clubInfo.value.id, period_selected.value);
     let period = period_selected.value;
