@@ -37,7 +37,7 @@
                     <span class="sm:block hidden ml-1">
                         Spiele
                     </span>
-                    <input class="ml-1 mt-0.5 rounded" type="checkbox" name="" id=""
+                    <input class="ml-1 rounded" type="checkbox" name="" id=""
                         @click="showAll = !showAll, updateFilter(showAll)" />
                 </div>
                 <div v-if="loading_net">
@@ -52,7 +52,7 @@
                 </div>
                 <div v-else class="flex items-center">
                     <button v-if="!offline" @click="refreshData"
-                        class="hover:bg-indigo-200 rounded mt-2 text-indigo-500 hover:text-indigo-900">
+                        class="hover:bg-indigo-200 rounded text-indigo-500 hover:text-indigo-900">
                         <RefreshIcon class="h-5" />
                     </button>
                     <Popover v-else class="relative">
