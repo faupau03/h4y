@@ -10,10 +10,10 @@
             <Header v-if="club" :type="'club'" :club="clubInfo" :club_id="clubInfo.no"
                 @updateFavorites="emit('updateFavorites')"></Header>
             <HeaderLoading v-else />
-            <div id="club-content" class="flex mb-5">
+            <div id="club-content" class="flex flex-wrap mb-5">
                 <!-- {{ JSON.stringify(club).length }} -->
                 <img v-if="clubInfo" :src="'logos/clubs/' + clubInfo.no + '.png'" alt=""
-                    class="w-1/3 ml-5 rounded-lg border border-gray-500" />
+                    class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg" />
 
                 <div v-else>Loading...</div>
                 <div id="club-info" class=" m-5 line-clamp-4 break-words">
