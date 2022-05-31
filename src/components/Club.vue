@@ -10,8 +10,7 @@
             <Header v-if="club" :type="'club'" :club="clubInfo" :club_id="clubInfo.no"
                 @updateFavorites="emit('updateFavorites')"></Header>
             <HeaderLoading v-else />
-            <div id="club-content" class="flex flex-wrap mb-5">
-                <!-- {{ JSON.stringify(club).length }} -->
+            <!-- <div id="club-content" class="flex flex-wrap mb-5">
                 <img v-if="clubInfo" :src="'logos/clubs/' + clubInfo.no + '.png'" alt=""
                     class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg" />
 
@@ -25,6 +24,33 @@
                 </div>
                 <a class="absolute bottom-5 right-5 underline text-indigo-500 hover:text-indigo-800"
                     :href="'http://' + clubInfo.webaddress">{{ clubInfo.webaddress }}</a>
+            </div> -->
+            <div id="content" class="flex flex-wrap mb-5">
+                <img
+                    v-if="clubInfo && img_loaded"
+                    :src="'logos/clubs/' + clubInfo.no + '.png'"
+                    @error="img_loaded = false"
+                    alt=""
+                    id="club-logo"
+                    class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg"
+                />
+
+                <div
+                    v-else
+                    class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg shadow-2xl bg-gray-200"
+                >
+                    <UserGroupIcon class="text-gray-500 h-full" />
+                </div>
+                <div id="club-info" class="m-5">
+                    <div class="font-bold">
+                        {{ clubInfo.lname }}
+                    </div>
+                    <div class="text-gray-800">Postleitzahl: {{ clubInfo.postal }}</div>
+                    <div class="text-gray-800">Nummer: {{ clubInfo.no }}</div>
+                    <a class="absolute bottom-5 right-5 underline text-indigo-500 hover:text-indigo-800"
+                    :href="'http://' + clubInfo.webaddress">{{ clubInfo.webaddress }}</a>
+                </div>
+                <!-- {{ clubInfo }} -->
             </div>
         </div>
         <div class="w-5/6 m-auto pb-24">
@@ -168,6 +194,7 @@ import {
     InformationCircleIcon,
     RefreshIcon,
     StatusOfflineIcon,
+    UserGroupIcon,
 } from "@heroicons/vue/solid";
 import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/outline";
 import { Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
@@ -183,6 +210,8 @@ import Period from "./helpers/Period.vue";
 import { fetchTeamID, fetchTeamGames, fetchClub, fetchClassGames } from "./functions/fetchData.js";
 import { filterGames } from "./functions/misc.js";
 const route = useRoute();
+
+const img_loaded = ref(true);
 
 const club_id = ref({});
 const period_selected = ref(null);
@@ -289,7 +318,8 @@ const updateFilter = (show) => {
 const fetchAddress = async () => {
     if (localStorage.getItem("club_addresses")) {
         console.log("club_addresses found in localStorage");
-        club.value.webadress = JSON.parse(localStorage.getItem("club_addresses"))[clubInfo.value.club_no];
+        clubInfo.value.webaddress = JSON.parse(localStorage.getItem("club_addresses"))[clubInfo.value.no];
+        console.log("FETCHADDRESS: " + clubInfo.value.webaddress);
     }
 
     // return if offline
@@ -300,7 +330,7 @@ const fetchAddress = async () => {
     fetch("/club_address.json")
         .then((response) => response.json())
         .then((data) => {
-            club.value.webadress = data[clubInfo.value.club_no];
+            clubInfo.value.webaddress = data[clubInfo.value.no];
             localStorage.setItem("club_addresses", JSON.stringify(data));
         })
         .catch((error) => {
@@ -493,12 +523,14 @@ window.addEventListener('offline', () => {
 onMounted(async () => {
     await fetchClubInfo();
     console.log("ClubInfo No: " + clubInfo.value.no);
+    console.log("ClubInfo: " + JSON.stringify(clubInfo.value));
     fetchAddress();
     await initData();
 });
 
 const forceUpdate = async () => {
     await fetchClubInfo();
+    console.log("ClubInfo: " + JSON.stringify(clubInfo.value));
     fetchAddress();
     await initData();
 };

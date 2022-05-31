@@ -11,19 +11,21 @@
             class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
         >
             <Header @updateFavorites="emit('updateFavorites')" :type="'team'" :games="teamMatches" :team_id="teamID" :class_id="teamClassID" :club_id="teamClubNo" :team="team" :club="club"></Header>
-            <div id="content" class="flex mb-5">
+            <div id="content" class="flex flex-wrap mb-5">
                 <img
-                    v-if="team"
+                    v-if="team && img_loaded"
                     :src="'logos/clubs/' + teamClubNo + '.png'"
+                    @error="img_loaded = false"
                     alt=""
-                    class="w-1/3 ml-5 rounded-lg border border-gray-500"
+                    id="club-logo"
+                    class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg"
                 />
 
                 <div
                     v-else
-                    class="w-1/3 ml-5 rounded-lg border border-gray-300 shadow-2xl bg-gray-300"
+                    class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg shadow-2xl bg-gray-200"
                 >
-                    <UserGroupIcon class="text-gray-700" />
+                    <UserGroupIcon class="text-gray-500 h-full" />
                 </div>
                 <div id="club-info" class="m-5">
                     <div class="font-bold">
@@ -133,6 +135,8 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 const route = useRoute();
 const props = defineProps(["team_id", "team_class", "team_club"]);
+
+const img_loaded = ref(true);
 
 const teamLoading = ref(false);
 const matchesLoading = ref(false);
