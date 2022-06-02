@@ -38,7 +38,29 @@ export default defineConfig({
             type: 'image/png',
             purpose: 'any maskable',
           }
-        ]
+        ],
+        screenshots: [
+          {
+              src: "Ticker_lineup.jpeg",
+              type: "image/jpeg",
+              sizes: "621x1344"
+          },
+          {
+              src: "Leagues.jpeg",
+              type: "image/jpeg",
+              sizes: "621x1344"
+          },
+          {
+              src: "Favorites.jpeg",
+              type: "image/jpeg",
+              sizes: "621x1344"
+          },
+          {
+              src: "Search.jpeg",
+              type: "image/jpeg",
+              sizes: "621x1344"
+          }
+      ],
       }
     })
   ]
