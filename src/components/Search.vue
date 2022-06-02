@@ -1,8 +1,5 @@
 <template>
-    <div class="ml-5 mt-3 mb-3 absolute">
-                <h1 class="text-3xl font-bold">Suche</h1>
-                <p class="text-sm text-gray-500 uppercase font-bold">Verein / Halle</p>
-    </div>
+    <NavBar title="Suche" subtitle="Verein/Halle"/>
     <div class="flex justify-center w-full pt-20">
         <div class="flex w-4/6">
             <SearchIcon class="ml-auto h-6 mt-2 text-neutral-800 mr-0 z-10" />
@@ -39,7 +36,7 @@
 import Multiselect from "@vueform/multiselect";
 import { ref } from "vue";
 import { SearchIcon } from "@heroicons/vue/outline";
-
+import NavBar from "./helpers/NavBar.vue";
 const isLoading = ref(false);
 const searchData = ref([]);
 const searchResult = ref("");

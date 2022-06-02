@@ -1,11 +1,6 @@
 <template>
     <div class="w-full h-full">
-        <div class="ml-5 pt-3 mb-3">
-            <h1 class="text-3xl font-bold">Team</h1>
-            <p class="text-sm text-gray-500 uppercase font-bold">
-                Spielübersicht
-            </p>
-        </div>
+        <NavBar title="Team" subtitle="Spielübersicht"/>
         <div
             id="club-header"
             class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
@@ -13,7 +8,7 @@
             <Header @updateFavorites="emit('updateFavorites')" :type="'team'" :games="teamMatches" :team_id="teamID" :class_id="teamClassID" :club_id="teamClubNo" :team="team" :club="club"></Header>
             <div id="content" class="flex flex-wrap mb-5">
                 <img
-                    v-if="team && img_loaded"
+                    v-if="team && teamClubNo && img_loaded"
                     :src="'logos/clubs/' + teamClubNo + '.png'"
                     @error="img_loaded = false"
                     alt=""
@@ -112,6 +107,7 @@ import { ref, toRef } from "vue";
 import { watch } from "vue";
 import { useRoute } from "vue-router";
 
+import NavBar from "./helpers/NavBar.vue";
 import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
 import Table from "./helpers/Table.vue";

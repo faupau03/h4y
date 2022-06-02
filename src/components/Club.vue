@@ -1,33 +1,14 @@
 <template>
     <div class="w-full h-full">
-        <div class="ml-5 pt-3 mb-3">
-            <h1 class="text-3xl font-bold">Verein</h1>
-            <p class="text-sm text-gray-500 uppercase font-bold">
-                Spielübersicht
-            </p>
-        </div>
+        <NavBar title="Verein" subtitle="Spielübersicht"/>
         <div id="club-header" class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative">
             <Header v-if="club" :type="'club'" :club="clubInfo" :club_id="clubInfo.no"
                 @updateFavorites="emit('updateFavorites')"></Header>
             <HeaderLoading v-else />
-            <!-- <div id="club-content" class="flex flex-wrap mb-5">
-                <img v-if="clubInfo" :src="'logos/clubs/' + clubInfo.no + '.png'" alt=""
-                    class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg" />
 
-                <div v-else>Loading...</div>
-                <div id="club-info" class=" m-5 line-clamp-4 break-words">
-                    <div class="font-bold">
-                        {{ clubInfo.lname }}
-                    </div>
-                    <div class="text-gray-800">Postleitzahl: {{ clubInfo.postal }}</div>
-                    <div class="text-gray-800">Nummer: {{ clubInfo.no }}</div>
-                </div>
-                <a class="absolute bottom-5 right-5 underline text-indigo-500 hover:text-indigo-800"
-                    :href="'http://' + clubInfo.webaddress">{{ clubInfo.webaddress }}</a>
-            </div> -->
             <div id="content" class="flex flex-wrap mb-5">
                 <img
-                    v-if="clubInfo && img_loaded"
+                    v-if="clubInfo && clubInfo.no && img_loaded"
                     :src="'logos/clubs/' + clubInfo.no + '.png'"
                     @error="img_loaded = false"
                     alt=""
@@ -50,7 +31,6 @@
                     <a class="absolute bottom-5 right-5 underline text-indigo-500 hover:text-indigo-800"
                     :href="'http://' + clubInfo.webaddress">{{ clubInfo.webaddress }}</a>
                 </div>
-                <!-- {{ clubInfo }} -->
             </div>
         </div>
         <div class="w-5/6 m-auto pb-24">
@@ -96,7 +76,11 @@
 
                 </div>
             </div>
-            <div v-if="!loading"
+            
+            <!-- Debugging: -->
+            <!-- {{ club.menu ? club.menu.period.selectedID == period_selected : 'error'}} -->
+
+            <div v-if="!loading && club.menu && club.menu.period.selectedID == period_selected"
                 class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2">
                 <Disclosure v-for="team in classes" :key="team.gClassID" v-slot="{ open }">
                     <DisclosureButton
@@ -200,6 +184,7 @@ import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/outline";
 import { Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 
 // helper components
+import NavBar from "./helpers/NavBar.vue";
 import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
 import Header from "./helpers/Header.vue";
@@ -379,6 +364,8 @@ const initData = async () => {
 
     // return if offline
     if (offline.value) {
+        loading.value = false;
+        loading_net.value = false;
         console.log("offline");
         return;
     }

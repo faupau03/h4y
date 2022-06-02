@@ -1,11 +1,6 @@
 <template>
     <div class="w-full h-full">
-        <div class="ml-5 pt-3 mb-3">
-            <h1 class="text-3xl font-bold">Halle</h1>
-            <p class="text-sm text-gray-500 uppercase font-bold">
-                Spielübersicht
-            </p>
-        </div>
+        <NavBar title="Halle" subtitle="Spielübersicht"/>
         <div
             id="gym-header"
             class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
@@ -154,6 +149,7 @@ import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/outline";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 // helper components
+import NavBar from "./helpers/NavBar.vue";
 import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
 import Header from "./helpers/Header.vue";

@@ -15,10 +15,7 @@
         <meta name="twitter:card" content="summary_large_image">
     </Head>
     <div class="w-full h-full">
-        <div class="ml-5 pt-3 mb-3">
-            <h1 class="text-3xl font-bold">Spiel</h1>
-            <p class="text-sm text-gray-500 uppercase font-bold">Info</p>
-        </div>
+        <NavBar title="Spiel" subtitle="Info"/>
         <div id="game-header" class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative">
             <Header v-if="!loading" :type="'match'" :game="game" :game_id="gameID" :team_id="teamID"
                 :class_id="teamClassID"></Header>
@@ -130,13 +127,14 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { onMounted } from "vue";
 import { ref, toRef } from "vue";
 import { watch } from "vue";
 import { useRoute } from "vue-router";
 
 //helper components
+import NavBar from "./helpers/NavBar.vue";
 import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
 import Table from "./helpers/Table.vue";

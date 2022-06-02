@@ -3,8 +3,7 @@
         <div class="w-full pb-20 overflow-x-hidden">
 
             <div v-if="!og && !o" id="overview" class="mx-3 sm:mx-10">
-                <h1 class="text-3xl font-bold mt-4">Übersicht</h1>
-                <p class="text-sm text-gray-500 uppercase font-bold mb-4">Ligen</p>
+                <NavBar title="Ligen" subtitle="Übersicht"/>
                 <!-- all registered organizations from handball4all  -->
                 <div v-for="level, key in leagues" class="mt-4">
                     <h1 class="text-2xl">{{ key }}</h1>
@@ -139,6 +138,7 @@ import {
 
 import { filterGames } from "./functions/misc.js";
 
+import NavBar from "./helpers/NavBar.vue";
 import Match from "./helpers/Match.vue";
 import MatchLoading from "./helpers/MatchLoading.vue";
 
