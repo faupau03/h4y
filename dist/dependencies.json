@@ -1,0 +1,45 @@
+[
+    {
+        "name": "Vue",
+        "url": "https://vuejs.org/",
+        "github_user": "vuejs",
+        "github_repo": "vue"
+    },
+    {
+        "name": "Heroicons",
+        "url": "https://heroicons.dev/",
+        "github_user": "tailwindlabs",
+        "github_repo": "heroicons"
+    },
+    {
+        "name": "Tailwind CSS",
+        "url": "https://tailwindcss.com/",
+        "github_user": "tailwindlabs",
+        "github_repo": "tailwindcss"
+    },
+    {
+        "name": "Vite",
+        "url": "https://vitejs.dev/",
+        "github_user": "vitejs",
+        "github_repo": "vite"
+    },
+    {
+        "name": "Express",
+        "url": "https://expressjs.com/",
+        "github_user": "expressjs",
+        "github_repo": "express"
+    },
+    {
+        "name": "Vite Plugin PWA",
+        "url": "https://vite-plugin-pwa.netlify.app",
+        "github_user": "antfu",
+        "github_repo": "vite-plugin-pwa"
+    },
+    {
+        "name": "ICAL-Generator",
+        "url": "https://github.com/sebbo2002/ical-generator",
+        "github_user": "sebbo2002",
+        "github_repo": "ical-generator"
+    }
+
+]
