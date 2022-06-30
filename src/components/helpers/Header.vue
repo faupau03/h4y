@@ -2,7 +2,7 @@
     <div
         id="header"
         class="w-full flex p-5 sm:gap-5 xs:gap-3 gap-1 justify-end"
-    >
+    >   
         <div id="clock" class="flex mr-auto" v-if="type == 'match'">
             <ClockIcon class="h-6 w-6 mt-1" />
             <span class="sm:text-xl sm:mt-0.5 mt-1 ml-2">
@@ -128,6 +128,11 @@ const isFavorite = () => {
                 return true;
             }
         }
+        else if (props.type == "gym") {
+            if (favorite.type == "gym" && favorite.id == props.gym_id) {
+                return true;
+            }
+        }
     }
 };
 
@@ -139,7 +144,8 @@ const addFavorite = () => {
             name: props.club.lname,
             no: props.club.no,
         });
-    } else if (props.type == "team") {
+    }
+    else if (props.type == "team") {
         favorites.value.push({
             type: "team",
             id: props.team_id,
@@ -147,6 +153,15 @@ const addFavorite = () => {
             classid: props.class_id,
             clubno: props.club_id,
             clubname: props.club.lname,
+        });
+    }
+    else if (props.type == "gym") {
+        console.log("adding gym");
+        console.log(props.gym_id);
+        favorites.value.push({
+            type: "gym",
+            id: props.gym_id,
+            name: props.gym.name,
         });
     }
     updateFavorites(favorites.value);
@@ -164,6 +179,12 @@ const removeFavorite = () => {
                 favorites.value.splice(favorites.value.indexOf(favorite), 1);
             }
         }
+        else if (props.type == "gym") {
+            if (favorite.type == "gym" && favorite.id == props.gym_id) {
+                favorites.value.splice(favorites.value.indexOf(favorite), 1);
+            }
+        }
+
     }
     updateFavorites(favorites.value);
     emit("updateFavorites");

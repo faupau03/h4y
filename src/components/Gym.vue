@@ -9,7 +9,7 @@
                 v-if="gym"
                 :type="'gym'"
                 :gym="gym"
-                :gym_id="gym.id"
+                :gym_id="gym_id"
                 @updateFavorites="emit('updateFavorites')"
             ></Header>
             <div id="gym-content" class="flex mb-5">
@@ -172,7 +172,7 @@ const week_selected = ref(null);
 const period_selected = ref(null);
 const period_list = ref([]);
 const teamClassID = ref(null);
-const props = defineProps(["club_no"]);
+const props = defineProps(["gym_id","gym"]);
 
 const emit = defineEmits(["updateFavorites", "disclosure-update"]);
 
@@ -195,8 +195,9 @@ const goDateForward = () => {
 };
 
 const findOg = (item) => {
-    console.log(item);
-    console.log(item.name);
+    //console.log(gym.value.org);
+    //console.log(item);
+    //console.log(item.name);
     return item.name === gym.value.org;
 }
 
@@ -310,16 +311,21 @@ const fetchMatches = async () => {
     loading.value = false;
 };
 
-//TODO: implement this fix again
-/*
-const club_no_ref = toRef(props, "club_no");
+
+const club_no_ref = toRef(props, "gym_id");
 watch(club_no_ref, async (newValue, oldValue) => {
     console.log("update club");
     if (newValue) {
         forceUpdate();
     }
 });
-*/
+
+
+const forceUpdate = async() => {
+    await fetchGym();
+    await fetchOg();
+    await fetchMatches();
+}
 
 onMounted(async () => {
     await fetchGym();

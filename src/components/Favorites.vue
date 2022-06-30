@@ -9,7 +9,7 @@
                 class="h-8 w-8 m-5 ml-auto mr-5"
                 @click="showMenu = !showMenu"
             />
-            <div class="mr-5 transition-all">
+            <div class="mr-5 transition-all ease-in-out duration-300">
                 <p
                     class="font-bold"
                     :class="showMenu ? '' : 'ml-[calc(100%-2.5rem)] -mr-2'"
@@ -19,7 +19,7 @@
                 <div
                     v-for="favorite in favorites"
                     v-show="favorite.type == 'club'"
-                    class="rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-indigo-600 h-9 break-all text-indigo-100 p-2 my-1 overflow-hidden"
+                    class="cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-indigo-600 h-9 break-all text-indigo-100 p-2 my-1 overflow-hidden"
                     :class="showMenu ? '' : 'ml-[calc(100%-3.2rem)] -mr-2'"
                     @click="selectFavorite(favorite)"
                 >
@@ -34,7 +34,7 @@
                 <div
                     v-for="favorite in favorites"
                     v-show="favorite.type == 'team'"
-                    class="rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-indigo-600 h-9 break-all text-indigo-100 p-2 my-1 overflow-hidden"
+                    class="cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-indigo-600 h-9 break-all text-indigo-100 p-2 my-1 overflow-hidden"
                     :class="showMenu ? 'flex' : 'ml-[calc(100%-3.2rem)] -mr-2'"
                     @click="selectFavorite(favorite)"
                 >
@@ -42,6 +42,21 @@
                     <span class="ml-auto mr-0">
                         {{ favorite.clubname }}
                     </span>
+                </div>
+                <p
+                    class=" font-bold"
+                    :class="showMenu ? '' : 'ml-[calc(100%-2.5rem)] -mr-2'"
+                >
+                    Halle
+                </p>
+                <div
+                    v-for="favorite in favorites"
+                    v-show="favorite.type == 'gym'"
+                    class="cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-indigo-600 h-9 break-all text-indigo-100 p-2 my-1 overflow-hidden"
+                    :class="showMenu ? 'flex' : 'ml-[calc(100%-3.2rem)] -mr-2'"
+                    @click="selectFavorite(favorite)"
+                >
+                    <span class="ml-0 mr-auto">{{ favorite.name }}</span>
                 </div>
             </div>
         </div>
@@ -60,6 +75,13 @@
             :team_class="selectedFavorite.classid"
             :team_club="selectedFavorite.clubno"
             :key="selectedFavorite.id"
+            @updateFavorites="getFavorites"
+        />
+        <Gym
+            class="w-[calc(100%-4rem)] ml-auto mr-0"
+            v-else-if="selectedFavorite && selectedFavorite.type == 'gym'"
+            :gym_id="selectedFavorite.id"
+            :key="selectedFavorite.no"
             @updateFavorites="getFavorites"
         />
         
@@ -83,6 +105,7 @@ import { ref } from "vue";
 import Club from "./Club.vue";
 import Team from "./Team.vue";
 import { MenuAlt1Icon } from "@heroicons/vue/outline";
+import Gym from "./Gym.vue";
 
 const favorites = ref([]);
 const selectedFavorite = ref({});

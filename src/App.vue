@@ -13,7 +13,7 @@ const gym = ref({});
 const last_tab = ref("");
 const now_tab = ref("");
 const isTab = ref(false);
-
+const show_last_page = ref(true);
 const route = useRoute();
 
 //watch route change
@@ -29,6 +29,14 @@ const updateTab = () => {
     }
     now_tab.value = window.location.href;
 }
+
+window.addEventListener('storage', () => {
+    console.log("storage changed");
+    show_last_page.value = localStorage.getItem("show_last_page") === "true";
+    console.log(show_last_page.value);
+    updateTab();
+});
+
 onUpdated(() => {
     console.log("onUpdated");
     updateTab();
@@ -42,6 +50,8 @@ onMounted(() => {
     );
     updateTab();
 });
+
+
 </script>
 
 <template>
@@ -94,7 +104,7 @@ onMounted(() => {
             </router-link>
             
             <router-link
-                v-if="isTab"
+                v-if="isTab && show_last_page"
                 :to="last_tab"
                 class="flex flex-grow items-center justify-center p-2 hover:text-indigo-500 hover:fill-indigo-500"
                 :class="(now_tab.includes('team') || now_tab.includes('match') || now_tab.includes('gym') || now_tab.includes('club')) ? 'text-indigo-500 fill-indigo-500' : ''"
