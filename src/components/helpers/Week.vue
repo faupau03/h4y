@@ -1,14 +1,14 @@
 <template>
-    <div v-if=!loading class="flex shadow-large !text-xs rounded-lg bg-indigo-100 items-center" :class="!selected ? 'bg-gray-300' : ''">
-        <button @click="goDateBack" class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400" :disabled="Object.keys(list).indexOf(String(selected)) <= 0">
-            <ChevronLeftIcon class="h-5" />
+    <div v-if=!loading class="btn-group flex shadow-large rounded-lg items-center" :class="!selected ? 'bg-gray-300' : ''">
+        <button @click="goDateBack" class="btn btn-sm rounded-r-none w-8" :disabled="Object.keys(list).indexOf(String(selected)) <= 0">
+            <ChevronLeftIcon class="h-5 flex-none" />
         </button>
-        <select :value="selected" @change="(event) => $emit('updateWeek', event.target.value)" class="m-0 text-xs sm:text-base py-2 border-none bg-indigo-100 rounded-lg hover:bg-indigo-200 !ring-0">
-            <option v-for="date, key in list" :value="key" class="bg-indigo-100 p-0 m-0">{{ date }}</option>
+        <select :value="selected" @change="(event) => $emit('updateWeek', event.target.value)" class="select h-8 min-h-[2rem] border-1 border border-neutral dark:hover:brightness-150 hover:brightness-50 rounded-none py-0 outline-none ring-none outline-0 focus:border-neutral focus:ring-none focus:ring-0 focus:outline-0">
+            <option v-for="date, key in list" :value="key" class="">{{ date }}</option>
         </select>
 
-        <button @click="goDateForward" class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400" :disabled="Object.keys(list).indexOf(String(selected)) == Object.keys(list).length - 1">
-            <ChevronRightIcon class="h-5" />
+        <button @click="goDateForward" class="btn btn-sm rounded-l-none w-8" :disabled="Object.keys(list).indexOf(String(selected)) == Object.keys(list).length - 1">
+            <ChevronRightIcon class="h-5 flex-none" />
         </button>
     </div>
     <div v-else

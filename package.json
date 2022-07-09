@@ -17,6 +17,7 @@
     "ejs": "^3.1.7",
     "express": "^4.17.3",
     "ical-generator": "^3.4.0",
+    "theme-change": "^2.0.2",
     "useragent": "^2.3.0",
     "vue": "^3.2.25",
     "vue-router": "^4.0.14",

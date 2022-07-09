@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-between items-center pt-3 mb-3 mx-10">
-        <button @click="navBack" class="hover:text-indigo-500 h-10 w-10" aria-label="go page back">
+        <button @click="navBack" class="hover:text-accent h-10 w-10" aria-label="go page back">
             <ChevronLeftIcon/>
         </button>
         <div class="text-center">
@@ -9,7 +9,7 @@
                 {{ subtitle }}
             </p>
         </div>
-        <router-link class="hover:text-indigo-500 disabled:text-gray-500 h-6 w-6" aria-label="settings" to="settings">
+        <router-link class="hover:text-accent disabled:text-gray-500 h-6 w-6" aria-label="settings" to="settings">
             <CogIcon/>
         </router-link>
     </div>

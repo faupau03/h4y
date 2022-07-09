@@ -1,5 +1,5 @@
 <template>
-    <div class="flex p-1 m-1 bg-indigo-100 rounded-lg">
+    <div class="flex p-1 my-1 h-[30px] bg-secondary bg-opacity-20 rounded-lg">
         <div class="text-sm mr-1">
             <span class="bg-gray-500 animate-pulse h-4 w-20 mt-1 ml-1 inline-block rounded"></span>
         </div>

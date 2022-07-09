@@ -1,6 +1,6 @@
 <template>
     <div v-if="game || games.length" class="">
-        <CalendarIcon @click="createIcal" class="h-6 mt-0.5 hover:text-indigo-500" />
+        <CalendarIcon @click="createIcal" class="h-6 mt-0.5 hover:text-accent" />
         <a class="hidden" ref="download"></a>
     </div>
     <div v-else>

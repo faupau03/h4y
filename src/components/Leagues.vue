@@ -1,17 +1,19 @@
 <template>
     <div class="w-full h-full flex text-3xl">
-        <div class="w-full pb-20 overflow-x-hidden">
-
+        <div class="w-full">
             <div v-if="!og && !o" id="overview" class="mx-3 sm:mx-10">
-                <NavBar title="Ligen" subtitle="Übersicht"/>
+                <NavBar title="Ligen" subtitle="Übersicht" />
                 <!-- all registered organizations from handball4all  -->
-                <div v-for="level, key in leagues" class="mt-4">
-                    <h1 class="text-2xl">{{ key }}</h1>
-                    <div v-for="org, key in level">
-                        <router-link class="bg-indigo-100 text-lg p-1 rounded-lg shadow-2xl hover:bg-indigo-200"
-                            :to="'#' + org.o + ';' + org.og">{{ key }}</router-link>
+                <div class="flex gap-4 flex-noshrink flex-wrap pb-4">
+                    <div v-for="level, key in leagues" class="mt-4 card p-4 bg-base-100 w-fit h-fit shadow-xl">
+                        <h1 class="text-2xl">{{ key }}</h1>
+                        <div v-for="org, key in level">
+                            <router-link class="btn btn-sm btn-primary" :to="'#' + org.o + ';' + org.og">{{ key }}
+                            </router-link>
+                        </div>
                     </div>
                 </div>
+
             </div>
             <div v-else class="sm:mx-10 mx-3">
                 <div v-if="!games_loading">
@@ -30,13 +32,14 @@
                     </div>
                 </div>
 
-
-                <div id="menu" class="flex flex-wrap gap-5 sm:text-xl text-sm mb-1 overflow-auto">
-                        <RegionSelect @updateRegion="(id) => updateRegion(id)" :list="region_list" :selected="region_selected" :loading="games_loading" />
-                        <Period class="" @updatePeriod="(id) => updatePeriod(id)"
-                            :loading="games_loading" :list="period_list" :selected="period_selected" />
-                        <Week class="mr-auto" @updateWeek="(id) => updateWeek(id)"
-                            :loading="games_loading" :list="week_list" :selected="week_selected" />
+                <div class="card p-2 bg-base-100 shadow-xl mb-4">
+                    <div id="menu" class="flex flex-wrap items-center gap-5 sm:text-xl text-sm mb-1 overflow-auto">
+                        <RegionSelect @updateRegion="(id) => updateRegion(id)" :list="region_list"
+                            :selected="region_selected" :loading="games_loading" />
+                        <Period class="" @updatePeriod="(id) => updatePeriod(id)" :loading="games_loading"
+                            :list="period_list" :selected="period_selected" />
+                        <Week class="mr-auto" @updateWeek="(id) => updateWeek(id)" :loading="games_loading"
+                            :list="week_list" :selected="week_selected" />
                         <div class="text-sm m-2 flex">
                             Alle
                             <span class="sm:block hidden ml-1">
@@ -45,45 +48,44 @@
                             <input class="ml-1 mt-0.5 rounded" type="checkbox" name="" id=""
                                 @click="showAll = !showAll, updateFilter(showAll)" />
                         </div>
-                </div>
-                <div v-if="!games_loading"
-                    class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2">
-                    <Disclosure v-for="(team) in classes" :key="team.gClassID" v-slot="{ open }">
-                        <DisclosureButton
-                            class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-indigo-900 bg-indigo-100 rounded-t-lg hover:bg-indigo-200 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75 disabled:bg-gray-200 disabled:text-gray-500"
-                            :class="[
-                                (team.gClassID !== teamClassID) ? 'my-1 rounded-lg' : '',
-                            ]" @click="
+                    </div>
+                    <div v-if="!games_loading"
+                        class="w-full mx-auto">
+                        <Disclosure v-for="(team) in classes" :key="team.gClassID" v-slot="{ open }">
+                            <DisclosureButton
+                                class="btn btn-primary bg-opacity-75 w-full flex justify-end flex-nowrap gap-3"
+                                :class="[
+                                    (team.gClassID !== teamClassID) ? 'my-1 rounded-lg' : 'rounded-b-none', is_dark ? 'brightness-75':''
+                                ]" @click="
     team.gClassID !== teamClassID
         ? (teamClassID = team.gClassID,
             open = true)
         : (teamClassID = null, open = false)
-"
-                            :disabled="classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1)">
-                            <span class="sm:hidden block">{{ team.gClassSname }}</span>
-                            <span class="hidden sm:block">{{ team.gClassLname }}</span>
-                            <span id="league-info" class="ml-auto mr-5 text-gray-500 text-xs">
-                                <span v-if="team.games.length < 1">
-                                    <span
-                                        v-if="games_data.content.classes.find(c => c.gClassID === team.gClassID).games.length < 1">
-                                        spielfrei
-                                    </span>
-                                    <span v-else>
-                                        Keine zukünftigen Spiele
+" :disabled="classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1)">
+                                <span class="sm:hidden block">{{ team.gClassSname }}</span>
+                                <span class="hidden sm:block">{{ team.gClassLname }}</span>
+                                <span id="league-info" class="ml-auto mr-5 text-gray-500 text-xs">
+                                    <span v-if="team.games.length < 1">
+                                        <span
+                                            v-if="games_data.content.classes.find(c => c.gClassID === team.gClassID).games.length < 1">
+                                            spielfrei
+                                        </span>
+                                        <span v-else>
+                                            Keine zukünftigen Spiele
+                                        </span>
                                     </span>
                                 </span>
-                            </span>
-                            <ChevronUpIcon class="w-5 h-5" :class="[
-                                open ? 'transform rotate-180' : '',
-                                classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1) ? 'text-gray-500' : 'text-indigo-900',
-                            ]" />
-                        </DisclosureButton>
-                        <DisclosurePanel static v-show="team.gClassID === teamClassID"
-                            class="px-4 pt-4 pb-2 text-sm text-gray-500 bg-indigo-100 rounded-b-lg">
-                            <div>
+                                <ChevronUpIcon class="w-5 h-5" :class="[
+                                    open ? 'transform rotate-180' : '',
+                                    classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1) ? 'text-gray-500' : 'text-primary-content',
+                                ]" />
+                            </DisclosureButton>
+                            <DisclosurePanel static v-show="team.gClassID === teamClassID"
+                                class="px-4 pt-4 pb-2 text-sm bg-primary bg-opacity-20 rounded-b-lg">
+                                <div>
 
-                                <hr class="bg-gray-400 text-black h-[1.5px] -mt-3" />
-                                <!-- <router-link v-if="Object.keys(subTeam)[0]" :to="
+                                    <hr class="bg-gray-400 text-black h-[1.5px] -mt-3" />
+                                    <!-- <router-link v-if="Object.keys(subTeam)[0]" :to="
                                     'team#' +
                                     Object.keys(subTeam)[0] +
                                     ';' +
@@ -93,33 +95,35 @@
                                 "
                                     class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900">
                                     Zum Team</router-link> -->
-                                <div id="league-info">
-                                    <!-- Information about how many games and button to team component -->
-                                </div>
-                                <Match v-for="match in team.games" :key="match.gID" :match="match" :teamID="null"
-                                    :teamClassID="team.gClassID"></Match>
-                                <div id="no-data" v-show="!team.games.length" class="mb-2">
-                                    <div id="no-future-matches" v-show="!showAll">
-                                        Keine zukünftigen Spiele
+                                    <div id="league-info">
+                                        <!-- Information about how many games and button to team component -->
                                     </div>
-                                    <div v-show="showAll">
-                                        Keine Spiele in dieser Klasse
+                                    <Match v-for="match in team.games" :key="match.gID" :match="match" :teamID="null"
+                                        :teamClassID="team.gClassID"></Match>
+                                    <div id="no-data" v-show="!team.games.length" class="mb-2">
+                                        <div id="no-future-matches" v-show="!showAll">
+                                            Keine zukünftigen Spiele
+                                        </div>
+                                        <div v-show="showAll">
+                                            Keine Spiele in dieser Klasse
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </DisclosurePanel>
-                    </Disclosure>
-                </div>
-                <div v-else
-                    class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2">
-                    <div v-for="i in 10" class="p-3 bg-gray-300 rounded-lg my-1 flex">
-                        <div class="animate-pulse rounded-lg bg-gray-400 h-3 sm:w-44 w-16">
-                        </div>
-                        <div class="animate pulse rounded-full bg-gray-400 h-3 sm:w-44 w-3 ml-auto mr-2">
-                        </div>
+                            </DisclosurePanel>
+                        </Disclosure>
                     </div>
+                    <div v-else
+                        class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2">
+                        <div v-for="i in 10" class="p-3 bg-gray-300 rounded-lg my-1 flex">
+                            <div class="animate-pulse rounded-lg bg-gray-400 h-3 sm:w-44 w-16">
+                            </div>
+                            <div class="animate pulse rounded-full bg-gray-400 h-3 sm:w-44 w-3 ml-auto mr-2">
+                            </div>
+                        </div>
 
+                    </div>
                 </div>
+
 
             </div>
         </div>
@@ -206,13 +210,13 @@ const updateRegion = (id) => {
     console.log(region_list.value[id]);
     region_selected.value = id;
     o.value = id;
-    router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value+ ';' + period_selected.value + ';' + week_selected.value });
+    router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value + ';' + period_selected.value + ';' + week_selected.value });
 }
 const updateWeek = (id) => {
     console.log("updateWeek");
     console.log(week_list.value[id]);
     week_selected.value = id;
-    router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value+ ';' + period_selected.value + ';' + week_selected.value });
+    router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value + ';' + period_selected.value + ';' + week_selected.value });
 }
 
 const updatePeriod = (id) => {
@@ -220,7 +224,7 @@ const updatePeriod = (id) => {
     console.log(id);
     console.log(period_list.value[id]);
     period_selected.value = id;
-    router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value+ ';' + period_selected.value + ';' + week_selected.value });
+    router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value + ';' + period_selected.value + ';' + week_selected.value });
 }
 
 const updateFilter = (show) => {

@@ -1,165 +1,154 @@
 <template>
-    <div class="w-full h-full">
-        <NavBar title="Verein" subtitle="Spielübersicht"/>
-        <div id="club-header" class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative">
-            <Header v-if="club" :type="'club'" :club="clubInfo" :club_id="clubInfo.no"
-                @updateFavorites="emit('updateFavorites')"></Header>
-            <HeaderLoading v-else />
+    <div class="min-h-full w-full scrolled bg-base-100/50">
+        <div class="w-full grid gap-4">
+            <NavBar title="Verein" subtitle="Spielübersicht" />
+            <div id="club-header" class="grid w-5/6 m-auto relative bg-base-100 card shadow-xl">
+                <Header v-if="club" :type="'club'" :club="clubInfo" :club_id="clubInfo.no"
+                    @updateFavorites="emit('updateFavorites')"></Header>
+                <HeaderLoading v-else />
 
-            <div id="content" class="flex flex-wrap mb-5">
-                <img
-                    v-if="clubInfo && clubInfo.no && img_loaded"
-                    :src="'logos/clubs/' + clubInfo.no + '.png'"
-                    @error="img_loaded = false"
-                    alt=""
-                    id="club-logo"
-                    class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg"
-                />
+                <div id="content" class="flex flex-wrap mb-5">
+                    <img v-if="clubInfo && clubInfo.no && img_loaded" :src="'logos/clubs/' + clubInfo.no + '.png'"
+                        @error="img_loaded = false" alt="" id="club-logo"
+                        class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg" />
 
-                <div
-                    v-else
-                    class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg shadow-2xl bg-gray-200"
-                >
-                    <UserGroupIcon class="text-gray-500 h-full" />
-                </div>
-                <div id="club-info" class="m-5">
-                    <div class="font-bold">
-                        {{ clubInfo.lname }}
+                    <div v-else class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg shadow-2xl bg-gray-200">
+                        <UserGroupIcon class="text-gray-500 h-full" />
                     </div>
-                    <div class="text-gray-800">Postleitzahl: {{ clubInfo.postal }}</div>
-                    <div class="text-gray-800">Nummer: {{ clubInfo.no }}</div>
-                    <a class="absolute bottom-5 right-5 underline text-indigo-500 hover:text-indigo-800"
-                    :href="'http://' + clubInfo.webaddress">{{ clubInfo.webaddress }}</a>
+                    <div id="club-info" class="m-5">
+                        <div class="font-bold">
+                            {{ clubInfo.lname }}
+                        </div>
+                        <div class="text-base-content">Postleitzahl: {{ clubInfo.postal }}</div>
+                        <div class="text-base-content">Nummer: {{ clubInfo.no }}</div>
+                        <div
+                            class="absolute bottom-5 right-5 flex items-center gap-1 text-base-content hover:text-accent">
+                            <GlobeAltIcon class="h-5" />
+                            <a class=" underline mb-1" :href="'http://' + clubInfo.webaddress">{{ clubInfo.webaddress
+                            }}</a>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="w-5/6 m-auto pb-24">
-            <div class="mt-3 flex flex-wrap">
-                <h2 class="font-bold text-lg m-1">Spiele</h2>
-                <Period class="sm:ml-5 ml-2 mr-auto" @updatePeriod="(id) => updatePeriod(id)" :loading="loading"
-                    :selected="period_selected" :list="period_list" />
-                <div class="text-sm m-2 mr-5 flex items-center">
-                    Alle
-                    <span class="sm:block hidden ml-1">
-                        Spiele
-                    </span>
-                    <input class="ml-1 rounded" type="checkbox" name="" id=""
-                        @click="showAll = !showAll, updateFilter(showAll)" />
-                </div>
-                <div v-if="loading_net">
-                    <svg class="animate-spin mt-2 h-5 w-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                        </path>
-                    </svg>
-                </div>
-                <div v-else class="flex items-center">
-                    <button v-if="!offline" @click="refreshData"
-                        class="hover:bg-indigo-200 rounded text-indigo-500 hover:text-indigo-900">
-                        <RefreshIcon class="h-5" />
-                    </button>
-                    <Popover v-else class="relative">
-                        <PopoverButton class="flex items-center">
-                            <StatusOfflineIcon class="h-5 text-red-600" />
-                        </PopoverButton>
+            <div class="w-5/6 m-auto p-2 mb-4 card bg-base-100 shadow-xl overflow-hidden">
+                <div class="mt-3 flex flex-wrap">
+                    <h2 class="font-bold text-lg m-1">Spiele</h2>
+                    <Period class="sm:ml-5 ml-2 mr-auto" @updatePeriod="(id) => updatePeriod(id)" :loading="loading"
+                        :selected="period_selected" :list="period_list" />
+                    <div class="form-control mr-5">
+                        <label class="label cursor-pointer flex gap-1">
+                            <span class="label-text">Alle</span>
+                            <span class="label-text sm:block hidden">
+                                Spiele
+                            </span>
+                            <input type="checkbox" class="checkbox checkbox-sm"
+                                @click="showAll = !showAll, updateFilter(showAll)" />
+                        </label>
+                    </div>
+                    <div class="flex items-center">
+                        <button v-if="!offline" @click="refreshData" class="btn btn-sm btn-square"
+                            :class="loading_net ? 'loading disabled' : ''">
+                            <RefreshIcon v-if="!loading_net" class="h-4" />
+                        </button>
+                        <Popover v-else class="relative">
+                            <PopoverButton class="flex items-center">
+                                <StatusOfflineIcon class="h-5 text-red-600" />
+                            </PopoverButton>
 
-                        <PopoverPanel
-                            class="absolute z-10 bg-indigo-100 outline-1 outline outline-indigo-200 rounded-lg p-2 shadow-2xl border-indigo-300 border-1">
-                            <p class="text-xs">
-                                Du bist offline. Dir werden zuvor gespeicherte Daten gezeigt.
-                            </p>
-                        </PopoverPanel>
-                    </Popover>
+                            <PopoverPanel
+                                class="absolute z-10 bg-indigo-100 outline-1 outline outline-indigo-200 rounded-lg p-2 shadow-2xl border-indigo-300 border-1">
+                                <p class="text-xs">
+                                    Du bist offline. Dir werden zuvor gespeicherte Daten gezeigt.
+                                </p>
+                            </PopoverPanel>
+                        </Popover>
 
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Debugging: -->
-            <!-- {{ club.menu ? club.menu.period.selectedID == period_selected : 'error'}} -->
 
-            <div v-if="!loading && club.menu && club.menu.period.selectedID == period_selected"
-                class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2">
-                <Disclosure v-for="team in classes" :key="team.gClassID" v-slot="{ open }">
-                    <DisclosureButton
-                        class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-indigo-900 bg-indigo-100 rounded-t-lg hover:bg-indigo-200 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75 disabled:bg-gray-200 disabled:text-gray-500"
-                        :class="[
-                            (team.gClassID !== teamClassID) ? 'my-1 rounded-lg' : '',
-                        ]" @click="
+                <!-- Debugging: -->
+                <!-- {{ club.menu ? club.menu.period.selectedID == period_selected : 'error'}} -->
+
+                <div v-if="!loading && club.menu && club.menu.period.selectedID == period_selected" class="p-1">
+                    <Disclosure v-for="team in classes" :key="team.gClassID" v-slot="{ open }">
+                        <DisclosureButton
+                            class="btn btn-primary bg-opacity-75 w-full flex justify-end flex-nowrap gap-3" :class="[
+                                (team.gClassID !== teamClassID) ? 'my-1 rounded-lg' : 'rounded-b-none',
+                            ]" @click="
     team.gClassID !== teamClassID
         ? (teamClassID = team.gClassID,
             open = true)
         : (teamClassID = null, open = false)
 " :disabled="club.content.classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1)">
-                        <span class="sm:hidden block">{{ team.gClassSname }}</span>
-                        <span class="hidden sm:block">{{ team.gClassLname }}</span>
-                        <span id="league-info" class="ml-auto mr-5 text-gray-500 text-xs">
-                            <span v-if="team.games.every(element => element[Object.keys(element)[0]].length < 1)">
-                                <span
-                                    v-if="club.content.classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1)">
-                                    spielfrei
+                            <div id="class-name" class="mr-auto">
+                                <span class="sm:hidden block">{{ team.gClassSname }}</span>
+                                <span class="hidden sm:block">{{ team.gClassLname }}</span>
+                            </div>
+                            <span id="class-info" class="text-secondary-content text-opacity-60 text-xs">
+                                <span v-if="team.games.every(element => element[Object.keys(element)[0]].length < 1)">
+                                    <span
+                                        v-if="club.content.classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1)">
+                                        spielfrei
+                                    </span>
+                                    <span v-else>
+                                        Keine zukünftigen Spiele
+                                    </span>
                                 </span>
-                                <span v-else>
-                                    Keine zukünftigen Spiele
-                                </span>
+                                <div v-if="team.games[0][Object.keys(team.games[0])[0]].some(element => element.live)"
+                                    class="rounded-full relative w-4 h-4">
+                                    <div
+                                        class="animate-ping absolute -mt-0.5 inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75">
+                                    </div>
+                                    <div class="z-20 mx-auto my-auto mt-1 animate-none rounded-full h-3 w-3 bg-red-500">
+                                    </div>
+                                </div>
                             </span>
-                            <div v-if="team.games[0][Object.keys(team.games[0])[0]].some(element => element.live)"
-                                class="rounded-full relative w-4 h-4">
-                                <div
-                                    class="animate-ping absolute -mt-0.5 inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75">
-                                </div>
-                                <div class="z-20 mx-auto my-auto mt-1 animate-none rounded-full h-3 w-3 bg-red-500">
-                                </div>
-                            </div>
-                        </span>
-                        <ChevronUpIcon class="w-5 h-5" :class="[
-                            open ? 'transform rotate-180' : '',
-                            club.content.classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1) ? 'text-gray-500' : 'text-indigo-900',
-                        ]" />
-                    </DisclosureButton>
-                    <DisclosurePanel static v-show="team.gClassID === teamClassID"
-                        class="px-4 pt-4 pb-2 text-sm text-gray-500 bg-indigo-100 rounded-b-lg">
-                        <div v-for="(subTeam, index) in team.games" :key="Object.keys(subTeam)[0]">
+                            <ChevronUpIcon class="w-5 h-5 shrink-0" :class="[
+                                open ? 'transform rotate-180' : '',
+                                club.content.classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1) ? 'text-gray-500' : 'text-primary-content',
+                            ]" />
+                        </DisclosureButton>
+                        <DisclosurePanel static v-show="team.gClassID === teamClassID"
+                            class="px-4 pt-4 pb-2 text-sm bg-primary bg-opacity-20 rounded-b-lg">
+                            <div v-for="(subTeam, index) in team.games" :key="Object.keys(subTeam)[0]">
 
-                            <hr class="bg-gray-400 text-black h-[1.5px]" :class="index === 0 ? '-mt-3' : ''" />
-                            <router-link v-if="Object.keys(subTeam)[0]" :to="
-                                'team#' +
-                                Object.keys(subTeam)[0] +
-                                ';' +
-                                team.gClassID +
-                                ';' +
-                                clubInfo.no
-                            "
-                                class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900">
-                                Zum Team</router-link>
-                            <div id="league-info">
-                                <!-- Information about how many games and button to team component -->
-                            </div>
-                            <Match v-for="match in subTeam[Object.keys(subTeam)[0]]" :key="match.gID" :match="match"
-                                :teamID="Object.keys(subTeam)[0]" :teamClassID="team.gClassID"></Match>
-                            <div id="no-data" v-show="!subTeam[Object.keys(subTeam)[0]].length" class="mb-2">
-                                <div id="no-future-matches" v-show="!showAll">
-                                    Keine zukünftigen Spiele
+                                <hr class="bg-gray-400 text-black h-[1.5px]" :class="index === 0 ? '-mt-3' : ''" />
+                                <router-link v-if="Object.keys(subTeam)[0]" :to="
+                                    'team#' +
+                                    Object.keys(subTeam)[0] +
+                                    ';' +
+                                    team.gClassID +
+                                    ';' +
+                                    clubInfo.no
+                                " class="ml-auto mr-0 w-fit block underline-offset-2 underline text-base-content hover:opacity-50">
+                                    Zum Team</router-link>
+                                <div id="league-info">
+                                    <!-- Information about how many games and button to team component -->
                                 </div>
-                                <div v-show="showAll">
-                                    Keine Spiele in dieser Klasse
+                                <Match v-for="match in subTeam[Object.keys(subTeam)[0]]" :key="match.gID" :match="match"
+                                    :teamID="Object.keys(subTeam)[0]" :teamClassID="team.gClassID"></Match>
+                                <div id="no-data" v-show="!subTeam[Object.keys(subTeam)[0]].length" class="mb-2">
+                                    <div id="no-future-matches" v-show="!showAll">
+                                        Keine zukünftigen Spiele
+                                    </div>
+                                    <div v-show="showAll">
+                                        Keine Spiele in dieser Klasse
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </DisclosurePanel>
-                </Disclosure>
-            </div>
-            <div v-else
-                class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2">
-                <div v-for="i in 10" class="p-3 bg-gray-300 rounded-lg my-1 flex">
-                    <div class="animate-pulse rounded-lg bg-gray-400 h-3 sm:w-44 w-16">
-                    </div>
-                    <div class="animate pulse rounded-full bg-gray-400 h-3 sm:w-44 w-3 ml-auto mr-2">
-                    </div>
+                        </DisclosurePanel>
+                    </Disclosure>
                 </div>
+                <div v-else class="overflow-auto max-h-[50%] w-full mx-auto rounded-2xl">
+                    <div v-for="i in 10" class="p-3 bg-gray-300 rounded-lg my-1 flex">
+                        <div class="animate-pulse rounded-lg bg-gray-400 h-3 sm:w-44 w-16">
+                        </div>
+                        <div class="animate pulse rounded-full bg-gray-400 h-3 sm:w-44 w-3 ml-auto mr-2">
+                        </div>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>
@@ -180,7 +169,7 @@ import {
     StatusOfflineIcon,
     UserGroupIcon,
 } from "@heroicons/vue/solid";
-import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/outline";
+import { StarIcon as StarIconOutline, ShareIcon, GlobeAltIcon } from "@heroicons/vue/outline";
 import { Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 
 // helper components
@@ -193,7 +182,7 @@ import Period from "./helpers/Period.vue";
 
 // helper functions
 import { fetchTeamID, fetchTeamGames, fetchClub, fetchClassGames } from "./functions/fetchData.js";
-import { filterGames } from "./functions/misc.js";
+import { filterGames, isDark } from "./functions/misc.js";
 const route = useRoute();
 
 const img_loaded = ref(true);
@@ -212,6 +201,8 @@ const classes = ref([]);
 const props = defineProps(["club_no"]);
 const teamClassID = ref(null);
 const showAll = ref(false);
+
+const is_dark = ref(isDark());
 
 const emit = defineEmits(["updateFavorites", "disclosure-update"]);
 
@@ -380,7 +371,7 @@ const initData = async () => {
     club_json = club_json[0];
 
     period_selected.value = period;
-    
+
     Promise.all(club_json.content.classes.map(async (club_class) => {
 
         const team_ids = await fetchTeamID(club_class.gClassID, club_json.head.name);
@@ -508,6 +499,7 @@ window.addEventListener('offline', () => {
 });
 
 onMounted(async () => {
+    is_dark.value = isDark();
     await fetchClubInfo();
     console.log("ClubInfo No: " + clubInfo.value.no);
     console.log("ClubInfo: " + JSON.stringify(clubInfo.value));

@@ -27,7 +27,7 @@
         <AnnotationIcon
             v-if="type == 'match'"
             v-show="game.robotextstate == 'generated'"
-            class="h-6 mt-1 hover:text-indigo-500 cursor-pointer"
+            class="h-6 mt-1 hover:text-accent cursor-pointer"
             @click="getText = !getText"
         />
         <a
@@ -39,7 +39,7 @@
             "
         >
             <DocumentIcon
-                class="h-6 mt-1 hover:text-indigo-500"
+                class="h-6 mt-1 hover:text-accent"
                 :class="game.robotextstate == 'generated' ? '' : 'ml-auto'"
             />
         </a>
@@ -62,18 +62,18 @@
             id="favorite"
         >
             <StarIconOutline
-                class="h-6 w-6 mt-1 ml-2 hover:text-indigo-500 cursor-pointer"
+                class="h-6 w-6 mt-1 ml-2 hover:text-accent cursor-pointer"
                 v-show="!isFavorite()"
                 @click="addFavorite"
             />
             <StarIcon
-                class="h-6 w-6 mt-1 ml-2 text-indigo-500 hover:text-black cursor-pointer"
+                class="h-6 w-6 mt-1 ml-2 text-accent hover:text-black cursor-pointer"
                 v-show="isFavorite()"
                 @click="removeFavorite"
             />
         </div>
         <ShareIcon
-            class="h-6 w-6 mt-1 hover:text-indigo-500 float-right cursor-pointer"
+            class="h-6 w-6 mt-1 hover:text-accent float-right cursor-pointer"
             @click="share"
         />
     </div>

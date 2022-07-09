@@ -1,6 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
-  plugins: [require("@tailwindcss/typography"), require("daisyui")],
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
@@ -15,5 +14,7 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/line-clamp'),
+    require("@tailwindcss/typography"),
+    require("daisyui"),
   ],
 }

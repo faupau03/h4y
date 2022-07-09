@@ -1,9 +1,10 @@
 <template>
     <NavBar title="Suche" subtitle="Verein/Halle"/>
     <div class="flex justify-center w-full pt-20">
-        <div class="flex w-4/6">
-            <SearchIcon class="ml-auto h-6 mt-2 text-neutral-800 mr-0 z-10" />
-            <input type="text" autocomplete="off" class="-ml-8 w-full pl-8 rounded-full"  @input="event => fetchSearch(event.target.value)">
+        <div class="flex w-4/6 items-center">
+            <SearchIcon class="ml-auto h-6 text-neutral-800 mr-0 z-10" />
+            <input type="text" autocomplete="off" class="input -ml-8 w-full pl-8 rounded-full shadow
+            focus:ring-0 focus:outline-none"  @input="event => fetchSearch(event.target.value)">
         </div>
     </div>
     <div class="w-4/6 mx-auto">
@@ -12,7 +13,7 @@
         -->
         <div class="rounded-lg w-full mt-5 text-sm text-gray-500 uppercase font-bold">Verein</div>
         <div id="clubs">
-            <div v-for="item in data_clubs" class="transform transition-all duration-300 scale-100 hover:scale-95 rounded-lg w-full border-neutral-300 border p-2 my-2" @click="$router.push('club#' + item.no)">
+            <div v-for="item in data_clubs" class="bg-base-300 hover:brightness-90 border-none text-base-content transform transition-all duration-300 scale-100 hover:scale-95 rounded-lg w-full border-neutral-300 border p-2 my-2" @click="$router.push('club#' + item.no)">
                 {{ item.lname }}
             </div>
             <div v-show="data_clubs.length < 1" class="text-sm text-gray-500">
@@ -21,7 +22,7 @@
         </div>
         <div class="rounded-lg w-full mt-5 text-sm text-gray-500 uppercase font-bold">Halle</div>
         <div id="gyms">
-            <div v-for="item in data_gyms" class="transform transition-all duration-300 scale-100 hover:scale-95 rounded-lg w-full border-neutral-300 border p-2 my-2" @click="$router.push('gym#' + item.id)">
+            <div v-for="item in data_gyms" class="bg-base-300 hover:shadow-inner border-none transform transition-all duration-300 scale-100 hover:scale-95 rounded-lg w-full border-neutral-300 border p-2 my-2" @click="$router.push('gym#' + item.id)">
                 {{ item.lname }}
             </div>
             <div v-show="data_gyms.length < 1" class="text-sm text-gray-500">

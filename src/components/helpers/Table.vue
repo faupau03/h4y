@@ -1,5 +1,5 @@
 <template>
-    <div class="flex p-1 m-1 bg-indigo-100 rounded-lg">
+    <div class="flex p-1 my-0.5 bg-secondary bg-opacity-20 rounded-lg">
         <div class="text-sm mr-1">
             {{ team_score.tabScore }}
         </div>

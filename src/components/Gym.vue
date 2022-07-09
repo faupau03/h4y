@@ -1,62 +1,60 @@
 <template>
-    <div class="w-full h-full">
-        <NavBar title="Halle" subtitle="Spielübersicht"/>
-        <div
-            id="gym-header"
-            class="grid w-5/6 m-auto border border-gray-100 shadow-xl rounded-lg relative"
-        >
-            <Header
-                v-if="gym"
-                :type="'gym'"
-                :gym="gym"
-                :gym_id="gym_id"
-                @updateFavorites="emit('updateFavorites')"
-            ></Header>
-            <div id="gym-content" class="flex mb-5">
-                <div id="club-info" class="mx-5 line-clamp-4 break-words w-full">
-                    
-                    <div class="font-bold text-lg">
-                        {{ gym.name }}
-                    </div>
-                    <div class="text-gray-700 -mt-1 underline hover:text-gray-900">
-                        <!-- TODO: add link to org -->
-                        <!-- {{ og }} -->
-                        <router-link v-if="og.length" :to="'/leagues#' + og.find(findOg).id + ';' + og.find(findOg).v_id">{{ gym.org }}</router-link>
-                    </div>
-                    <div id="info" class="grid text-xs sm:text-base xs:text-sm">
-                        <div>Nummer: {{ gym.no }}</div>
-                        <div>
-                            Straße: {{ gym.street }}
+    <div class="min-h-full w-full scrolled">
+        <div class="w-full grid gap-4">
+            <NavBar title="Halle" subtitle="Spielübersicht" />
+            <div id="gym-header" class="card bg-base-100 grid w-5/6 m-auto shadow-xl relative">
+                <Header v-if="gym" :type="'gym'" :gym="gym" :gym_id="gym_id" @updateFavorites="emit('updateFavorites')">
+                </Header>
+                <div id="gym-content" class="flex mb-5">
+                    <div id="club-info" class="mx-5 line-clamp-4 break-words w-full">
+
+                        <div class="font-bold text-lg">
+                            {{ gym.name }}
                         </div>
-                        <div>Ort: {{ gym.town }}</div>
-                        <div>
-                            Telefon: {{ gym.phone }}
+                        <div class="text-base-content -mt-1 underline hover:text-gray-900">
+                            <!-- TODO: add link to org -->
+                            <!-- {{ og }} -->
+                            <router-link v-if="og.length"
+                                :to="'/leagues#' + og.find(findOg).id + ';' + og.find(findOg).v_id">{{ gym.org }}
+                            </router-link>
                         </div>
-                    </div>
-                    <button @click="maps()" class="rounded flex w-fit p-1  sm:text-base text-xs underline-none text-white items-center hover:bg-indigo-300 hover:text-indigo-900 bg-indigo-500">
+                        <div id="info" class="grid text-xs sm:text-base xs:text-sm">
+                            <div>Nummer: {{ gym.no }}</div>
+                            <div>
+                                Straße: {{ gym.street }}
+                            </div>
+                            <div>Ort: {{ gym.town }}</div>
+                            <div>
+                                Telefon: {{ gym.phone }}
+                            </div>
+                        </div>
+                        <button @click="maps()"
+                            class="btn btn-primary btn-sm flex w-fit p-1  sm:text-base text-xs underline-none items-center">
                             Öffnen in
                             <img class="h-6 ml-1" src="/icons/maps.png" alt="">
-                    </button>
-                    <div class="flex text-gray-700 my-2 flex-wrap text-xs sm:text-base xs:text-sm">
-                        <InformationCircleIcon class="h-5 mt-0.5 mr-1"/>{{ gym.wax}}
-                    </div>
-                    <div class="text-gray-800">
-                        Dateien:
-                    </div>
-                    <div class="bg-indigo-100 rounded w-full flex flex-wrap text-xs sm:text-base">
-                        <a  v-for="file in gym.files" :href="file.file" class="flex bg-indigo-200 p-1 rounded m-2 hover:bg-indigo-300">
-                            <DocumentIcon class="h-5 text-gray-700 mt-0.5"/>
-                            {{ file.type }}
-                        </a>
+                        </button>
+                        <div class="flex text-base-content my-2 flex-wrap text-xs sm:text-base xs:text-sm">
+                            <InformationCircleIcon class="h-5 mt-0.5 mr-1" />{{ gym.wax }}
+                        </div>
+                        <div class="card bg-secondary bg-opacity-50 p-2">
+                            <div
+                                class="w-full flex flex-wrap text-xs sm:text-base gap-2">
+                                <a v-for="file in gym.files" :href="file.file"
+                                    class="btn btn-sm btn-secondary p-1">
+                                    <DocumentIcon class="h-5 text-gray-700 mt-0.5" />
+                                    {{ file.type }}
+                                </a>
+
+                            </div>
+                        </div>
 
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="w-5/6 m-auto pb-24">
-            <div class="mt-3 flex justify-between gap-1 flex-wrap xs:flex-nowrap">
-                <h2 class="font-bold text-lg m-1">Spiele</h2>
-                <!-- <div class="text-sm m-2">
+            <div class="w-5/6 card bg-base-100 m-auto p-2 gap-2 mb-4">
+                <div class="mt-3 flex justify-between gap-1 flex-wrap xs:flex-nowrap">
+                    <h2 class="font-bold text-lg m-1">Spiele</h2>
+                    <!-- <div class="text-sm m-2">
                     Alle Spiele
                     <input
                         class="ml-1 mb-1 rounded"
@@ -67,64 +65,43 @@
                         @click="teamClassID ? getData(teamClassID) : null"
                     />
                 </div> -->
-                <div class="flex flex-wrap gap-2 justify-end">
-                    <Week @updateWeek="(id) => updateWeek(id)" :selected="week_selected" :list="week_list" :loading="loading"/>
-                <Period class="mr-0" @updatePeriod="(id) => updatePeriod(id)" :loading="loading" :selected="period_selected" :list="period_list"/>
+                    <div class="flex flex-wrap gap-2 justify-end">
+                        <Week @updateWeek="(id) => updateWeek(id)" :selected="week_selected" :list="week_list"
+                            :loading="loading" />
+                        <Period class="mr-0" @updatePeriod="(id) => updatePeriod(id)" :loading="loading"
+                            :selected="period_selected" :list="period_list" />
+                    </div>
                 </div>
-            </div>
-            <div
-                class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2"
-            >
-                <Disclosure
-                    v-for="team, index in teams"
-                    :key="team.gClassID + week_selected"
-                    
-                    
-                >
-                    <DisclosureButton
-                      
-                        class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-indigo-900 bg-indigo-100 rounded-t-lg focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75"
-                        :class="index == 0 ? '' : 'mt-1'"
-                    >
-                        <span>{{ team.gClassSname }}</span>
-                        <!-- <ChevronUpIcon
+                <div class="overflow-auto max-h-[50%] w-full">
+                    <Disclosure v-for="team, index in teams" :key="team.gClassID + week_selected">
+                        <DisclosureButton
+                            class="bg-primary text-sm leading-[1em] p-4 rounded-t-lg bg-opacity-75 w-full flex justify-start uppercase text-center text-primary-content flex-nowrap gap-3"
+                            :class="index == 0 ? '' : 'mt-1'">
+                            <span>{{ team.gClassSname }}</span>
+                            <!-- <ChevronUpIcon
                             class="w-5 h-5 text-indigo-900"
                             :class="[
                                 open ? 'transform rotate-180' : '',
                                 team.games.length ? '' : '!text-gray-500',
                             ]"
                         /> -->
-                    </DisclosureButton>
-                    <DisclosurePanel
-                        
-                        static
-                        v-if="team"
-                        class="px-4 pt-4 pb-2 text-sm text-gray-500 bg-indigo-100 rounded-b-lg"
-                    >
-                        <div>
-                            <hr
-                                class="bg-gray-400 text-black h-[1.5px] -mt-3"
-                            />
-                            <div id="league-info">
-                                <!-- Information about how many games and button to team component -->
+                        </DisclosureButton>
+                        <DisclosurePanel static v-if="team"
+                            class="px-4 pt-4 pb-2 text-sm bg-primary bg-opacity-20 rounded-b-lg">
+                            <div>
+                                <hr class="bg-gray-400 text-black h-[1.5px] -mt-3" />
+                                <div id="league-info">
+                                    <!-- Information about how many games and button to team component -->
+                                </div>
+                                <Match v-for="match in team.games" :key="match.gID" :match="match" :teamID="null"
+                                    :teamClassID="team.gClassID"></Match>
+                                <div id="no-data" v-show="!team.games.length" class="mb-2">
+                                    Keine Spiele
+                                </div>
                             </div>
-                            <Match
-                                v-for="match in team.games"
-                                :key="match.gID"
-                                :match="match"
-                                :teamID="null"
-                                :teamClassID="team.gClassID"
-                            ></Match>
-                            <div
-                                id="no-data"
-                                v-show="!team.games.length"
-                                class="mb-2"
-                            >
-                                Keine Spiele
-                            </div>
-                        </div>
-                    </DisclosurePanel>
-                </Disclosure>
+                        </DisclosurePanel>
+                    </Disclosure>
+                </div>
             </div>
         </div>
     </div>
@@ -157,6 +134,7 @@ import Week from "./helpers/Week.vue";
 import Period from "./helpers/Period.vue";
 import { fetchTeamID } from "./functions/fetchData";
 import MapsLoadingVue from "./helpers/MapsLoading.vue";
+import { isDark } from "./functions/misc.js";
 
 // helper functions
 
@@ -172,7 +150,8 @@ const week_selected = ref(null);
 const period_selected = ref(null);
 const period_list = ref([]);
 const teamClassID = ref(null);
-const props = defineProps(["gym_id","gym"]);
+const props = defineProps(["gym_id", "gym"]);
+const is_dark = ref(isDark());
 
 const emit = defineEmits(["updateFavorites", "disclosure-update"]);
 
@@ -189,7 +168,7 @@ const goDateBack = () => {
     fetchMatches();
 };
 const goDateForward = () => {
-    const index =  Object.keys(dateList.value).findIndex((element) => element == selected.value);
+    const index = Object.keys(dateList.value).findIndex((element) => element == selected.value);
     selected.value = Object.keys(dateList.value)[index + 1];
     fetchMatches();
 };
@@ -253,7 +232,7 @@ const fetchGym = async () => {
     }
     const response = await fetch(
         "https://spo.handball4all.de/service/if_g_json.php?cmd=gi&g=" +
-            gym_id.value
+        gym_id.value
     );
     const json = await response.json();
     gym.value = json[0].gymnasiumInfo;
@@ -272,22 +251,22 @@ const fetchMatches = async () => {
     let url;
     if (week_selected.value && period_selected.value) {
         url = "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
-                gym_id.value + "&do=" + week_selected.value + "&p=" + period_selected.value;
+            gym_id.value + "&do=" + week_selected.value + "&p=" + period_selected.value;
     }
-    else  if (week_selected.value) {
+    else if (week_selected.value) {
         url = "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
-                gym_id.value + "&do=" + week_selected.value;
+            gym_id.value + "&do=" + week_selected.value;
     }
     else if (period_selected.value) {
         url = "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
-                gym_id.value + "&p=" + period_selected.value;
+            gym_id.value + "&p=" + period_selected.value;
     }
     else {
         url = "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
-                gym_id.value + "&do=" + week_selected.value;
+            gym_id.value + "&do=" + week_selected.value;
     }
     const response = await fetch(url);
-    
+
     const json = await response.json();
     let teams_tmp = json[0].content.gList;
     teams.value = [];
@@ -321,13 +300,14 @@ watch(club_no_ref, async (newValue, oldValue) => {
 });
 
 
-const forceUpdate = async() => {
+const forceUpdate = async () => {
     await fetchGym();
     await fetchOg();
     await fetchMatches();
 }
 
 onMounted(async () => {
+    is_dark.value = isDark();
     await fetchGym();
     await fetchOg();
     await fetchMatches();

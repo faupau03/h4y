@@ -1,9 +1,9 @@
 <template>
 <div class="flex items-center">
-    <div @click="gym()" class="flex w-fit hover:cursor-pointer hover:text-indigo-500 border-r-[0.5px] mr-2 border-r-gray-600 text-ellipsis break-words">
+    <div @click="gym()" class="flex items-center gap-1 text-sm w-fit hover:cursor-pointer hover:text-accent border-r-[0.5px] mr-2 border-r-gray-600 text-ellipsis break-words">
         <LocationMarkerIcon class="h-6 w-6" />
         <div class="sm:flex">
-            <div class="w-fit mr-1">
+            <div class="xs:w-fit w-min mr-1">
             {{ name }}
         </div>
         <div class="hidden xs:block w-fit ml-1 mr-2">
@@ -13,7 +13,7 @@
         
         
     </div>
-    <button @click="maps()" class="rounded flex w-fit p-1  sm:text-base text-xs underline-none text-white items-center hover:bg-indigo-300 hover:text-indigo-900 bg-indigo-500">
+    <button @click="maps()" class="btn btn-sm btn-primary flex w-fit p-1  text-xs underline-none items-center">
             Öffnen in
             <img class="h-6 ml-1" src="/icons/maps.png" alt="">
     </button>

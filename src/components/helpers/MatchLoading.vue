@@ -1,11 +1,11 @@
 <template>
     <div
-        class="rounded-lg xs:h-[76px] sm:h-[48px] h-[92px] w-full bg-indigo-200 my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
+        class="bg-primary text-base-content rounded-lg py-4 bg-opacity-30 dark:brightness-150 items-center border-opacity-20  w-full  my-1 p-2 justify-between px-5 hover:scale-95 scale-100 transition-all"
     >
-        <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
+        <div class="grid grid-cols-3 sm:grid-cols-6 gap-1 w-full items-center">
             <div
                 id="teams"
-                class="text-black w-fit col-span-2 text-xs font-bold"
+                class=" w-fit col-span-2 text-xs font-bold"
             >
                 <!-- teams -->
                 <span
@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div id="location" class="flex text-black col-span-2 mt-1">
+            <div id="location" class="flex col-span-2 mt-1">
                 <!-- Gymnasium -->
                 <div
                     class="h-4 w-4 bg-gray-500 animate-pulse rounded-full mr-1 shrink-0"
@@ -51,7 +51,7 @@
                 </span>
             </div>
 
-            <div id="score" class="flex w-fit text-black">
+            <div id="score" class="flex w-fit">
                 <div class="min-w-[20px] mr-1 text-right">
                     <span
                         class="w-5 animate-pulse -mb-1 h-4 inline-block rounded bg-gray-500"

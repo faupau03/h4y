@@ -2,7 +2,7 @@
     <div class="w-full h-full">
         <div
             id="menu"
-            class="h-full z-10 pl-5 w-[calc(50%+4rem)] bg-indigo-200 transition-all duration-300 fixed"
+            class="h-full z-10 pl-5 w-[calc(50%+4rem)] bg-base-100 transition-all duration-300 fixed"
             :class="showMenu ? 'left-0' : '-left-1/2'"
         >
             <MenuAlt1Icon
@@ -19,7 +19,7 @@
                 <div
                     v-for="favorite in favorites"
                     v-show="favorite.type == 'club'"
-                    class="cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-indigo-600 h-9 break-all text-indigo-100 p-2 my-1 overflow-hidden"
+                    class="text-secondary-content cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-secondary h-9 break-all p-2 my-1 overflow-hidden"
                     :class="showMenu ? '' : 'ml-[calc(100%-3.2rem)] -mr-2'"
                     @click="selectFavorite(favorite)"
                 >
@@ -34,7 +34,7 @@
                 <div
                     v-for="favorite in favorites"
                     v-show="favorite.type == 'team'"
-                    class="cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-indigo-600 h-9 break-all text-indigo-100 p-2 my-1 overflow-hidden"
+                    class="text-secondary-content cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-secondary h-9 break-all  p-2 my-1 overflow-hidden"
                     :class="showMenu ? 'flex' : 'ml-[calc(100%-3.2rem)] -mr-2'"
                     @click="selectFavorite(favorite)"
                 >
@@ -52,7 +52,7 @@
                 <div
                     v-for="favorite in favorites"
                     v-show="favorite.type == 'gym'"
-                    class="cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-indigo-600 h-9 break-all text-indigo-100 p-2 my-1 overflow-hidden"
+                    class="text-secondary-content cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-secondary h-9 break-all p-2 my-1 overflow-hidden"
                     :class="showMenu ? 'flex' : 'ml-[calc(100%-3.2rem)] -mr-2'"
                     @click="selectFavorite(favorite)"
                 >
