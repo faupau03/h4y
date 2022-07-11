@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!loading && list && Object.keys(list).length > 1" class="btn-group flex shadow-large rounded-lg items-center">
+    <div v-if="!loading && list && Object.keys(list).length > 1" class="btn-group flex flex-nowrap shadow-large rounded-lg items-center">
         <button @click="goPeriodBack" :disabled="Object.keys(list).indexOf(String(selected)) == 0"
             class="btn btn-sm rounded-r-none w-8">
             <ChevronLeftIcon class="h-5 flex-none" />

@@ -88,7 +88,7 @@
         <!-- Other components like, match, gym, ... -->
         <div
             v-else
-            class="w-[calc(100%-4rem)] h-full ml-auto mr-0 flex justify-center items-center px-5"
+            class="w-[calc(100%-4rem)] h-[calc(100vh-4rem)] ml-auto mr-0 flex justify-center items-center px-5"
         >
             <span class="text-lg">
                 Noch keine Favoriten angelegt. <br />

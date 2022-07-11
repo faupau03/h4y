@@ -43,6 +43,10 @@
                                     <DocumentIcon class="h-5 text-gray-700 mt-0.5" />
                                     {{ file.type }}
                                 </a>
+                                <div class="btn btn-sm btn-secondary p-1 !text-base-content/50" disabled="true">
+                                    <!-- <DocumentIcon class="h-5 text-gray-700 mt-0.5" /> -->
+                                    Keine Dokumente
+                                </div>
 
                             </div>
                         </div>
@@ -51,7 +55,7 @@
                 </div>
             </div>
             <div class="w-5/6 card bg-base-100 m-auto p-2 gap-2 mb-4">
-                <div class="mt-3 flex justify-between gap-1 flex-wrap xs:flex-nowrap">
+                <div class="mt-3 flex justify-between gap-1 flex-wrap sm:flex-nowrap">
                     <h2 class="font-bold text-lg m-1">Spiele</h2>
                     <!-- <div class="text-sm m-2">
                     Alle Spiele
@@ -64,7 +68,7 @@
                         @click="teamClassID ? getData(teamClassID) : null"
                     />
                 </div> -->
-                    <div class="flex flex-wrap gap-2 justify-end">
+                    <div class="flex flex-wrap gap-2 sm:justify-end">
                         <Week @updateWeek="(id) => updateWeek(id)" :selected="week_selected" :list="week_list"
                             :loading="loading" />
                         <Period class="mr-0" @updatePeriod="(id) => updatePeriod(id)" :loading="loading"
@@ -100,6 +104,9 @@
                             </div>
                         </DisclosurePanel>
                     </Disclosure>
+                    <div id="no-data" v-show="teams.length < 1" class="mb-2">
+                        Keine Spiele
+                    </div>
                 </div>
             </div>
         </div>

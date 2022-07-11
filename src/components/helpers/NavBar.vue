@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-between items-center pt-3 mb-3 mx-10">
+    <div class="bg-base-100/30 flex justify-between items-center my-2 p-2 rounded-lg mx-10">
         <button @click="navBack" class="btn btn-ghost hover:text-accent h-10 w-10" aria-label="go page back">
             <ChevronLeftIcon class="flex-none h-10"/>
         </button>
