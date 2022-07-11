@@ -1,5 +1,4 @@
 <template>
-    <div class="min-h-full w-full scrolled">
         <div class="w-full grid gap-4">
             <NavBar title="Halle" subtitle="Spielübersicht" />
             <div id="gym-header" class="card bg-base-100 grid w-5/6 m-auto shadow-xl relative">
@@ -104,7 +103,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script setup lang="ts">

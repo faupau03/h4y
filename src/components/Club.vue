@@ -1,5 +1,4 @@
 <template>
-    <div class="min-h-full w-full scrolled bg-base-100/50">
         <div class="w-full grid gap-4">
             <NavBar title="Verein" subtitle="Spielübersicht" />
             <div id="club-header" class="grid w-5/6 m-auto relative bg-base-100 card shadow-xl">
@@ -151,7 +150,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script setup lang="ts">

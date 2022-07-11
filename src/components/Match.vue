@@ -18,117 +18,115 @@
         <meta name="twitter:image" content="og.png">
         <meta name="twitter:card" content="summary_large_image">
     </Head>
-    <div class="min-h-full w-full scrolled bg-base-100/50">
-        <div class="w-full grid gap-4 ">
-            <NavBar title="Spiel" subtitle="Info" class="" />
-            <div id="game-header" class="card grid w-5/6 m-auto shadow-xl bg-base-100 relative">
-                <Header v-if="!loading" :type="'match'" :game="game" :game_id="gameID" :team_id="teamID"
-                    :class_id="teamClassID"></Header>
-                <HeaderLoading v-else />
+    <div class="w-full grid gap-4 ">
+        <NavBar title="Spiel" subtitle="Info" class="" />
+        <div id="game-header" class="card grid w-5/6 m-auto shadow-xl bg-base-100 relative">
+            <Header v-if="!loading" :type="'match'" :title="scores.head.name" :game="game" :game_id="gameID"
+                :team_id="teamID" :class_id="teamClassID"></Header>
+            <HeaderLoading v-else />
 
-                <div id="game-info" class="">
-                    <div class="justify-center mx-2">
-                        <div v-if="!loading" class="font-bold text-base sm:text-2xl">
-                            <div class="flex items-center">
-                                <div class="w-1/2 text-center">
+            <div id="game-info" class="">
+                <div class="justify-center mx-2">
+                    <div v-if="!loading" class="font-bold text-base sm:text-2xl">
+                        <div id="title" class="flex xs:hidden font-bold text-sm">
+                            {{ scores.head.name }}
+                        </div>
+                        <div class="flex justify-center w-full">
+                            <div class="flex flex-wrap justify-items-center w-fit items-center">
+                                <div class="text-right sm:px-10 xs:px-2 flex flex-wrap">
                                     {{ game.gHomeTeam }}
                                 </div>
                                 <div class="text-center h-min">
                                     :
                                 </div>
-                                <div class="w-1/2 text-center">
+                                <div class="text-left sm:px-10 xs:px-2 text-clip">
                                     {{ game.gGuestTeam }}
                                 </div>
                             </div>
                         </div>
-                        <div v-else class="flex font-bold text-xl sm:text-2xl rounded animate-pulse">
-                            <div class="h-8 w-24 mx-1 bg-gray-400 rounded-lg">
 
-                            </div>
-                            :
-                            <div class="h-8 w-24 mx-1 bg-gray-400 rounded-lg"></div>
-                        </div>
-
-                        <div v-if="!loading" class="ml-2 text-sm sm:text-base">
-                            {{ scores.head.name }}
-                        </div>
-                        <span v-else class="rounded h-4 w-40 bg-gray-300 m-1 animate-pulse"></span>
                     </div>
-                    <div id="game-class" class="text-md sm:text-sl justify-center flex"></div>
-                    <div class="font-bold text-3xl sm:text-4xl my-4 justify-center flex" v-if="!loading">
-                        {{
-                                !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.home_score
-                                    ? tickerScore.gameScore.home_score
-                                    : game.gHomeGoals
-                        }}
-                        :
-                        {{
-                                !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.guest_score
-                                    ? tickerScore.gameScore.guest_score
-                                    : game.gGuestGoals
-                        }}
-                    </div>
-                    <div v-else class="font-bold text-3xl sm:text-4xl my-4 justify-center flex animate-pulse">
-                        <div class="h-8 w-10 bg-gray-300 rounded-lg mt-2 mx-1">
+                    <div v-else class="flex font-bold text-xl sm:text-2xl rounded animate-pulse">
+                        <div class="h-8 w-24 mx-1 bg-gray-400 rounded-lg">
 
                         </div>
                         :
-                        <div class="h-8 w-10 bg-gray-300 rounded-lg mt-2 mx-1">
+                        <div class="h-8 w-24 mx-1 bg-gray-400 rounded-lg"></div>
+                    </div>
+                    <span v-else class="rounded h-4 w-40 bg-gray-300 m-1 animate-pulse"></span>
+                </div>
+                <div id="game-class" class="text-md sm:text-sl justify-center flex"></div>
+                <div class="font-bold text-3xl sm:text-4xl my-4 justify-center flex" v-if="!loading">
+                    {{
+                            !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.home_score
+                                ? tickerScore.gameScore.home_score
+                                : game.gHomeGoals
+                    }}
+                    :
+                    {{
+                            !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.guest_score
+                                ? tickerScore.gameScore.guest_score
+                                : game.gGuestGoals
+                    }}
+                </div>
+                <div v-else class="font-bold text-3xl sm:text-4xl my-4 justify-center flex animate-pulse">
+                    <div class="h-8 w-10 bg-gray-300 rounded-lg mt-2 mx-1">
 
-                        </div>
                     </div>
-                    <div class="m-1 sm:m-5">
-                        <div v-if="game">
-                            <Maps class="w-full" :location="
-                                game.gGymnasiumName +
-                                '+' +
-                                game.gGymnasiumStreet +
-                                '+' +
-                                game.gGymnasiumPostal +
-                                '+' +
-                                game.gGymnasiumTown
-                            " :name="game.gGymnasiumName" :town="game.gGymnasiumTown" :id="game.gGymnasiumID" />
-                        </div>
-                        <MapsLoading v-else class="w-full" />
+                    :
+                    <div class="h-8 w-10 bg-gray-300 rounded-lg mt-2 mx-1">
+
                     </div>
                 </div>
-            </div>
-            <Ticker v-if="game && !loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live" />
-            <div id="scores" class="card bg-base-100 w-5/6 m-auto shadow-xl relative p-2">
-                <div v-show="loading ? true : scores.content.score.length" class="flex mt-1">
-                    <span class="font-bold ml-2"> Tabelle </span>
-                    <span class="hidden sm:block ml-auto mr-9"> Tore </span>
-                    <span class="sm:ml-0 ml-auto mr-5"> Spiele </span>
-                    <span class="mr-2"> Punkte </span>
-                    <span class="sm:block hidden">+/-</span>
-                </div>
-                <div v-if="loading">
-                    <TableLoading v-for="i in 10" :key="i"> </TableLoading>
-                </div>
-                <div v-else>
-                    <Table v-for="team_score in scores.content.score" :key="team_score.tabTeamID"
-                        :team_score="team_score">
-                    </Table>
-                </div>
-            </div>
-            <div class="card bg-base-100 w-5/6 m-auto shadow-xl relative p-2 mb-4">
-                <div class="mt-3 flex justify-between">
-                    <h2 class="font-bold text-base m-1">
-                        Spiele in dieser Klasse
-                    </h2>
-                    <Cal class="ml-auto mr-1 mt-1" :games="classGames"
-                        :name="scores.head ? scores.head.name + (showAll ? ' (Alle Spiele)' : '') : ''"
-                        type="multiple" />
-                    <div class="text-sm m-2">
-                        Alle Spiele
-                        <input class="ml-1 mb-1 rounded" type="checkbox" name="" id="" v-model="showAll"
-                            @click="teamClassID ? getData(teamClassID) : null" />
+                <div class="m-1 sm:m-5">
+                    <div v-if="game">
+                        <Maps class="w-full" :location="
+                            game.gGymnasiumName +
+                            '+' +
+                            game.gGymnasiumStreet +
+                            '+' +
+                            game.gGymnasiumPostal +
+                            '+' +
+                            game.gGymnasiumTown
+                        " :name="game.gGymnasiumName" :town="game.gGymnasiumTown" :id="game.gGymnasiumID" />
                     </div>
+                    <MapsLoading v-else class="w-full" />
                 </div>
-                <ClassGames v-if="!loading" :games="classGames" :loading="loading" :showAll="showAll"
-                    :teamClassID="teamClassID" @gameUpdate="(gID, tID, cID) => forceUpdate(gID, tID, cID)"></ClassGames>
-                <ClassGamesLoading v-else />
             </div>
+        </div>
+        <Ticker v-if="game && !loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live" />
+        <div id="scores" class="card bg-base-100 w-5/6 m-auto shadow-xl relative p-2">
+            <div v-show="loading ? true : scores.content.score.length" class="flex mt-1">
+                <span class="font-bold ml-2"> Tabelle </span>
+                <span class="hidden sm:block ml-auto mr-9"> Tore </span>
+                <span class="sm:ml-0 ml-auto mr-5"> Spiele </span>
+                <span class="mr-2"> Punkte </span>
+                <span class="sm:block hidden">+/-</span>
+            </div>
+            <div v-if="loading">
+                <TableLoading v-for="i in 10" :key="i"> </TableLoading>
+            </div>
+            <div v-else>
+                <Table v-for="team_score in scores.content.score" :key="team_score.tabTeamID" :team_score="team_score">
+                </Table>
+            </div>
+        </div>
+        <div class="card bg-base-100 w-5/6 m-auto shadow-xl relative p-2 mb-4">
+            <div class="mt-3 flex justify-between">
+                <h2 class="font-bold text-base m-1">
+                    Spiele in dieser Klasse
+                </h2>
+                <Cal class="ml-auto mr-1 mt-1" :games="classGames"
+                    :name="scores.head ? scores.head.name + (showAll ? ' (Alle Spiele)' : '') : ''" type="multiple" />
+                <div class="text-sm m-2">
+                    Alle Spiele
+                    <input class="ml-1 mb-1 rounded" type="checkbox" name="" id="" v-model="showAll"
+                        @click="teamClassID ? getData(teamClassID) : null" />
+                </div>
+            </div>
+            <ClassGames v-if="!loading" :games="classGames" :loading="loading" :showAll="showAll"
+                :teamClassID="teamClassID" @gameUpdate="(gID, tID, cID) => forceUpdate(gID, tID, cID)"></ClassGames>
+            <ClassGamesLoading v-else />
         </div>
     </div>
 </template>

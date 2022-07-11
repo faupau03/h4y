@@ -11,6 +11,9 @@
             </span>
         </div>
 
+        <div id="title" class="hidden xs:flex font-bold md:text-lg sm:text-base text-sm">
+            {{ title }}
+        </div>
         <div
             v-if="type == 'match'"
             v-show="game.live == true"
@@ -73,7 +76,7 @@
             />
         </div>
         <ShareIcon
-            class="h-6 w-6 mt-1 hover:text-accent float-right cursor-pointer"
+            class="h-6 w-6 mt-1 hover:text-accent float-right cursor-pointer flex-none"
             @click="share"
         />
     </div>
@@ -112,6 +115,7 @@ const props = defineProps([
     "team_id",
     "game_id",
     "gym_id",
+    "title",
 ]);
 
 const isFavorite = () => {

@@ -17,8 +17,8 @@
             </div>
             <div v-else class="sm:mx-10 mx-3">
                 <div v-if="!games_loading">
-                    <h1 class="text-3xl font-bold mt-4">{{ name }}</h1>
-                    <p class="text-sm text-gray-500 uppercase font-bold mb-4">{{ league }}</p>
+                    <h1 class="text-3xl font-bold text-base-200-content mt-4">{{ name }}</h1>
+                    <p class="text-sm text-base-200-content uppercase mb-4">{{ league }}</p>
                 </div>
                 <div v-else>
                     <div class="flex flex-wrap mt-4 gap-2">

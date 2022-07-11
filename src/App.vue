@@ -67,15 +67,19 @@ onMounted(() => {
     <div class="h-screen w-screen overflow-x-hidden bg-base-200">
         <ReloadPWA />
         <div class="w-full h-[calc(100%-4rem)] overflow-y-scroll bg-gradient-to-r from-primary to-secondary">
+            <div class="min-h-full w-full scrolled bg-base-100/50">
+
+            
             <router-view v-slot="{ Component }">
                 <keep-alive include="['search', 'favorites']">
                     <component :is="Component" />
                 </keep-alive>
             </router-view>
+            </div>
         </div>
-        <div class="z-10 h-16 bg-base-300 fixed bottom-0 w-full flex">
+        <div class="z-10 h-16 bg-base-300 fixed bottom-0 w-full flex text-base-200-content  fill-base-200-content">
             <router-link to="leagues"
-                class="flex flex-grow items-center justify-center p-2 text-base-content hover:text-accent brightness-50 saturate-200"
+                class="flex flex-grow items-center justify-center p-2 hover:text-accent brightness-50 saturate-200"
                 :class="is_dark ? 'brightness-100' : ''" active-class="active text-accent">
                 <div class="text-center">
                     <span class="block h-8 text-3xl leading-8">
@@ -85,7 +89,7 @@ onMounted(() => {
                 </div>
             </router-link>
             <router-link to="favorites" active-class="active text-accent" :class="is_dark ? 'brightness-100' : ''"
-                class="flex flex-grow items-center justify-center p-2 text-base-content hover:text-accent brightness-50 saturate-200 dark:brightness-100">
+                class="flex flex-grow items-center justify-center p-2 hover:text-accent brightness-50 saturate-200 dark:brightness-100">
                 <div class="text-center">
                     <span class="block h-8 text-3xl leading-8">
                         <StarIcon class="h-7 w-7 mx-auto" />
@@ -94,7 +98,7 @@ onMounted(() => {
                 </div>
             </router-link>
             <router-link to="search" :class="is_dark ? 'brightness-100' : ''"
-                class="flex flex-grow items-center justify-center p-2 text-base-content hover:text-accent brightness-50 saturate-200 dark:brightness-100"
+                class="flex flex-grow items-center justify-center p-2 hover:text-accent brightness-50 saturate-200 dark:brightness-100"
                 active-class="active text-accent">
                 <div class="text-center">
                     <span class="block h-8 text-3xl leading-8">
@@ -105,7 +109,7 @@ onMounted(() => {
             </router-link>
 
             <router-link v-if="isTab && show_last_page" :to="last_tab"
-                class="flex flex-grow items-center justify-center p-2 hover:text-accent  text-base-content fill-base-content hover:fill-accent brightness-50 saturate-200 dark:brightness-100"
+                class="flex flex-grow items-center justify-center p-2 hover:text-accent hover:fill-accent brightness-50 saturate-200 dark:brightness-100"
                 :class="(now_tab.includes('team') || now_tab.includes('match') || now_tab.includes('gym') || now_tab.includes('club')) ? 'text-accent fill-accent active' : '', is_dark ? 'brightness-100' : ''">
                 <div class="text-center">
                     <span class="block h-8 text-3xl leading-8">

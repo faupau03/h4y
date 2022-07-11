@@ -1,12 +1,12 @@
 <template>
-    <div class="w-full bg-base-100/50 pb-5">
+    <div class="w-full pb-5">
         <div class="flex justify-between items-center pt-3 mb-3 mx-10">
             <button class="text-base-200 h-6 w-6 opacity-[0%]" disabled>
                 <XIcon />
             </button>
             <div class="text-center">
-                <h1 class="text-3xl font-bold">{{ title }}</h1>
-                <p class="text-sm text-gray-500 uppercase font-bold">
+                <h1 class="text-3xl text-base-200-content font-bold">{{ title }}</h1>
+                <p class="text-sm text-base-200-content uppercase">
                     {{ subtitle }}
                 </p>
             </div>
