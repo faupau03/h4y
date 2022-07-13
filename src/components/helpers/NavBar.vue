@@ -1,7 +1,7 @@
 <template>
     <div class="bg-base-100/30 flex justify-between items-center my-2 p-2 rounded-lg mx-10">
-        <button @click="navBack" class="btn btn-ghost hover:text-accent h-10 w-10" aria-label="go page back">
-            <ChevronLeftIcon class="flex-none h-10"/>
+        <button @click="navBack" class="btn btn-sm sm:btn-md btn-ghost" aria-label="go page back">
+            <ChevronLeftIcon class="flex-none sm:h-10"/>
         </button>
         <div class="text-center">
             <h1 class="text-3xl text-base-200-content font-bold">{{ title }}</h1>
@@ -9,7 +9,7 @@
                 {{ subtitle }}
             </p>
         </div>
-        <router-link class="btn btn-ghost hover:text-accent disabled:text-gray-500 h-6 w-6" aria-label="settings" to="settings">
+        <router-link class="btn btn-sm sm:btn-md btn-ghost disabled:text-gray-500" aria-label="settings" to="settings">
             <CogIcon class="flex-none h-6"/>
         </router-link>
     </div>

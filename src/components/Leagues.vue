@@ -22,12 +22,12 @@
                 </div>
                 <div v-else>
                     <div class="flex flex-wrap mt-4 gap-2">
-                        <div class="w-60 h-8 rounded-lg bg-gray-300 animate-pulse"></div>
-                        <div class="w-48 h-8 rounded-lg bg-gray-300 animate-pulse"></div>
+                        <div class="w-60 h-8 rounded-lg bg-base-100 animate-pulse"></div>
+                        <div class="w-48 h-8 rounded-lg bg-base-100 animate-pulse"></div>
                     </div>
                     <div class="flex flex-wrap mb-3 gap-2 mt-1">
-                        <div class="w-64 h-4 rounded-lg bg-gray-300 animate-pulse"></div>
-                        <div class="w-44 h-4 rounded-lg bg-gray-300 animate-pulse"></div>
+                        <div class="w-64 h-4 rounded-lg bg-base-100 animate-pulse"></div>
+                        <div class="w-44 h-4 rounded-lg bg-base-100 animate-pulse"></div>
 
                     </div>
                 </div>
@@ -113,11 +113,11 @@
                         </Disclosure>
                     </div>
                     <div v-else
-                        class="overflow-auto max-h-[50%] w-full mx-auto bg-white rounded-2xl border border-gray-100 shadow-xl p-2">
-                        <div v-for="i in 10" class="p-3 bg-gray-300 rounded-lg my-1 flex">
-                            <div class="animate-pulse rounded-lg bg-gray-400 h-3 sm:w-44 w-16">
+                        class="overflow-auto max-h-[50%] w-full mx-auto">
+                        <div v-for="i in 10" class="p-3 h-12 bg-base-200 rounded-lg my-1 flex items-center">
+                            <div class="animate-pulse rounded-lg bg-base-100 h-3 sm:w-44 w-16">
                             </div>
-                            <div class="animate pulse rounded-full bg-gray-400 h-3 sm:w-44 w-3 ml-auto mr-2">
+                            <div class="animate pulse rounded-full bg-base-100 h-3 sm:w-44 w-3 ml-auto mr-2">
                             </div>
                         </div>
 

@@ -2,7 +2,7 @@
 
     <div class="flex items-stretch">
         <div class="dropdown dropdown-end">
-            <div tabindex="0" class="m-1 btn">Change Color</div>
+            <div tabindex="0" class="btn">Change Color</div>
             <ul tabindex="0" class="h-60 gap-2 overflow-scroll p-2 shadow menu dropdown-content bg-base-200 rounded-box w-52"
                 data-choose-theme="">
                 <li @click="updateTheme(theme)" v-for="theme in themes"><a :data-set-theme="theme" :data-theme="theme" class="text-base-content" :class="actualTheme == theme ? 'outline outline-2 outline-base-content' : ''">
@@ -31,9 +31,8 @@ onMounted(() => {
 const updateTheme = (theme) => {
     actualTheme.value = theme;
     console.log(theme);
-    let color = getComputedStyle(document.documentElement).getPropertyValue('--a');
-    let color_hex = hslToHex(color[0], color[1], color[2]);
-    document.querySelector('meta[name="theme-color"]').setAttribute("content", color_hex);
+    let color = getComputedStyle(document.documentElement).getPropertyValue('--b2');
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", "hsl(" + color + ")");
     console.log(color);
 };
 

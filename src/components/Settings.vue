@@ -1,8 +1,8 @@
 <template>
     <div class="w-full pb-5">
         <div class="flex justify-between items-center pt-3 mb-3 mx-10">
-            <button class="text-base-200 h-6 w-6 opacity-[0%]" disabled>
-                <XIcon />
+            <button class="btn btn-ghost h-6 w-6 opacity-[0%]" disabled>
+                <XIcon class="text-base-200-content"/>
             </button>
             <div class="text-center">
                 <h1 class="text-3xl text-base-200-content font-bold">{{ title }}</h1>
@@ -10,9 +10,9 @@
                     {{ subtitle }}
                 </p>
             </div>
-            <button @click="closeSettings" class="hover:text-accent h-6 w-6"
+            <button @click="closeSettings" class="btn btn-sm sm:btn-md btn-ghost text-base-200-content"
                 aria-label="settings">
-                <XIcon />
+                <XIcon class="h-6 w-6"/>
             </button>
         </div>
         <div class="w-5/6 grid gap-4 p-4 justify-center mx-auto card bg-base-100 shadow-xl">

@@ -40,10 +40,10 @@
                                 class="w-full flex flex-wrap text-xs sm:text-base gap-2">
                                 <a v-for="file in gym.files" :href="file.file"
                                     class="btn btn-sm btn-secondary p-1">
-                                    <DocumentIcon class="h-5 text-gray-700 mt-0.5" />
+                                    <DocumentIcon class="h-5 text-accent mt-0.5" />
                                     {{ file.type }}
                                 </a>
-                                <div class="btn btn-sm btn-secondary p-1 !text-base-content/50" disabled="true">
+                                <div v-if="!gym.files || gym.files.length < 1" class="btn btn-sm btn-secondary p-1 shadow-lg !text-base-content/50" disabled="true">
                                     <!-- <DocumentIcon class="h-5 text-gray-700 mt-0.5" /> -->
                                     Keine Dokumente
                                 </div>

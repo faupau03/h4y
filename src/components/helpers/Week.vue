@@ -1,5 +1,5 @@
 <template>
-    <div v-if=!loading class="btn-group flex flex-nowrap shadow-large rounded-lg items-center" :class="!selected ? 'bg-gray-300' : ''">
+    <div v-if="!loading && list && Object.keys(list).length >= 1"  class="btn-group flex flex-nowrap shadow-large rounded-lg items-center" :class="!selected ? 'bg-gray-300' : ''">
         <button @click="goDateBack" class="btn btn-sm rounded-r-none w-8" :disabled="Object.keys(list).indexOf(String(selected)) <= 0">
             <ChevronLeftIcon class="h-5 flex-none" />
         </button>
@@ -11,15 +11,14 @@
             <ChevronRightIcon class="h-5 flex-none" />
         </button>
     </div>
-    <div v-else
-        class="flex shadow-large rounded-lg bg-indigo-100 items-center bg-gray-300 text-gray-400 animate-pulse">
-        <button disabled class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400">
-            <ChevronLeftIcon class="h-5" />
+    <div v-else class="flex flex-nowrap shadow-large rounded-lg items-center" :class="loading ? 'animate-pulse' : ''">
+        <button disabled class="btn btn-sm rounded-r-none w-8">
+            <ChevronLeftIcon class="h-5 flex-none" />
         </button>
-        <div class="h-9 sm:w-32 w-28 bg-gray-300">
+        <div class="sm:w-28 w-24 h-8 bg-neutral/20">
         </div>
-        <button disabled class="p-2 rounded-lg hover:bg-indigo-200 disabled:bg-gray-300 disabled:text-gray-400">
-            <ChevronRightIcon class="h-5" />
+        <button disabled class="btn btn-sm rounded-l-none w-8">
+            <ChevronRightIcon class="h-5 flex-none" />
         </button>
     </div>
 </template>
