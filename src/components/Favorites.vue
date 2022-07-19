@@ -19,11 +19,14 @@
                 <div
                     v-for="favorite in favorites"
                     v-show="favorite.type == 'club'"
-                    class="text-secondary-content cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-secondary h-9 break-all p-2 my-1 overflow-hidden"
-                    :class="showMenu ? '' : 'ml-[calc(100%-3.2rem)] -mr-2'"
+                    class="btn btn-sm btn-secondary min-h-5 h-6 p-2 my-1 flex flex-nowrap whitespace-nowrap overflow-hidden text-clip overflow-hidden"
+                    :class="showMenu ? '' : 'ml-[calc(100%-4rem)] -mr-2 pl-5'"
                     @click="selectFavorite(favorite)"
+                    :title="favorite.name"
                 >
-                    {{ favorite.name }}
+                    <span class="overflow-hidden whitespace-nowrap">
+                        {{ favorite.name }}
+                    </span>
                 </div>
                 <p
                     class="font-bold"
@@ -34,29 +37,31 @@
                 <div
                     v-for="favorite in favorites"
                     v-show="favorite.type == 'team'"
-                    class="text-secondary-content cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-secondary h-9 break-all  p-2 my-1 overflow-hidden"
-                    :class="showMenu ? 'flex' : 'ml-[calc(100%-3.2rem)] -mr-2'"
+                    class="btn btn-sm  btn-secondary min-h-5 h-6 p-2 my-1 flex flex-nowrap overflow-hidden text-clip overflow-hidden"
+                    :class="showMenu ? 'flex' : 'ml-[calc(100%-4rem)] pl-6 -mr-2'"
                     @click="selectFavorite(favorite)"
+                    :title="favorite.name + ' ' + favorite.clubname"
                 >
                     <span class="ml-0 mr-auto">{{ favorite.name }}</span>
-                    <span class="ml-auto mr-0">
+                    <span class="ml-1 mr-0 overflow-hidden truncate">
                         {{ favorite.clubname }}
                     </span>
                 </div>
                 <p
                     class=" font-bold"
-                    :class="showMenu ? '' : 'ml-[calc(100%-2.5rem)] -mr-2'"
+                    :class="showMenu ? '' : 'ml-[calc(100%-4rem)] -mr-2 pl-6'"
                 >
                     Halle
                 </p>
                 <div
                     v-for="favorite in favorites"
                     v-show="favorite.type == 'gym'"
-                    class="text-secondary-content cursor-pointer rounded-lg shadow-2xl hover:scale-95 scale-100 transition all bg-secondary h-9 break-all p-2 my-1 overflow-hidden"
-                    :class="showMenu ? 'flex' : 'ml-[calc(100%-3.2rem)] -mr-2'"
+                    class="btn btn-sm  btn-secondary min-h-5 h-6 p-2 my-1 flex flex-nowrap overflow-hidden text-clip overflow-hidden"
+                    :class="showMenu ? 'flex' : 'ml-[calc(100%-4rem)] -mr-2 pl-5'"
                     @click="selectFavorite(favorite)"
+                    :title="favorite.name"
                 >
-                    <span class="ml-0 mr-auto">{{ favorite.name }}</span>
+                    <span class="ml-0 mr-auto overflow-hidden whitespace-nowrap">{{ favorite.name }}</span>
                 </div>
             </div>
         </div>

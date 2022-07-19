@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full pb-5">
+    <div class="w-full pb-5 overflow-visible">
         <div class="flex justify-between items-center pt-3 mb-3 mx-10">
             <button class="btn btn-ghost h-6 w-6 opacity-[0%]" disabled>
                 <XIcon class="text-base-200-content"/>

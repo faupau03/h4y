@@ -73,7 +73,7 @@
                     <Disclosure v-for="team in classes" :key="team.gClassID" v-slot="{ open }">
                         <DisclosureButton
                             class="btn btn-primary bg-opacity-75 w-full flex justify-end flex-nowrap gap-3" :class="[
-                                (team.gClassID !== teamClassID) ? 'my-1 rounded-lg' : 'rounded-b-none',
+                                (team.gClassID !== teamClassID) ? 'my-1' : 'rounded-b-none',
                             ]" @click="
     team.gClassID !== teamClassID
         ? (teamClassID = team.gClassID,
@@ -109,7 +109,7 @@
                             ]" />
                         </DisclosureButton>
                         <DisclosurePanel static v-show="team.gClassID === teamClassID"
-                            class="px-4 pt-4 pb-2 text-sm bg-primary bg-opacity-20 rounded-b-lg">
+                            class="px-4 pt-4 pb-2 text-sm bg-primary bg-opacity-20 rounded-b">
                             <div v-for="(subTeam, index) in team.games" :key="Object.keys(subTeam)[0]">
 
                                 <hr class="bg-gray-400 text-black h-[1.5px]" :class="index === 0 ? '-mt-3' : ''" />
@@ -140,10 +140,10 @@
                     </Disclosure>
                 </div>
                 <div v-else class="overflow-auto max-h-[50%] w-full mx-auto rounded-2xl">
-                    <div v-for="i in 10" class="p-3 bg-gray-300 rounded-lg my-1 flex">
-                        <div class="animate-pulse rounded-lg bg-gray-400 h-3 sm:w-44 w-16">
+                    <div v-for="i in 10" class="p-4 bg-base-300 rounded-lg my-1 flex">
+                        <div class="animate-pulse rounded-full bg-base-100 h-4 sm:w-44 w-16">
                         </div>
-                        <div class="animate pulse rounded-full bg-gray-400 h-3 sm:w-44 w-3 ml-auto mr-2">
+                        <div class="animate-pulse rounded-full bg-base-100 h-4 sm:w-44 w-3 ml-auto mr-2">
                         </div>
                     </div>
 

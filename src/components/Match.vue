@@ -28,7 +28,7 @@
             <div id="game-info" class="">
                 <div class="justify-center mx-2">
                     <div v-if="!loading" class="font-bold text-base sm:text-2xl">
-                        <div id="title" class="flex xs:hidden font-bold text-sm">
+                        <div id="title" class="flex sm:hidden font-bold text-sm truncate">
                             {{ scores.head.name }}
                         </div>
                         <div class="flex justify-center w-full">
@@ -46,14 +46,12 @@
                         </div>
 
                     </div>
-                    <div v-else class="flex font-bold text-xl sm:text-2xl rounded animate-pulse">
-                        <div class="h-8 w-24 mx-1 bg-gray-400 rounded-lg">
-
-                        </div>
+                    <div v-else class="flex w-full font-bold justify-center text-xl sm:text-2xl animate-pulse">
+                        <div class="h-8 w-24 mx-1 bg-gray-300 rounded-lg"></div>
                         :
-                        <div class="h-8 w-24 mx-1 bg-gray-400 rounded-lg"></div>
+                        <div class="h-8 w-24 mx-1 bg-gray-300 rounded-lg"></div>
                     </div>
-                    <span v-else class="rounded h-4 w-40 bg-gray-300 m-1 animate-pulse"></span>
+                    
                 </div>
                 <div id="game-class" class="text-md sm:text-sl justify-center flex"></div>
                 <div class="font-bold text-3xl sm:text-4xl my-4 justify-center flex" v-if="!loading">

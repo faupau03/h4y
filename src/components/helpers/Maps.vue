@@ -1,6 +1,6 @@
 <template>
 <div class="flex items-center">
-    <div @click="gym()" class="flex items-center gap-1 text-sm w-fit hover:cursor-pointer hover:text-accent border-r-[0.5px] mr-2 border-r-gray-600 text-ellipsis break-words">
+    <div @click="gym()" class="flex flex-wrap items-center gap-1 text-sm w-fit hover:cursor-pointer hover:text-accent border-r-[0.5px] mr-2 border-r-gray-600 text-ellipsis break-words">
         <LocationMarkerIcon class="h-6 w-6" />
         <div class="sm:flex">
             <div class="xs:w-fit w-min mr-1">
@@ -13,7 +13,7 @@
         
         
     </div>
-    <button @click="maps()" class="btn btn-sm btn-primary flex w-fit p-1  text-xs underline-none items-center">
+    <button @click="maps()" class="btn btn-sm btn-primary xs:flex grid w-fit p-1  text-xs underline-none items-center">
             Öffnen in
             <img class="h-6 ml-1" src="/icons/maps.png" alt="">
     </button>

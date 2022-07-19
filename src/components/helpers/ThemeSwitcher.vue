@@ -2,7 +2,9 @@
 
     <div class="flex items-stretch">
         <div class="dropdown dropdown-end">
-            <div tabindex="0" class="btn">Change Color</div>
+            <div tabindex="0" class="btn">Change Theme
+                <ChevronDownIcon class="h-8 ml-2"/>
+            </div>
             <ul tabindex="0" class="h-60 gap-2 overflow-scroll p-2 shadow menu dropdown-content bg-base-200 rounded-box w-52"
                 data-choose-theme="">
                 <li @click="updateTheme(theme)" v-for="theme in themes"><a :data-set-theme="theme" :data-theme="theme" class="text-base-content" :class="actualTheme == theme ? 'outline outline-2 outline-base-content' : ''">
@@ -20,6 +22,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { hslToHex } from '../functions/misc.js';
+import { ChevronDownIcon } from '@heroicons/vue/outline';
 const themes = ["light", "dark", "cupcake", "bumblebee", "emerald", "corporate", "synthwave", "retro", "cyberpunk", "valentine", "halloween", "garden", "forest", "aqua", "lofi", "pastel", "fantasy", "wireframe", "black", "luxury", "dracula", "cmyk", "autumn", "business", "acid", "lemonade", "night", "coffee", "winter"];
 const actualTheme = ref("light");
 

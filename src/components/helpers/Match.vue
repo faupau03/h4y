@@ -27,14 +27,14 @@
                     {{ match.gDate }}
                 </div>
                 <div class="flex">
-                    <ClockIcon class="h-4 mr-1 text-secondary" />
+                    <ClockIcon class="h-4 mr-1" />
                     {{ match.gTime }}
                 </div>
             </div>
 
             <div id="location" class="flex col-span-2">
                 <!-- Gymnasium -->
-                <LocationMarkerIcon class="h-4 w-4 text-secondary  shrink-0" />
+                <LocationMarkerIcon class="h-4 w-4  shrink-0" />
                 <span class="truncate text-xs underline opacity-75 hover:text-indigo-500">
                     <!-- TODO: add link to gym -->
                     <router-link class="gym" :to="'/gym#' + match.gGymnasiumID">{{ match.gGymnasiumName }}</router-link>

@@ -1,7 +1,7 @@
 <template>
     <div
         id="header"
-        class="w-full flex p-5 sm:gap-5 xs:gap-3 gap-1 justify-end"
+        class="w-full flex xs:p-5 sm:p-4 p-2 sm:gap-5 xs:gap-3 gap-1 justify-end"
     >   
         <div id="clock" class="flex mr-auto" v-if="type == 'match'">
             <ClockIcon class="h-6 w-6 mt-1" />
@@ -11,7 +11,7 @@
             </span>
         </div>
 
-        <div id="title" class="hidden xs:flex font-bold md:text-lg sm:text-base text-sm">
+        <div id="title" class="hidden sm:flex font-bold md:text-lg sm:text-base text-sm">
             {{ title }}
         </div>
         <div
