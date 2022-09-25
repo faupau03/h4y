@@ -111,6 +111,6 @@ function hslToHex(h, s, l) {
     };
     return `#${f(0)}${f(8)}${f(4)}`;
 }
+const delay = (ms = 1000) => new Promise(r => setTimeout(r, ms));
 
-
-export { getDate, filterGames, isDark, hslToHex };
+export { getDate, filterGames, isDark, hslToHex, delay };

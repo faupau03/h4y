@@ -152,9 +152,9 @@
         </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { onMounted } from "vue";
-import { ref, toRef } from "vue";
+import { ref, toRef} from "vue";
 import { watch } from "vue";
 import { useRoute } from "vue-router";
 import {
@@ -180,7 +180,7 @@ import Period from "./helpers/Period.vue";
 
 // helper functions
 import { fetchTeamID, fetchTeamGames, fetchClub, fetchClassGames } from "./functions/fetchData.js";
-import { filterGames, isDark } from "./functions/misc.js";
+import { delay, filterGames, isDark } from "./functions/misc.js";
 const route = useRoute();
 
 const img_loaded = ref(true);
@@ -326,6 +326,49 @@ const updateShow = (period_default) => {
     }
 }
 
+const classFetch = async (i, data, classes, head) => {
+    console.log(i);
+    if (i >= classes.length) {
+        return data;
+    }
+    let club_class = classes[i];
+        const team_ids = await fetchTeamID(club_class.gClassID, head.name);
+        //console.log(team_ids);
+        //console.log(club_class.games);
+
+        let class_teams = [];
+
+        if (team_ids && team_ids.length > 0) {
+            //fetch game for each team
+            for (let team_id of team_ids) {
+                await delay(500);
+                const team_json = await fetchTeamGames(team_id, club_class.gClassID, null, true);
+                let team_obj = {};
+                team_obj[team_id] = team_json; //.reverse();    //reverse to get most recent games first
+                class_teams.push(team_obj);
+            }
+            club_class.games = await class_teams;
+        }
+        else {
+            let class_games = await fetchClassGames(club_class.gClassID, true);
+            const result = class_games.filter(function (game) {
+                if (game.gHomeTeam.includes(head.sname)) {
+                    return true;
+                }
+                if (game.gGuestTeam.includes(head.sname)) {
+                    return true;
+                }
+                return false;
+            })
+            club_class.games = [];
+            club_class.games.push({ null: result });
+        }
+        data.push(club_class);
+        setTimeout(() => {
+            classFetch(i + 1, data, classes, head);
+        } , 500);
+}
+
 const initData = async () => {
     loading.value = true;
     loading_net.value = true;
@@ -358,7 +401,6 @@ const initData = async () => {
         console.log("offline");
         return;
     }
-
     let club_json = await fetchClub(clubInfo.value.id, period_selected.value);
     let period = period_selected.value;
     period_list.value = club_json[0].menu.period.list;
@@ -369,42 +411,66 @@ const initData = async () => {
     club_json = club_json[0];
 
     period_selected.value = period;
+    
+    await delay(500);
+    const data = await classFetch(0, [], club_json.content.classes, club_json.head);
 
-    Promise.all(club_json.content.classes.map(async (club_class) => {
+    // Promise.all(club_json.content.classes.map(async (club_class) => {
 
-        const team_ids = await fetchTeamID(club_class.gClassID, club_json.head.name);
-        //console.log(team_ids);
-        //console.log(club_class.games);
+        // const team_ids = await fetchTeamID(club_class.gClassID, club_json.head.name);
+        // //console.log(team_ids);
+        // //console.log(club_class.games);
 
-        let class_teams = [];
+        // let class_teams = [];
 
-        if (team_ids && team_ids.length > 0) {
-            //fetch game for each team
-            for (let team_id of team_ids) {
-                const team_json = await fetchTeamGames(team_id, club_class.gClassID, null, true);
-                let team_obj = {};
-                team_obj[team_id] = team_json; //.reverse();    //reverse to get most recent games first
-                class_teams.push(team_obj);
-            }
-            club_class.games = await class_teams;
-        }
-        else {
-            let class_games = await fetchClassGames(club_class.gClassID, true);
-            const result = class_games.filter(function (game) {
-                if (game.gHomeTeam.includes(club_json.head.sname)) {
-                    return true;
-                }
-                if (game.gGuestTeam.includes(club_json.head.sname)) {
-                    return true;
-                }
-                return false;
-            })
-            club_class.games = [];
-            club_class.games.push({ null: result });
-        }
-        return club_class;
-    }))
-        .then((data) => {
+        // if (team_ids && team_ids.length > 0) {
+        //     //fetch game for each team
+        //     for (let team_id of team_ids) {
+        //         await delay(100);
+        //         const team_json = await fetchTeamGames(team_id, club_class.gClassID, null, true);
+        //         let team_obj = {};
+        //         team_obj[team_id] = team_json; //.reverse();    //reverse to get most recent games first
+        //         class_teams.push(team_obj);
+        //     }
+        //     club_class.games = await class_teams;
+        // }
+        // else {
+        //     let class_games = await fetchClassGames(club_class.gClassID, true);
+        //     const result = class_games.filter(function (game) {
+        //         if (game.gHomeTeam.includes(club_json.head.sname)) {
+        //             return true;
+        //         }
+        //         if (game.gGuestTeam.includes(club_json.head.sname)) {
+        //             return true;
+        //         }
+        //         return false;
+        //     })
+        //     club_class.games = [];
+        //     club_class.games.push({ null: result });
+        // }
+        // return club_class;
+    // }))
+        // .then((data) => {
+        //     let club_val = club_json;
+        //     club_val.content.classes = data;
+        //     const name = "club_" + clubInfo.value.id + (!period_default ? "_" + period : "");
+        //     console.log("Saving as: " + name);
+        //     localStorage.setItem(name, JSON.stringify(club_val));
+        //     console.log("club_length:", JSON.stringify(club_val).length);
+        //     console.log("club value: " + localStorage.getItem(name));
+        //     updateShow(period_default);
+        //     loading.value = false;
+        //     loading_net.value = false;
+        // })
+        // .catch((error) => {
+        //     console.error("Error:", error);
+        //     console.log("Probably no internet connection");
+        //     loading.value = false;
+        //     loading_net.value = false;
+        //     offline.value = true;
+        // });
+
+    if (data.length == club_json.content.classes) {
             let club_val = club_json;
             club_val.content.classes = data;
             const name = "club_" + clubInfo.value.id + (!period_default ? "_" + period : "");
@@ -415,15 +481,14 @@ const initData = async () => {
             updateShow(period_default);
             loading.value = false;
             loading_net.value = false;
-        })
-        .catch((error) => {
-            console.error("Error:", error);
+    }
+    else {
+            console.error("Error:", "some error");
             console.log("Probably no internet connection");
             loading.value = false;
             loading_net.value = false;
             offline.value = true;
-        });
-
+    };
 
 
 
@@ -433,7 +498,6 @@ const refreshData = async () => {
     console.log("Refreshing data");
     loading_net.value = true;
     Promise.all(club.value.content.classes.map(async (club_class) => {
-
         const team_ids = await fetchTeamID(club_class.gClassID, club.value.head.name);
         //console.log(team_ids);
         //console.log(club_class.games);
@@ -443,6 +507,7 @@ const refreshData = async () => {
         if (team_ids && team_ids.length > 0) {
             //fetch game for each team
             for (let team_id of team_ids) {
+                await delay(100);
                 const team_json = await fetchTeamGames(team_id, club_class.gClassID, null, true);
                 let team_obj = {};
                 team_obj[team_id] = team_json; //.reverse();    //reverse to get most recent games first

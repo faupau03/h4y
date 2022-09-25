@@ -1,3 +1,4 @@
+import { delay } from "./misc";
 const fetchTeamGames = async(teamID, classID, clubMatches, showAll) => {
     if (!teamID) {
         //console.log("no teamid");
@@ -100,6 +101,7 @@ const fetchTeam = async(teamID, classID, clubMatches) => {
 };
 
 const fetchTeamID = async(classID, clubName) => {
+    await delay(1000);
     const response = await fetch(
         "https://spo.handball4all.de/service/if_g_json.php?ca=1&cmd=ps&cl=" +
         classID
@@ -132,6 +134,7 @@ const getClubClasses = async(json) => {
 
 const fetchClub = async(club_id, period) => {
     let response;
+    await delay(1000);
     if (period) {
         response = await fetch(
             "https://spo.handball4all.de/service/if_g_json.php?cmd=pcu&c="
