@@ -65,19 +65,19 @@ const fetchSearch = async (query) => {
     //
 
     // Clubs
-    const response_clubs = await fetch("https://www.handball.net/a/sportdata/1/clubs/search?query=" + query);
+    const response_clubs = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=cs&cs=" + query);
 
     // Teams & Leagues
-    const response_leagues = await fetch("https://www.handball.net/a/sportdata/1/tournaments/search?query=" + query);
+    //const response_leagues = await fetch("https://www.handball.net/a/sportdata/1/tournaments/search?query=" + query);
 
     // Gyms
-    const response_gyms = await fetch("https://www.handball.net/a/sportdata/1/fields/search?query=" + query);
+    const response_gyms = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=gs&gs=" + query);
 
 
-    console.log(json_clubs);
-    data_clubs.value = JSON.parse(response_clubs).data;
-    data_gyms.value = JSON.parse(response_gyms).data;
-    data_leagues.value = JSON.parse(response_leagues).data;
+    console.log(response_clubs);
+    data_clubs.value = JSON.parse(response_clubs)[0].searchResult.list;
+    data_gyms.value = JSON.parse(response_gyms)[0].searchResult.list;
+    //data_leagues.value = JSON.parse(response_leagues).data;
 
     console.log(data_clubs.value);
 
