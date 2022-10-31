@@ -244,12 +244,12 @@ const loadClub = async (period_id) => {
         // Set club name
         club.value.lname = data[0].head.name;
         fetchClubInfo();
-        loading.value = false;
+        loading.value = true;
     })
         .catch((error) => {
             console.log(error);
-            loading.value = false;
-            netError.value = true;
+            loading.value = true;
+            netError.value = false;
         });
 }
 
