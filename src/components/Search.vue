@@ -17,7 +17,7 @@
                 <div v-for="item in data_clubs"
                     class="btn btn-primary h-8 min-h-8 flex justify-start hover:shadow-inner transform transition-all duration-300 scale-100 hover:scale-95 w-full"
                     @click="$router.push('club#' + item.id)">
-                    {{ item.name }}
+                    {{ item.lname }}
                 </div>
                 <div v-show="data_clubs.length < 1" class="text-sm text-base-200-content">
                     Keine Ergebnisse
@@ -28,7 +28,7 @@
                 <div v-for="item in data_gyms"
                     class="btn h-8 min-h-8 flex justify-start hover:shadow-inner transform transition-all duration-300 scale-100 hover:scale-95 w-full"
                     @click="$router.push('gym#' + item.id)">
-                    {{ item.name }}
+                    {{ item.lname }}
                 </div>
                 <div v-show="data_gyms.length < 1" class="text-sm text-base-200-content">
                     Keine Ergebnisse
