@@ -16,8 +16,8 @@
             <div id="clubs" class="grid gap-2">
                 <div v-for="item in data_clubs"
                     class="btn btn-primary h-8 min-h-8 flex justify-start hover:shadow-inner transform transition-all duration-300 scale-100 hover:scale-95 w-full"
-                    @click="$router.push('club#' + item.no)">
-                    {{ item.lname }}
+                    @click="$router.push('club#' + item.id)">
+                    {{ item.name }}
                 </div>
                 <div v-show="data_clubs.length < 1" class="text-sm text-base-200-content">
                     Keine Ergebnisse
@@ -28,7 +28,7 @@
                 <div v-for="item in data_gyms"
                     class="btn h-8 min-h-8 flex justify-start hover:shadow-inner transform transition-all duration-300 scale-100 hover:scale-95 w-full"
                     @click="$router.push('gym#' + item.id)">
-                    {{ item.lname }}
+                    {{ item.name }}
                 </div>
                 <div v-show="data_gyms.length < 1" class="text-sm text-base-200-content">
                     Keine Ergebnisse
@@ -49,27 +49,35 @@ const isLoading = ref(false);
 const searchData = ref([]);
 const searchResult = ref("");
 const limitText = ref("Show more");
+
+
 const data_clubs = ref([]);
 const data_gyms = ref([]);
+const data_leagues = ref([]);
+
 const query = ref("");
 
 const fetchSearch = async (query) => {
     isLoading.value = true;
-    await delay(200);
-    const response_clubs = await fetch(
-        "https://spo.handball4all.de/misc/mobApp.php?jsoncallback=jQuery18206208759815204975_1660312955458&cmd=clubSearch&_=1660312978585&searchString=" + query
-    );
-    await delay(200);
-    const response_gyms = await fetch(
-        "https://spo.handball4all.de/service/if_g_json.php?cmd=gs&gs=" + query
-    );
+
+    //
+    // Requests
+    //
+
+    // Clubs
+    const response_clubs = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=cs&cs=" + query);
+
+    // Teams & Leagues
+    //const response_leagues = await fetch("https://www.handball.net/a/sportdata/1/tournaments/search?query=" + query);
+
+    // Gyms
+    const response_gyms = await fetch("https://spo.handball4all.de/service/if_g_json.php?cmd=gs&gs=" + query);
+
+
     console.log(response_clubs);
-    const text_clubs = await response_clubs.text();
-    const json_clubs = JSON.parse(text_clubs.replace("jQuery18206208759815204975_1660312955458(", "").replace(")", ""));
-    const json_gyms = await response_gyms.json();
-    console.log(json_clubs);
-    data_clubs.value = json_clubs[0][0].resultObjects;
-    data_gyms.value = json_gyms[0].searchResult.list;
+    data_clubs.value = JSON.parse(response_clubs)[0].searchResult.list;
+    data_gyms.value = JSON.parse(response_gyms)[0].searchResult.list;
+    //data_leagues.value = JSON.parse(response_leagues).data;
 
     console.log(data_clubs.value);
 
