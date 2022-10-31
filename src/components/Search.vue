@@ -58,6 +58,12 @@ const data_leagues = ref([]);
 const query = ref("");
 
 const fetchSearch = async (query) => {
+    if (query.length < 3) {
+        data_clubs.value = [];
+        data_gyms.value = [];
+        data_leagues.value = [];
+        return;
+    }
     isLoading.value = true;
 
     //
