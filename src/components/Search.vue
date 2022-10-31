@@ -100,6 +100,14 @@ const fetchSearch = async (query) => {
         const response_club_json = await response_clubs.json();
         //const response_leagues_json = await response_leagues.json();
         const response_gyms_json = await response_gyms.json();
+        console.log(response_clubs);
+        data_clubs.value = response_club_json[0].searchResult.list;
+        data_gyms.value = response_gyms_json[0].searchResult.list;
+        //data_leagues.value = JSON.parse(response_leagues).data;
+
+        console.log(data_clubs.value);
+
+        isLoading.value = false;
     }
     catch (error) {
         netError.value = true;
@@ -107,13 +115,6 @@ const fetchSearch = async (query) => {
         return;
     }
 
-    console.log(response_clubs);
-    data_clubs.value = response_club_json[0].searchResult.list;
-    data_gyms.value = response_gyms_json[0].searchResult.list;
-    //data_leagues.value = JSON.parse(response_leagues).data;
 
-    console.log(data_clubs.value);
-
-    isLoading.value = false;
 };
 </script>
