@@ -31,7 +31,7 @@
         <div class="w-5/6 m-auto p-2 mb-4 card bg-base-100 shadow-xl overflow-hidden">
             <div class="mt-3 flex flex-wrap">
                 <h2 class="font-bold text-lg m-1">Spiele</h2>
-                <Period class="sm:ml-5 ml-2 mr-auto" @updatePeriod="(id) => loadClub()" :loading="loading"
+                <Period class="sm:ml-5 ml-2 mr-auto" @updatePeriod="(id) => loadClub(id)" :loading="loading"
                     :selected="period_selected" :list="period_list" />
                 <div class="form-control mr-5">
                     <label class="label cursor-pointer flex gap-1">
@@ -44,17 +44,17 @@
                     </label>
                 </div>
                 <div class="flex items-center">
-                    <button v-if="!offline" @click="loadClub" class="btn btn-sm btn-square"
-                        :class="loading_net ? 'loading disabled' : ''">
-                        <RefreshIcon v-if="!loading_net" class="h-4" />
+                    <button v-if="!netError" @click="loadClub()" class="btn btn-sm btn-square"
+                        :class="loading ? 'loading disabled' : ''">
+                        <RefreshIcon v-if="!loading" class="h-4" />
                     </button>
                     <Popover v-else class="relative">
-                        <PopoverButton class="flex items-center">
+                        <PopoverButton class="flex items-center btn btn-sm btn-square">
                             <StatusOfflineIcon class="h-5 text-red-600" />
                         </PopoverButton>
 
                         <PopoverPanel
-                            class="absolute z-10 bg-indigo-100 outline-1 outline outline-indigo-200 rounded-lg p-2 shadow-2xl border-indigo-300 border-1">
+                            class="right-0 absolute z-10 bg-base-100 outline-1 outline outline-indigo-200 rounded-lg p-2 shadow-2xl border-indigo-300 border-1">
                             <p class="text-xs">
                                 Du bist offline. Dir werden zuvor gespeicherte Daten gezeigt.
                             </p>
@@ -104,7 +104,8 @@
                                 <div id="league-info">
                                     <!-- Information about how many games and button to team component -->
                                     <router-link v-if="Object.keys(team)[0] && !loadingGames"
-                                        :to="'/team#' + Object.keys(team)[0]" class=" ml-auto mr-0 w-fit block underline-offset-2 underline text-base-content
+                                        :to="'/team#' + Object.keys(team)[0] + ';' + activeClass.id + ';' + club.no"
+                                        class=" ml-auto mr-0 w-fit block underline-offset-2 underline text-base-content
                                 hover:opacity-50">
                                         Zum Team</router-link>
                                 </div>
@@ -196,11 +197,12 @@ const period_list = ref([]); // Period list
 const loadingGames = ref(false);
 const img_loaded = ref(true);
 const loading = ref(false);
+const netError = ref(false);
 
 const route = useRoute();
 
 // Old variables
-const props = defineProps(["club_no"]);
+const props = defineProps(["club_id"]);
 
 
 const data = ref([]);
@@ -215,8 +217,8 @@ onMounted(() => {
     console.log("Hello World");
 
     // Set club id
-    if (props.club_no) {
-        club.value.id = props.club_no;
+    if (props.club_id) {
+        club.value.id = props.club_id;
     } else {
         club.value.id = route.hash.substring(1);
     }
@@ -225,10 +227,13 @@ onMounted(() => {
 });
 
 
-const loadClub = async () => {
+const loadClub = async (period_id) => {
     // First fetch the club classes
     loading.value = true;
-    fetchClub(club.value.id, period_selected.value).then((data) => {
+    if (!period_id) {
+        period_id = period_selected.value;
+    }
+    fetchClub(club.value.id, period_id).then((data) => {
         // Set period list
         period_list.value = data[0].menu.period.list;
         period_selected.value = data[0].menu.period.selectedID;
@@ -239,8 +244,13 @@ const loadClub = async () => {
         // Set club name
         club.value.lname = data[0].head.name;
         fetchClubInfo();
-        loading.value = false;
-    });
+        loading.value = true;
+    })
+        .catch((error) => {
+            console.log(error);
+            loading.value = true;
+            netError.value = false;
+        });
 }
 
 const showClass = (class_id) => {
@@ -265,19 +275,31 @@ const showClass = (class_id) => {
         }
         activeClass.value.games = await Promise.all(teams);
         loadingGames.value = false;
-    });
+    })
+        .catch(error => {
+            console.log(error);
+            loadingGames.value = false;
+            netError.value = true;
+        });
 };
 
 const fetchClubInfo = async () => {
-    const response = await fetch(
-        "https://spo.handball4all.de/service/if_g_json.php?cmd=cs&cs=" + club.value.lname
-    );
-    const data = await response.json();
-    const club_info = data[0].searchResult.list.filter((res) => {
-        return res.id == club.value.id;
-    });
-    club.value = await club_info[0];
-    console.log(club.value);
+    try {
+        const response = await fetch(
+            "https://spo.handball4all.de/service/if_g_json.php?cmd=cs&cs=" + club.value.lname
+        );
+        const data = await response.json();
+        const club_info = data[0].searchResult.list.filter((res) => {
+            return res.id == club.value.id;
+        });
+        club.value = await club_info[0];
+        console.log(club.value);
+    }
+    catch (error) {
+        console.log(error);
+        netError.value = true;
+    };
+
 };
 
 </script>
