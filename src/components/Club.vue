@@ -64,6 +64,7 @@
                 </div>
             </div>
 
+
             <!-- Debugging: -->
             <!-- {{ club.menu ? club.menu.period.selectedID == period_selected : 'error'}} -->
             <!-- v-if="!loading && club.menu && club.menu.period.selectedID == period_selected" -->
@@ -85,11 +86,12 @@
                                     Keine zukünftigen Spiele
                                 </span>
                             </span>
-                            <div v-if="false" class="rounded-full relative w-4 h-4">
+                            <div v-if="checkLive(item.gClassID)" class="rounded-full relative w-4 h-4">
                                 <div
-                                    class="animate-ping absolute -mt-0.5 inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75">
+                                    class="animate-ping absolute -mt-0.5 inline-flex h-4 w-4 rounded-full bg-accent opacity-75">
                                 </div>
-                                <div class="z-20 mx-auto my-auto mt-1 animate-none rounded-full h-3 w-3 bg-red-500">
+                                <div
+                                    class="relative -mr-1.5 z-20 mx-auto my-auto mt-1 animate-none rounded-full h-3 w-3 bg-accent">
                                 </div>
                             </div>
                         </span>
@@ -212,6 +214,19 @@ const clubExample = {
     name: 'Hbi Weilimdorf/Feuerbach',
 }
 
+// Get class after id from classes and check if any game is live
+const checkLive = (id) => {
+    console.log("checkLive");
+    console.log(id);
+    const classData = classes.value.find((item) => item.gClassID == id);
+    console.log(classData);
+    if (classData) {
+        return classData.games.some((game) => game.live == true);
+    }
+    return false;
+};
+
+
 
 onMounted(() => {
     console.log("Hello World");
@@ -299,7 +314,6 @@ const fetchClubInfo = async () => {
         console.log(error);
         netError.value = true;
     };
-
 };
 
 </script>
