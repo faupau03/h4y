@@ -37,15 +37,18 @@
                 <div class="text-accent absolute right-0 sm:-top-7 -top-5 sm:text-lg">Heim</div>
             </div>
             <div class="grid justify-center mt-1">
-                <div class="flex justify-center md:text-xl">
-                    <ClockIcon class="h-6 w-6" />
+                <div class="flex justify-center md:text-xl sm:pl-0 pl-2">
+                    <ClockIcon class="h-6 w-6 hidden sm:block" />
                     <!-- {{ getTime(gameTicker[0]["game_time"]) }} -->
                     {{ getTime(gameTickerTime) }}
                 </div>
-                <div class="justify-center flex font-bold text-xl sm:text-3xl md:text-5xl">
-                    {{ gameTicker[0]["home_score"] }}
+                <div class="justify-center flex font-bold text-xl sm:text-3xl md:text-5xl pr-2 sm:pr-0">
+                    <span>{{ gameTicker[0]["home_score"] }}</span>
                     :
-                    {{ gameTicker[0]["guest_score"] }}
+                    <span>
+                        {{ gameTicker[0]["guest_score"] }}
+                    </span>
+
                 </div>
             </div>
             <div class="h-20 bg-secondary text-secondary-content text-sm sm:text-base font-bold relative flex items-center justify-center p-2 w-1/3"
