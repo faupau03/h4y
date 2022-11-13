@@ -1,8 +1,5 @@
 <template>
-    <div
-        id="header"
-        class="w-full flex p-5 sm:gap-5 xs:gap-3 gap-1 justify-end animate-pulse"
-    >
+    <div id="header" class="w-full flex p-5 sm:gap-5 xs:gap-3 gap-1 justify-end animate-pulse">
         <div id="clock" class="flex mr-auto">
             <div class="h-6 w-6 bg-gray-300 rounded-full">
 
@@ -28,6 +25,6 @@ import {
     ShareIcon,
     ClockIcon,
     StarIcon as StarIconOutline,
-} from "@heroicons/vue/outline";
-import { DocumentIcon, AnnotationIcon, StarIcon } from "@heroicons/vue/solid";
+} from "@heroicons/vue/24/outline";
+import { DocumentIcon, ChatBubbleBottomCenterTextIcon, StarIcon } from "@heroicons/vue/24/solid";
 </script>

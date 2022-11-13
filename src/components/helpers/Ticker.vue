@@ -5,29 +5,25 @@
         !gameTickerLoading &&
         gameTickerInfo &&
         gameTickerInfo['team_home']
-    " id="ticker" class="w-5/6 m-auto border bg-white border-gray-100 shadow-xl rounded-lg relative mt-2" :class="
-    fullscreenTicker
-        ? '!m-0 !z-50 !absolute !right-0 !top-0 !bottom-0 !left-0 !h-screen !w-screen overflow-hidden'
-        : ''
-">
+    " id="ticker" class="card bg-base-100 w-5/6 m-auto shadow-xl relative p-2" :class="
+        fullscreenTicker
+            ? '!m-0 !z-50 !absolute !right-0 !top-0 !bottom-0 !left-0 !h-screen !w-screen overflow-hidden'
+            : ''
+    ">
         <div class="flex py-2">
             <span class="font-bold ml-2"> Ticker </span>
-            <button v-show="infoTicker"
-                class="bg-indigo-300 ml-auto rounded p-1 text-sm sm:text-base hover:bg-indigo-500"
-                @click="infoTicker = false">
+            <button v-show="infoTicker" class="ml-auto btn btn-primary" @click="infoTicker = false">
                 Spielverlauf
             </button>
-            <button v-show="!infoTicker"
-                class="bg-indigo-300 ml-auto rounded p-1 text-sm sm:text-base hover:bg-indigo-500"
-                @click="infoTicker = true">
+            <button v-show="!infoTicker" class="ml-auto btn btn-primary" @click="infoTicker = true">
                 Aufstellung
             </button>
-            <img src="/icons/arrows-angle-expand.svg" alt="expand" v-show="!fullscreenTicker"
-                class="h-7 w-7 ml-5 hover:bg-indigo-500 bg-indigo-300 rounded-lg p-1.5 mr-5 hover:cursor-pointer"
-                @click="fullscreenTicker = true" />
-            <img src="/icons/arrows-angle-contract.svg" alt="contract" v-show="fullscreenTicker"
-                class="h-7 w-7 ml-5 hover:bg-indigo-500 bg-indigo-300 rounded-lg p-1.5 mr-5 hover:cursor-pointer"
-                @click="fullscreenTicker = false" />
+            <button>
+                <img src="/icons/arrows-angle-expand.svg" alt="expand" v-show="!fullscreenTicker" class=""
+                    @click="fullscreenTicker = true" />
+                <img src="/icons/arrows-angle-contract.svg" alt="contract" v-show="fullscreenTicker" class=""
+                    @click="fullscreenTicker = false" />
+            </button>
         </div>
         <div id="header" class="flex justify-between mt-2 md:mt-0">
             <div class="h-20 bg-indigo-500 text-sm sm:text-base text-white relative font-bold flex items-center justify-center p-2 w-1/3"
@@ -69,13 +65,13 @@
                 <VirtualisedList class="h-full" :nodes="gameTicker" :viewportHeight="
                     fullscreenTicker ? screenHeight() - 216 : 320
                 " :getNodeHeight="
-    (node) => {
-        if (screenWidth() < 640) {
-            return 56;
-        }
-        return 86;
-    }
-" :get-node-key="(node, index) => index">
+                    (node) => {
+                        if (screenWidth() < 640) {
+                            return 56;
+                        }
+                        return 86;
+                    }
+                " :get-node-key="(node, index) => index">
                     <template #cell="slotProps">
                         <div
                             class="flex justify-evenly md:text-xl sm:text-sm text-xs p-2 mx-2 bg-indigo-100 rounded items-center text-gray-800">
@@ -127,46 +123,46 @@
                     </div>
                     <div>
                         {{
-                                get7m(player.player_no)
-                                    ? get7m(player.player_no) +
-                                    "/" +
-                                    get7mScore(player.player_no)
-                                    : ""
+                        get7m(player.player_no)
+                        ? get7m(player.player_no) +
+                        "/" +
+                        get7mScore(player.player_no)
+                        : ""
                         }}
                     </div>
                     <div class="bg-yellow-400 h-full text-center grid items-center">
                         {{
-                                getYellowCard(player.player_no)
-                                    ? getTime(getYellowCard(player.player_no))
-                                    : ""
+                        getYellowCard(player.player_no)
+                        ? getTime(getYellowCard(player.player_no))
+                        : ""
                         }}
                     </div>
                     <div class="bg-indigo-200 h-full text-center grid items-center border border-r-[1px]">
                         {{
-                                get2min(player.player_no)[0]
-                                    ? getTime(get2min(player.player_no)[0])
-                                    : ""
+                        get2min(player.player_no)[0]
+                        ? getTime(get2min(player.player_no)[0])
+                        : ""
                         }}
                     </div>
                     <div class="bg-indigo-200 h-full text-center grid items-center border border-r-[1.5px]">
                         {{
-                                get2min(player.player_no)[1]
-                                    ? getTime(get2min(player.player_no)[1])
-                                    : ""
+                        get2min(player.player_no)[1]
+                        ? getTime(get2min(player.player_no)[1])
+                        : ""
                         }}
                     </div>
                     <div class="bg-indigo-200 h-full text-center grid items-center">
                         {{
-                                get2min(player.player_no)[2]
-                                    ? getTime(get2min(player.player_no)[2])
-                                    : ""
+                        get2min(player.player_no)[2]
+                        ? getTime(get2min(player.player_no)[2])
+                        : ""
                         }}
                     </div>
                     <div class="bg-red-400 h-full text-center grid items-center">
                         {{
-                                getRedCard(player.player_no)
-                                    ? getTime(getRedCard(player.player_no))
-                                    : ""
+                        getRedCard(player.player_no)
+                        ? getTime(getRedCard(player.player_no))
+                        : ""
                         }}
                     </div>
                 </div>
@@ -180,7 +176,7 @@ import { ref, onMounted } from "vue";
 import { fetchTickerInfo, fetchTicker } from "../functions/fetchData.js";
 import TickerElement from "./TickerElement.vue";
 import { VirtualisedList } from "vue-virtualised";
-import { ClockIcon } from "@heroicons/vue/outline";
+import { ClockIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon } from "@heroicons/vue/24/outline";
 
 
 const props = defineProps(["game_token", "game_live"]);

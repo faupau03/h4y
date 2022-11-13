@@ -1,8 +1,5 @@
 <template>
-    <div
-        id="header"
-        class="w-full flex xs:p-5 sm:p-4 p-2 sm:gap-5 xs:gap-3 gap-1 justify-end"
-    >   
+    <div id="header" class="w-full flex xs:p-5 sm:p-4 p-2 sm:gap-5 xs:gap-3 gap-1 justify-end">
         <div id="clock" class="flex mr-auto" v-if="type == 'match'">
             <ClockIcon class="h-6 w-6 mt-1" />
             <span class="sm:text-xl sm:mt-0.5 mt-1 ml-2">
@@ -14,71 +11,31 @@
         <div id="title" class="hidden sm:flex font-bold md:text-lg sm:text-base text-sm">
             {{ title }}
         </div>
-        <div
-            v-if="type == 'match'"
-            v-show="game.live == true"
-            class="rounded-full relative w-4 h-4 mt-2"
-        >
-            <div
-                class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75"
-            ></div>
-            <div
-                class="z-20 mx-auto my-auto mt-0.5 animate-none rounded-full h-3 w-3 bg-red-500"
-            ></div>
+        <div v-if="type == 'match'" v-show="game.live == true" class="rounded-full relative w-4 h-4 mt-2">
+            <div class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75"></div>
+            <div class="z-20 mx-auto my-auto mt-0.5 animate-none rounded-full h-3 w-3 bg-red-500"></div>
         </div>
 
-        <AnnotationIcon
-            v-if="type == 'match'"
-            v-show="game.robotextstate == 'generated'"
-            class="h-6 mt-1 hover:text-accent cursor-pointer"
-            @click="getText = !getText"
-        />
-        <a
-            v-if="type == 'match'"
-            v-show="game.sGID"
-            :href="
-                'https://spo.handball4all.de/misc/sboPublicReports.php?sGID=' +
-                game.sGID
-            "
-        >
-            <DocumentIcon
-                class="h-6 mt-1 hover:text-accent"
-                :class="game.robotextstate == 'generated' ? '' : 'ml-auto'"
-            />
+        <ChatBubbleBottomCenterTextIcon v-if="type == 'match'" v-show="game.robotextstate == 'generated'"
+            class="h-6 mt-1 hover:text-accent cursor-pointer" @click="getText = !getText" />
+        <a v-if="type == 'match'" v-show="game.sGID" :href="
+            'https://spo.handball4all.de/misc/sboPublicReports.php?sGID=' +
+            game.sGID
+        ">
+            <DocumentIcon class="h-6 mt-1 hover:text-accent"
+                :class="game.robotextstate == 'generated' ? '' : 'ml-auto'" />
         </a>
-        <Cal
-            v-if="type == 'match'"
-            class="cursor-pointer"
-            :type="'single'"
-            :class="game.sGID ? '' : 'ml-auto'"
-            :game="game"
-        />
-        <Cal
-            v-else-if="type == 'team'"
-            class="cursor-pointer ml-auto"
-            :type="'multiple'"
-            :games="games"
-            :name="club ? club.lname + '  ' + team.head.name : ''"
-        />
-        <div
-            v-if="type == 'club' || type == 'team' || type == 'gym'"
-            id="favorite"
-        >
-            <StarIconOutline
-                class="h-6 w-6 mt-1 ml-2 hover:text-accent cursor-pointer"
-                v-show="!isFavorite()"
-                @click="addFavorite"
-            />
-            <StarIcon
-                class="h-6 w-6 mt-1 ml-2 text-accent hover:text-black cursor-pointer"
-                v-show="isFavorite()"
-                @click="removeFavorite"
-            />
+        <Cal v-if="type == 'match'" class="cursor-pointer" :type="'single'" :class="game.sGID ? '' : 'ml-auto'"
+            :game="game" />
+        <Cal v-else-if="type == 'team'" class="cursor-pointer ml-auto" :type="'multiple'" :games="games"
+            :name="club ? club.lname + '  ' + team.head.name : ''" />
+        <div v-if="type == 'club' || type == 'team' || type == 'gym'" id="favorite">
+            <StarIconOutline class="h-6 w-6 mt-1 ml-2 hover:text-accent cursor-pointer" v-show="!isFavorite()"
+                @click="addFavorite" />
+            <StarIcon class="h-6 w-6 mt-1 ml-2 text-accent hover:text-black cursor-pointer" v-show="isFavorite()"
+                @click="removeFavorite" />
         </div>
-        <ShareIcon
-            class="h-6 w-6 mt-1 hover:text-accent float-right cursor-pointer flex-none"
-            @click="share"
-        />
+        <ShareIcon class="h-6 w-6 mt-1 hover:text-accent float-right cursor-pointer flex-none" @click="share" />
     </div>
     <PressText :game_id="game_id" :getText="getText" />
 </template>
@@ -95,8 +52,8 @@ import {
     ShareIcon,
     ClockIcon,
     StarIcon as StarIconOutline,
-} from "@heroicons/vue/outline";
-import { DocumentIcon, AnnotationIcon, StarIcon } from "@heroicons/vue/solid";
+} from "@heroicons/vue/24/outline";
+import { DocumentIcon, ChatBubbleBottomCenterTextIcon, StarIcon } from "@heroicons/vue/24/solid";
 
 const getText = ref(null);
 const favorites = ref([]);

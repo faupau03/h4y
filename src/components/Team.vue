@@ -93,12 +93,11 @@ import {
     ChevronUpIcon,
     StarIcon,
     ClockIcon,
-    LocationMarkerIcon,
+    MapPinIcon,
     InformationCircleIcon,
-} from "@heroicons/vue/solid";
-import { ShareIcon } from "@heroicons/vue/outline";
-import { StarIcon as StarIconOutline } from "@heroicons/vue/outline";
-import { UserGroupIcon } from "@heroicons/vue/solid";
+    UserGroupIcon
+} from "@heroicons/vue/24/solid";
+import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/24/outline";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 const route = useRoute();

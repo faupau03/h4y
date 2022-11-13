@@ -51,7 +51,7 @@
                         :
                         <div class="h-8 w-24 mx-1 bg-gray-300 rounded-lg"></div>
                     </div>
-                    
+
                 </div>
                 <div id="game-class" class="text-md sm:text-sl justify-center flex"></div>
                 <div class="font-bold text-3xl sm:text-4xl my-4 justify-center flex" v-if="!loading">
@@ -157,16 +157,16 @@ import { Head } from '@vueuse/head';
 import {
     ChevronUpIcon,
     StarIcon,
-    LocationMarkerIcon,
+    MapPinIcon,
     InformationCircleIcon,
-} from "@heroicons/vue/solid";
-import { ShareIcon, ClockIcon, XCircleIcon } from "@heroicons/vue/outline";
-import { StarIcon as StarIconOutline } from "@heroicons/vue/outline";
+} from "@heroicons/vue/24/solid";
+import { ShareIcon, ClockIcon, XCircleIcon } from "@heroicons/vue/24/outline";
+import { StarIcon as StarIconOutline } from "@heroicons/vue/24/outline";
 import {
     UserGroupIcon,
     DocumentIcon,
-    AnnotationIcon,
-} from "@heroicons/vue/solid";
+    ChatBubbleBottomCenterTextIcon,
+} from "@heroicons/vue/24/solid";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 // helper functions

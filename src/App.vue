@@ -1,7 +1,7 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import { ViewListIcon, StarIcon, SearchIcon, UserGroupIcon, } from "@heroicons/vue/outline";
+import { Bars3Icon, StarIcon, MagnifyingGlassIcon, UserGroupIcon, } from "@heroicons/vue/24/outline";
 import ReloadPWA from "./components/ReloadPWA.vue";
 import { ref, onMounted, onUpdated, watch, handleError } from "vue";
 import { useRoute } from "vue-router";
@@ -83,7 +83,7 @@ onMounted(() => {
                 :class="is_dark ? 'brightness-100' : ''" active-class="active text-accent">
                 <div class="text-center">
                     <span class="block h-8 text-3xl leading-8">
-                        <ViewListIcon class="h-7 w-7 mx-auto" />
+                        <Bars3Icon class="h-7 w-7 mx-auto" />
                     </span>
                     <span class="block text-xs leading-none">Ligen</span>
                 </div>
@@ -102,7 +102,7 @@ onMounted(() => {
                 active-class="active text-accent">
                 <div class="text-center">
                     <span class="block h-8 text-3xl leading-8">
-                        <SearchIcon class="h-7 w-7 mx-auto" />
+                        <MagnifyingGlassIcon class="h-7 w-7 mx-auto" />
                     </span>
                     <span class="block text-xs leading-none">Suche</span>
                 </div>

@@ -2,7 +2,7 @@
     <div class="w-full h-full">
         <div id="menu" class="h-full z-10 pl-5 w-[calc(50%+4rem)] bg-base-100 transition-all duration-300 fixed"
             :class="showMenu ? 'left-0' : '-left-1/2'">
-            <MenuAlt1Icon class="h-8 w-8 m-5 ml-auto mr-5" @click="showMenu = !showMenu" />
+            <Bars3Icon class="h-8 w-8 m-5 ml-auto mr-5" @click="showMenu = !showMenu" />
             <div class="mr-5 transition-all ease-in-out duration-300">
                 <p class="font-bold" :class="showMenu ? '' : 'ml-[calc(100%-2.5rem)] -mr-2'">
                     Verein
@@ -63,7 +63,7 @@ import { onMounted } from "vue";
 import { ref } from "vue";
 import Club from "./Club.vue";
 import Team from "./Team.vue";
-import { MenuAlt1Icon } from "@heroicons/vue/outline";
+import { Bars3Icon } from "@heroicons/vue/24/outline";
 import Gym from "./Gym.vue";
 
 const favorites = ref([]);

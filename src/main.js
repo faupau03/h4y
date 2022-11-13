@@ -2,12 +2,12 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './index.css'
 import { createRouter, createWebHistory } from 'vue-router'
-import {createHead} from '@vueuse/head'
+import { createHead } from '@vueuse/head'
 
 import { registerSW } from 'virtual:pwa-register'
 
 const updateSW = registerSW({
-    onOfflineReady() {},
+    onOfflineReady() { },
 })
 
 
@@ -20,6 +20,7 @@ import Match from "./components/Match.vue";
 import Club from "./components/Club.vue";
 import Gym from "./components/Gym.vue";
 import Team from "./components/Team.vue";
+import Analysis from "./components/Analysis.vue";
 import Test from "././components/helpers/Test.vue";
 
 const routes = [
@@ -66,6 +67,11 @@ const routes = [
     },
     {
         path: import.meta.env.BASE_URL + '/settings', component: Settings, meta: {
+            KeepAlive: true // Need to be cached
+        }
+    },
+    {
+        path: import.meta.env.BASE_URL + '/analysis', component: Analysis, meta: {
             KeepAlive: true // Need to be cached
         }
     },

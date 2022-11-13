@@ -2,7 +2,7 @@
     <div class="w-full pb-5 overflow-visible">
         <div class="flex justify-between items-center pt-3 mb-3 mx-10">
             <button class="btn btn-ghost h-6 w-6 opacity-[0%]" disabled>
-                <XIcon class="text-base-200-content"/>
+                <XMarkIcon class="text-base-200-content" />
             </button>
             <div class="text-center">
                 <h1 class="text-3xl text-base-200-content font-bold">{{ title }}</h1>
@@ -12,7 +12,7 @@
             </div>
             <button @click="closeSettings" class="btn btn-sm sm:btn-md btn-ghost text-base-200-content"
                 aria-label="settings">
-                <XIcon class="h-6 w-6"/>
+                <XMarkIcon class="h-6 w-6" />
             </button>
         </div>
         <div class="w-5/6 grid gap-4 p-4 justify-center mx-auto card bg-base-100 shadow-xl">
@@ -36,7 +36,7 @@
 
             </div>
 
-            
+
 
             <div id="dependencies">
                 <span class="font-bold">Bibliotheken</span>
@@ -138,10 +138,10 @@ import { watch } from "vue";
 
 import { themeChange } from 'theme-change';
 
-import { XIcon } from "@heroicons/vue/outline";
+import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { useRouter } from "vue-router";
 
-import { TrashIcon } from "@heroicons/vue/outline";
+import { TrashIcon } from "@heroicons/vue/24/outline";
 
 import { Switch } from '@headlessui/vue'
 import ThemeSwitcher from './helpers/ThemeSwitcher.vue'
@@ -250,6 +250,7 @@ onMounted(() => {
             /*!*/
         ) !important;
 }
+
 [type='checkbox'] {
     color: var(--bg-b) !important;
     height: 1.5rem !important;
@@ -257,5 +258,4 @@ onMounted(() => {
     transition-duration: 300ms !important;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
-
 </style>

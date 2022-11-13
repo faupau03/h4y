@@ -1,27 +1,29 @@
 <template>
-<div class="flex items-center">
-    <div @click="gym()" class="flex flex-wrap items-center gap-1 text-sm w-fit hover:cursor-pointer hover:text-accent border-r-[0.5px] mr-2 border-r-gray-600 text-ellipsis break-words">
-        <LocationMarkerIcon class="h-6 w-6" />
-        <div class="sm:flex">
-            <div class="xs:w-fit w-min mr-1">
-            {{ name }}
+    <div class="flex items-center">
+        <div @click="gym()"
+            class="flex flex-wrap items-center gap-1 text-sm w-fit hover:cursor-pointer hover:text-accent border-r-[0.5px] mr-2 border-r-gray-600 text-ellipsis break-words">
+            <MapPinIcon class="h-6 w-6" />
+            <div class="sm:flex">
+                <div class="xs:w-fit w-min mr-1">
+                    {{ name }}
+                </div>
+                <div class="hidden xs:block w-fit ml-1 mr-2">
+                    {{ town }}
+                </div>
+            </div>
+
+
         </div>
-        <div class="hidden xs:block w-fit ml-1 mr-2">
-            {{ town }}
-        </div>
-        </div>
-        
-        
-    </div>
-    <button @click="maps()" class="btn btn-sm btn-primary xs:flex grid w-fit p-1  text-xs underline-none items-center">
+        <button @click="maps()"
+            class="btn btn-sm btn-primary xs:flex grid w-fit p-1  text-xs underline-none items-center">
             Öffnen in
             <img class="h-6 ml-1" src="/icons/maps.png" alt="">
-    </button>
-</div>
+        </button>
+    </div>
 </template>
 
 <script setup>
-import { LocationMarkerIcon } from "@heroicons/vue/outline";
+import { MapPinIcon } from "@heroicons/vue/24/outline";
 import { useRouter } from "vue-router";
 
 const navigator = window.navigator;

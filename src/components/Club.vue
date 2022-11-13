@@ -46,7 +46,7 @@
                 <div class="flex items-center">
                     <button v-if="!netError" @click="loadClub()" class="btn btn-sm btn-square"
                         :class="loading ? 'loading disabled' : ''">
-                        <RefreshIcon v-if="!loading" class="h-4" />
+                        <ArrowPath v-if="!loading" class="h-4" />
                     </button>
                     <Popover v-else class="relative">
                         <PopoverButton class="flex items-center btn btn-sm btn-square">
@@ -164,13 +164,12 @@ import {
     ChevronUpIcon,
     StarIcon,
     ClockIcon,
-    LocationMarkerIcon,
+    MapPinIcon,
     InformationCircleIcon,
-    RefreshIcon,
-    StatusOfflineIcon,
+    ArrowPathIcon,
     UserGroupIcon,
-} from "@heroicons/vue/solid";
-import { StarIcon as StarIconOutline, ShareIcon, GlobeAltIcon } from "@heroicons/vue/outline";
+} from "@heroicons/vue/24/solid";
+import { StarIcon as StarIconOutline, ShareIcon, GlobeAltIcon } from "@heroicons/vue/24/outline";
 
 import { Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 

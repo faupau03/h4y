@@ -1,10 +1,12 @@
 <template>
-    <div v-if="!loading && list && Object.keys(list).length > 1" class="btn-group flex flex-nowrap shadow-large rounded-lg items-center">
+    <div v-if="!loading && list && Object.keys(list).length > 1"
+        class="btn-group flex flex-nowrap shadow-large rounded-lg items-center">
         <button @click="goPeriodBack" :disabled="Object.keys(list).indexOf(String(selected)) == 0"
             class="btn btn-sm rounded-r-none w-8 border-solid border-1 border-base">
             <ChevronLeftIcon class="h-5 flex-none" />
         </button>
-        <select :value="selected" @change="(event) => $emit('updatePeriod', event.target.value)" class="select h-8 min-h-[2rem] border-1 border border-neutral dark:hover:brightness-150 hover:brightness-50 rounded-none py-0 outline-none ring-none outline-0 focus:border-neutral focus:ring-none focus:ring-0 focus:outline-0">
+        <select :value="selected" @change="(event) => $emit('updatePeriod', event.target.value)"
+            class="select h-8 min-h-[2rem] border-1 border border-neutral dark:hover:brightness-150 hover:brightness-50 rounded-none py-0 outline-none ring-none outline-0 focus:border-neutral focus:ring-none focus:ring-0 focus:outline-0">
             <option v-for="period, key in list" :value="key" class="">{{ period }}</option>
         </select>
         <button @click="goPeriodForward"
@@ -29,7 +31,7 @@
 import {
     ChevronLeftIcon,
     ChevronRightIcon,
-} from "@heroicons/vue/solid";
+} from "@heroicons/vue/24/solid";
 const props = defineProps(["loading", "list", "selected"]);
 const emit = defineEmits(["updatePeriod"]);
 

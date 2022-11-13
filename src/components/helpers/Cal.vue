@@ -10,7 +10,7 @@
 <script setup>
 import ical from 'ical-generator';
 import { getDate } from '../functions/misc.js';
-import { CalendarIcon } from '@heroicons/vue/solid';
+import { CalendarIcon } from '@heroicons/vue/24/solid';
 import { ref } from 'vue';
 
 const props = defineProps(["game", "type", "games", "name"]);

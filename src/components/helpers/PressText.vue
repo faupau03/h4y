@@ -3,9 +3,10 @@
     <div v-if="showText && pressText.robotext"
         class="pressText fixed left-0 bottom-0 right-0 top-0 w-screen bg-base-content bg-opacity-30 z-30 flex justify-center items-center">
         <div class="z-30 max-h-screen overflow-auto flex justify-center">
-            <div class="grid overflow-auto my-10 lg:max-w-[50%] rounded-lg shadow-2xl bg-base-100 justify-right z-30 p-3 sm:mx-20 mx-5">
+            <div
+                class="grid overflow-auto my-10 lg:max-w-[50%] rounded-lg shadow-2xl bg-base-100 justify-right z-30 p-3 sm:mx-20 mx-5">
                 <button class="btn btn-ghost ml-auto">
-                    <XIcon @click="showText = false" class="h-6" />
+                    <XMarkIcon @click="showText = false" class="h-6" />
                 </button>
                 <span v-html="pressText.robotext.text"> </span>
                 <span v-html="pressText.robotext.footer"> </span>
@@ -16,7 +17,7 @@
 </template>
 
 <script setup>
-import { XIcon } from "@heroicons/vue/outline";
+import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { ref, watch } from "vue";
 
 const props = defineProps(["getText", "game_id"]);
