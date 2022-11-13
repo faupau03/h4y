@@ -66,7 +66,8 @@ onMounted(() => {
 <template>
     <div class="h-screen w-screen overflow-x-hidden bg-base-200">
         <ReloadPWA />
-        <div class="w-full h-[calc(100%-4rem)] overflow-y-scroll bg-gradient-to-r from-primary to-secondary">
+        <div id="wrapper-div"
+            class="w-full h-[calc(100%-4rem)] overflow-y-scroll bg-gradient-to-r from-primary to-secondary">
             <div class="min-h-full w-full scrolled bg-base-100/50">
 
 

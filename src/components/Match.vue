@@ -18,7 +18,7 @@
         <meta name="twitter:image" content="og.png">
         <meta name="twitter:card" content="summary_large_image">
     </Head>
-    <div class="w-full grid gap-4 ">
+    <div class="w-full grid gap-4">
         <NavBar title="Spiel" subtitle="Info" class="" />
         <div id="game-header" class="card grid w-5/6 m-auto shadow-xl bg-base-100 relative">
             <Header v-if="!loading" :type="'match'" :title="scores.head.name" :game="game" :game_id="gameID"
@@ -92,7 +92,8 @@
                 </div>
             </div>
         </div>
-        <Ticker v-if="game && !loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live" />
+        <Ticker v-if="game && !loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live"
+            @fullscreen="(x) => x ? fullscreen = true : fullscreen = false" />
         <div id="scores" class="card bg-base-100 w-5/6 m-auto shadow-xl relative p-2">
             <div v-show="loading ? true : scores.content.score.length" class="flex mt-1">
                 <span class="font-bold ml-2"> Tabelle </span>
@@ -190,7 +191,7 @@ const classGames = ref([]);
 const showAll = ref(false);
 
 const tickerScore = ref(null);
-
+const fullscreen = ref(false);
 const pressText = ref({});
 const showText = ref(false);
 
