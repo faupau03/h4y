@@ -16,6 +16,19 @@
             <div class="z-20 mx-auto my-auto mt-0.5 animate-none rounded-full h-3 w-3 bg-red-500"></div>
         </div>
 
+        <Popover v-if="net_error" class="relative">
+            <PopoverButton class="flex items-center btn btn-sm btn-square">
+                <ExclamationCircleIcon class="h-5 text-red-600" />
+            </PopoverButton>
+
+            <PopoverPanel
+                class="right-0 absolute z-10 bg-base-100 outline-1 w-20 outline outline-indigo-200 rounded-lg p-2 shadow-2xl border-indigo-300 border-1">
+                <p class="text-xs">
+                    Du hast die maximale Anzahl an Anfragen erreicht. Bitte versuche es später noch einmal.
+                </p>
+            </PopoverPanel>
+        </Popover>
+
         <ChatBubbleBottomCenterTextIcon v-if="type == 'match'" v-show="game.robotextstate == 'generated'"
             class="h-6 mt-1 hover:text-accent cursor-pointer" @click="getText = !getText" />
         <a v-if="type == 'match'" v-show="game.sGID" :href="
@@ -55,6 +68,8 @@ import {
 } from "@heroicons/vue/24/outline";
 import { DocumentIcon, ChatBubbleBottomCenterTextIcon, StarIcon } from "@heroicons/vue/24/solid";
 
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
+
 const getText = ref(null);
 const favorites = ref([]);
 
@@ -73,6 +88,7 @@ const props = defineProps([
     "game_id",
     "gym_id",
     "title",
+    "net_error"
 ]);
 
 const isFavorite = () => {

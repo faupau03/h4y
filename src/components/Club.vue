@@ -50,13 +50,13 @@
                     </button>
                     <Popover v-else class="relative">
                         <PopoverButton class="flex items-center btn btn-sm btn-square">
-                            <StatusOfflineIcon class="h-5 text-red-600" />
+                            <ExclamationCircleIcon class="h-5 text-red-600" />
                         </PopoverButton>
 
                         <PopoverPanel
-                            class="right-0 absolute z-10 bg-base-100 outline-1 outline outline-indigo-200 rounded-lg p-2 shadow-2xl border-indigo-300 border-1">
+                            class="right-0 absolute z-10 bg-base-100 outline-1 w-20 outline outline-indigo-200 rounded-lg p-2 shadow-2xl border-indigo-300 border-1">
                             <p class="text-xs">
-                                Du bist offline. Dir werden zuvor gespeicherte Daten gezeigt.
+                                Du hast die maximale Anzahl an Anfragen erreicht. Bitte versuche es später noch einmal.
                             </p>
                         </PopoverPanel>
                     </Popover>
@@ -170,7 +170,7 @@ import {
     ArrowPathIcon,
     UserGroupIcon,
 } from "@heroicons/vue/24/solid";
-import { StarIcon as StarIconOutline, ShareIcon, GlobeAltIcon } from "@heroicons/vue/24/outline";
+import { StarIcon as StarIconOutline, ShareIcon, GlobeAltIcon, ExclamationCircleIcon } from "@heroicons/vue/24/outline";
 
 import { Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 

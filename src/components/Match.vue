@@ -22,8 +22,8 @@
         <NavBar title="Spiel" subtitle="Info" class="" />
         <div id="game-header" class="card grid w-5/6 m-auto shadow-xl bg-base-100 relative">
             <Header v-if="!loading" :type="'match'" :title="scores.head.name" :game="game" :game_id="gameID"
-                :team_id="teamID" :class_id="teamClassID"></Header>
-            <HeaderLoading v-else />
+                :team_id="teamID" :class_id="teamClassID" :net_error="netError"></Header>
+            <HeaderLoading :net_error="netError" v-else />
 
             <div id="game-info" class="">
                 <div class="justify-center mx-2">
@@ -186,6 +186,7 @@ const games = ref([]);
 const scores = ref({});
 const loading = ref(true);
 const game = ref({});
+const netError = ref(false);
 
 const classGames = ref([]);
 const showAll = ref(false);
@@ -228,7 +229,14 @@ const setGameID = async () => {
 
 const getData = async () => {
     loading.value = true;
-    games.value = await fetchClassGames(teamClassID.value, true);
+    fetchClassGames(teamClassID.value, true)
+        .then((data) => {
+            games.value = data;
+        })
+        .catch((error) => {
+            console.log(error);
+            netError.value = true;
+        });
     console.log("games value");
     console.log(games.value);
     classGames.value = games.value
