@@ -46,7 +46,7 @@
                 <div class="flex items-center">
                     <button v-if="!netError" @click="loadClub()" class="btn btn-sm btn-square"
                         :class="loading ? 'loading disabled' : ''">
-                        <ArrowPath v-if="!loading" class="h-4" />
+                        <ArrowPathIcon v-if="!loading" class="h-4" />
                     </button>
                     <Popover v-else class="relative">
                         <PopoverButton class="flex items-center btn btn-sm btn-square">
@@ -103,7 +103,11 @@
                         class="px-4 pt-4 pb-2 text-sm bg-primary bg-opacity-20 rounded-b">
                         <div v-if="!loadingGames">
                             <div v-for="team in activeClass.games">
-                                <div id="league-info">
+                                <div id="league-info" class="flex">
+                                    {{ activeClass.games[0][Object.keys(activeClass.games)[0]] }}
+                                    {{ activeClass.id }}
+                                    {{ Object.keys(team)[0] }}
+
                                     <!-- Information about how many games and button to team component -->
                                     <router-link v-if="Object.keys(team)[0] && !loadingGames"
                                         :to="'/team#' + Object.keys(team)[0] + ';' + activeClass.id + ';' + club.no"
@@ -111,10 +115,8 @@
                                 hover:opacity-50">
                                         Zum Team</router-link>
                                 </div>
-                                <hr class="bg-gray-400 text-black h-[1.5px]" />
-                                {{ activeClass.games[0][Object.keys(activeClass.games)[0]] }}
-                                {{ activeClass.id }}
-                                {{ Object.keys(team)[0] }}
+
+
 
                                 <Match v-for="game in team[Object.keys(team)[0]]" :match="game" :key="game.gID"
                                     :teamID="Object.keys(team)[0]" :teamClassID="activeClass.id">
@@ -132,9 +134,8 @@
                         <div v-else>
                             <div id="league-info">
                                 <!-- Information about how many games and button to team component -->
-                                <span class="w-10 h-4"></span>
+                                <div class="w-10 h-5"></div>
                             </div>
-                            <hr class="bg-gray-400 text-black h-[1.5px]" />
                             <MatchLoading v-for=" i in 4">
                             </MatchLoading>
                         </div>

@@ -25,7 +25,7 @@
                         <div class="w-60 h-8 rounded-lg bg-base-100 animate-pulse"></div>
                         <div class="w-48 h-8 rounded-lg bg-base-100 animate-pulse"></div>
                     </div>
-                    <div class="flex flex-wrap mb-3 gap-2 mt-1">
+                    <div class="flex flex-wrap mb-3 gap-2 mt-2">
                         <div class="w-64 h-4 rounded-lg bg-base-100 animate-pulse"></div>
                         <div class="w-44 h-4 rounded-lg bg-base-100 animate-pulse"></div>
 
@@ -52,14 +52,14 @@
                     <div v-if="!games_loading" class="w-full mx-auto">
                         <Disclosure v-for="(team) in classes" :key="team.gClassID" v-slot="{ open }">
                             <DisclosureButton
-                                class="btn btn-primary bg-opacity-75 w-full flex justify-end flex-nowrap gap-3" :class="[
-                                    (team.gClassID !== teamClassID) ? 'my-1 rounded-lg' : 'rounded-b-none', is_dark ? 'brightness-75':''
-                                ]" @click="
+                                class="btn btn-primary bg-opacity-75 w-full flex justify-end flex-nowrap gap-3 my-1"
+                                :class="[open ? 'rounded-b-none mb-0' : '']" @click="
                                     team.gClassID !== teamClassID
                                         ? (teamClassID = team.gClassID,
                                             open = true)
                                         : (teamClassID = null, open = false)
-                                " :disabled="classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1)">
+                                " :disabled="classes.find(c => c.gClassID === team.gClassID).games.every(element =>
+                                element[Object.keys(element)[0]].length < 1)">
                                 <span class="sm:hidden block">{{ team.gClassSname }}</span>
                                 <span class="hidden sm:block">{{ team.gClassLname }}</span>
                                 <span id="league-info" class="ml-auto mr-5 text-gray-500 text-xs">
@@ -111,17 +111,15 @@
                         </Disclosure>
                     </div>
                     <div v-else class="overflow-auto max-h-[50%] w-full mx-auto">
-                        <div v-for="i in 10" class="p-3 h-12 bg-base-200 rounded-lg my-1 flex items-center">
+                        <div v-for="i in 10"
+                            class="btn btn-primary border-none bg-opacity-25 w-full flex justify-end flex-nowrap gap-3 my-1 disabled">
                             <div class="animate-pulse rounded-lg bg-base-100 h-3 sm:w-44 w-16">
                             </div>
                             <div class="animate pulse rounded-full bg-base-100 h-3 sm:w-44 w-3 ml-auto mr-2">
                             </div>
                         </div>
-
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

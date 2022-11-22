@@ -4,7 +4,7 @@
         <div class="flex justify-center w-full">
             <div class="flex w-4/6 items-center">
                 <MagnifyingGlassIcon class="ml-auto h-6 text-neutral-800 mr-0 z-10" />
-                <input type="text" autocomplete="off" class="input -ml-9 -mr-9 w-full px-10 rounded-full shadow
+                <input type="text" autocomplete="off" class="input -ml-9 -mr-9 w-full px-10 shadow
             focus:ring-0 focus:outline-none" @input="event => fetchSearch(event.target.value)">
                 <div class="h-5 w-5">
                     <svg v-show="netError && !isLoading" class="text-red-600 h-5 w-5" xmlns="http://www.w3.org/2000/svg"
