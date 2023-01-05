@@ -51,20 +51,22 @@
                     </div>
                     <div v-if="!games_loading" class="w-full mx-auto">
                         <Disclosure v-for="(team) in classes" :key="team.gClassID" v-slot="{ open }">
-                            <DisclosureButton
-                                class="btn btn-primary bg-opacity-75 w-full flex justify-end flex-nowrap gap-3 my-1"
-                                :class="[open ? 'rounded-b-none mb-0' : '']" @click="
-                                    team.gClassID !== teamClassID
-                                        ? (teamClassID = team.gClassID,
-                                            open = true)
-                                        : (teamClassID = null, open = false)
-                                " :disabled="classes.find(c => c.gClassID === team.gClassID).games.every(element =>
-                                element[Object.keys(element)[0]].length < 1)">
-                                <span class="sm:hidden block">{{ team.gClassSname }}</span>
-                                <span class="hidden sm:block">{{ team.gClassLname }}</span>
-                                <span id="league-info" class="ml-auto mr-5 text-gray-500 text-xs">
-                                    <span v-if="team.games.length < 1">
-                                        <span
+                            <div class="bg-primary text-primary-content content-center p-0 rounded-md uppercase flex text-sm font-bold justify-between bg-opacity-75 w-full flex-nowrap gap-3 pl-3 my-1"
+                                :class="[open ? 'rounded-b-none mb-0' : '']">
+                                <div id="class-name" class="mr-auto my-auto">
+                                    <a :href="'/league#' + team.gClassID" class="link link-hover"><span
+                                            class="h-fit my-auto sm:hidden block">{{
+                                                team.gClassSname
+                                            }}</span></a>
+                                    <a :href="'/league#' + team.gClassID" class="link link-hover"><span
+                                            class="h-fit my-auto hidden sm:block">{{
+                                                team.gClassLname
+                                            }}</span></a>
+                                </div>
+                                <span id="league-info"
+                                    class="ml-auto h-fit my-auto text-primary-content mr-5 text-gray-500 text-xs">
+                                    <span class="h-fit" v-if="team.games.length < 1">
+                                        <span class=""
                                             v-if="games_data.content.classes.find(c => c.gClassID === team.gClassID).games.length < 1">
                                             spielfrei
                                         </span>
@@ -73,11 +75,21 @@
                                         </span>
                                     </span>
                                 </span>
-                                <ChevronUpIcon class="w-5 h-5" :class="[
-                                    open ? 'transform rotate-180' : '',
-                                    classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1) ? 'text-gray-500' : 'text-primary-content',
-                                ]" />
-                            </DisclosureButton>
+                                <DisclosureButton class="btn justify-self-end  flex-nowrap gap-3" @click="
+                                    team.gClassID !== teamClassID
+                                        ? (teamClassID = team.gClassID,
+                                            open = true)
+                                        : (teamClassID = null, open = false)
+                                " :disabled="classes.find(c => c.gClassID === team.gClassID).games.every(element =>
+element[Object.keys(element)[0]].length < 1)">
+
+                                    <ChevronUpIcon class="w-5 h-5" :class="[
+                                        open ? 'transform rotate-180' : '',
+                                        classes.find(c => c.gClassID === team.gClassID).games.every(element => element[Object.keys(element)[0]].length < 1) ? 'text-gray-500' : 'text-primary-content',
+                                    ]" />
+                                </DisclosureButton>
+
+                            </div>
                             <DisclosurePanel static v-show="team.gClassID === teamClassID"
                                 class="px-4 pt-4 pb-2 text-sm bg-primary bg-opacity-20 rounded-b-lg">
                                 <div>

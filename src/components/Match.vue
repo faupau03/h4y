@@ -1,23 +1,21 @@
 <template>
 
-    <Head>
+    <!-- <Head>
         <meta name="description"
             :content="'Handballspiel am ' + game.gDate + ', ' + game.gHomeTeam + 'gegen' + game.gGuestTeam">
 
-        <!-- Social -->
         <meta property="og:title" content="Handballspiel">
         <meta id="og_description" property="og:description"
             :content="'Handballspiel am ' + game.gDate + ', ' + game.gHomeTeam + ' gegen ' + game.gGuestTeam">
         <meta property="og:image" content="og.png">
         <meta property="og:url" :content="$location.href">
 
-        <!-- Twitter -->
         <meta name="twitter:title" content="Handballspiel">
         <meta name="twitter:description"
             :content="'Handballspiel am ' + game.gDate + ', ' + game.gHomeTeam + ' gegen ' + game.gGuestTeam">
         <meta name="twitter:image" content="og.png">
         <meta name="twitter:card" content="summary_large_image">
-    </Head>
+    </Head> -->
     <div class="w-full grid gap-4">
         <NavBar title="Spiel" subtitle="Info" class="" />
         <div id="game-header" class="card grid w-5/6 m-auto shadow-xl bg-base-100 relative">
@@ -56,15 +54,15 @@
                 <div id="game-class" class="text-md sm:text-sl justify-center flex"></div>
                 <div class="font-bold text-3xl sm:text-4xl my-4 justify-center flex" v-if="!loading">
                     {{
-                            !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.home_score
-                                ? tickerScore.gameScore.home_score
-                                : game.gHomeGoals
+                    !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.home_score
+    ? tickerScore.gameScore.home_score
+    : game.gHomeGoals
                     }}
                     :
                     {{
-                            !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.guest_score
-                                ? tickerScore.gameScore.guest_score
-                                : game.gGuestGoals
+                    !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.guest_score
+    ? tickerScore.gameScore.guest_score
+    : game.gGuestGoals
                     }}
                 </div>
                 <div v-else class="font-bold text-3xl sm:text-4xl my-4 justify-center flex animate-pulse">
@@ -229,7 +227,7 @@ const setGameID = async () => {
 
 const getData = async () => {
     loading.value = true;
-    fetchClassGames(teamClassID.value, true)
+    await fetchClassGames(teamClassID.value, true)
         .then((data) => {
             games.value = data;
         })
@@ -237,12 +235,12 @@ const getData = async () => {
             console.log(error);
             netError.value = true;
         });
-    console.log("games value");
-    console.log(games.value);
+    //console.log("games value");
+    //console.log(games.value);
     classGames.value = games.value
     classGames.value = filterGames(classGames.value, showAll.value);
     //classGames.value = classGames.value.reverse();  // 
-    console.log(teamID.value);
+    //console.log(teamID.value);
     if (teamID.value && teamID.value != "null" && teamID.value != "undefined") {
         games.value = await fetchTeamGames(
             teamID.value,
@@ -253,12 +251,15 @@ const getData = async () => {
     }
 
     scores.value = await fetchClass(teamClassID.value);
-    console.log(games.value);
+    //console.log(games.value);
     game.value = games.value.find((game) => game.gID === gameID.value);
-    console.log(gameID.value);
-    console.log(games.value);
-    console.log(game.value);
+    //console.log(gameID.value);
+    //console.log(games.value);
+    //console.log(game.value);
     loading.value = false;
+    //console.log("games: " + games.value)
+    //console.log("loading: " + loading.value);
+    //console.log("game: " + game.value);
 };
 
 const forceUpdate = async (gID, tID, cID) => {

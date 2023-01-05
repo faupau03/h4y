@@ -45,7 +45,7 @@ const filterGames = (games, showAll) => {
             time_split[0],
             time_split[1]
         );
-        date.setHours(date.getHours() + 2);     // 2 hour puffertime
+        date.setHours(date.getHours() + 2);     // 2 hour buffer time
         return date > new Date();
     });
 };

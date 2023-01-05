@@ -14,6 +14,7 @@ const updateSW = registerSW({
 // Components
 import Search from "./components/Search.vue";
 import Leagues from "./components/Leagues.vue";
+import League from "./components/League.vue";
 import Favorites from "./components/Favorites.vue";
 import Settings from "./components/Settings.vue";
 import Match from "./components/Match.vue";
@@ -37,6 +38,11 @@ const routes = [
     },
     {
         path: import.meta.env.BASE_URL + '/leagues', component: Leagues, meta: {
+            KeepAlive: true // Need to be cached
+        }
+    },
+    {
+        path: import.meta.env.BASE_URL + '/league', component: League, meta: {
             KeepAlive: true // Need to be cached
         }
     },

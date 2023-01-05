@@ -21,7 +21,8 @@
                     <div class="text-base-content">Nummer: {{ club.no }}</div>
                     <div class="absolute bottom-5 right-5 flex items-center gap-1 text-base-content hover:text-accent">
                         <GlobeAltIcon class="h-5" />
-                        <a class=" underline mb-1" :href="'http://' + club.webaddress">{{ club.webaddress
+                        <a class=" underline mb-1" :href="'http://' + club.webaddress">{{
+                            club.webaddress
                         }}</a>
                     </div>
 
@@ -70,35 +71,32 @@
             <!-- v-if="!loading && club.menu && club.menu.period.selectedID == period_selected" -->
             <div v-if="true" class="p-1">
                 <Disclosure v-for="item in classes" v-slot="{ open }">
-                    <DisclosureButton @click="!open ? showClass(item.gClassID) : ''"
-                        class="btn btn-primary bg-opacity-75 w-full flex justify-end flex-nowrap gap-3 my-1"
+                    <div class="bg-primary text-primary-content content-center p-0 rounded-md uppercase flex text-sm font-bold justify-between bg-opacity-75 w-full flex-nowrap gap-3 pl-3 my-1"
                         :class="[open ? 'rounded-b-none mb-0' : '']">
-                        <div id="class-name" class="mr-auto">
-                            <span class="sm:hidden block">{{ item.gClassSname }}</span>
-                            <span class="hidden sm:block">{{ item.gClassLname }}</span>
+                        <div id="class-name" class="mr-auto my-auto">
+                            <a :href="'/league#' + item.gClassID" class="link link-hover"><span
+                                    class="h-fit my-auto sm:hidden block">{{
+                                        item.gClassSname
+                                    }}</span></a>
+                            <a :href="'/league#' + item.gClassID" class="link link-hover"><span
+                                    class="h-fit my-auto hidden sm:block">{{
+                                        item.gClassLname
+                                    }}</span></a>
                         </div>
-                        <span id="class-info" class="text-secondary-content text-opacity-60 text-xs">
-                            <span v-if="false">
-                                <span v-if="false">
-                                    spielfrei
-                                </span>
-                                <span v-else>
-                                    Keine zukünftigen Spiele
-                                </span>
+                        <span id="league-info"
+                            class="ml-auto h-fit my-auto text-primary-content mr-5 text-gray-500 text-xs">
+                            <span class="h-fit" v-if="item.games.length < 1">
                             </span>
-                            <div v-if="checkLive(item.gClassID)" class="rounded-full relative w-4 h-4">
-                                <div
-                                    class="animate-ping absolute -mt-0.5 inline-flex h-4 w-4 rounded-full bg-accent opacity-75">
-                                </div>
-                                <div
-                                    class="relative -mr-1.5 z-20 mx-auto my-auto mt-1 animate-none rounded-full h-3 w-3 bg-accent">
-                                </div>
-                            </div>
                         </span>
-                        <ChevronUpIcon class="w-5 h-5 shrink-0" :class="[
-                            open ? 'transform rotate-180' : ''
-                        ]" />
-                    </DisclosureButton>
+                        <DisclosureButton @click="!open ? showClass(item.gClassID) : ''"
+                            class="btn bg-opacity-75 flex justify-end flex-nowrap gap-3"
+                            :class="[open ? 'rounded-b-none mb-0' : '']">
+                            <ChevronUpIcon class="w-5 h-5 shrink-0" :class="[
+                                open ? 'transform rotate-180' : ''
+                            ]" />
+                        </DisclosureButton>
+
+                    </div>
                     <DisclosurePanel static v-show="item.gClassID == activeClass.id && open"
                         class="px-4 pt-4 pb-2 text-sm bg-primary bg-opacity-20 rounded-b">
                         <div v-if="!loadingGames">
