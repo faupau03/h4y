@@ -6,10 +6,10 @@
         gameTickerInfo &&
         gameTickerInfo['team_home']
     " id="ticker" class="bg-base-100 w-5/6 m-auto shadow-xl relative p-2 gap-1 card" :class="
-        fullscreenTicker
-            ? '!m-0 !z-50 !absolute !right-0 !top-0 !bottom-0 !left-0 !h-screen !w-screen overflow-none rounded-none'
-            : ''
-    ">
+    fullscreenTicker
+        ? '!m-0 !z-50 !absolute !right-0 !top-0 !bottom-0 !left-0 !h-screen !w-screen overflow-none rounded-none'
+        : ''
+">
         <div class="flex gap-2 py-2">
             <span class="font-bold ml-2"> Ticker </span>
             <button v-show="infoTicker" class="ml-auto btn btn-primary" @click="infoTicker = false">
@@ -73,13 +73,13 @@
                 <VirtualisedList class="h-full" :nodes="gameTicker" :viewportHeight="
                     fullscreenTicker ? screenHeight() - 216 : 320
                 " :getNodeHeight="
-                    (node) => {
-                        if (screenWidth() < 640) {
-                            return 56;
-                        }
-                        return 86;
-                    }
-                " :get-node-key="(node, index) => index">
+    (node) => {
+        if (screenWidth() < 640) {
+            return 56;
+        }
+        return 86;
+    }
+" :get-node-key="(node, index) => index">
                     <template #cell="slotProps">
                         <div class="flex justify-evenly md:text-xl sm:text-sm text-xs p-2 mx-2 rounded items-center">
                             <div class="w-2/5 text-ellipsis overflow-hidden">
@@ -131,45 +131,45 @@
                     </div>
                     <div>
                         {{
-                        get7m(player.player_no)
-                        ? get7m(player.player_no) +
-                        "/" +
-                        get7mScore(player.player_no)
+    get7m(player.player_no)
+                        ?get7m(player.player_no) +
+    "/" +
+    get7mScore(player.player_no)
                         : ""
                         }}
                     </div>
                     <div class="bg-yellow-400 h-full text-center grid items-center">
                         {{
-                        getYellowCard(player.player_no)
-                        ? getTime(getYellowCard(player.player_no))
+    getYellowCard(player.player_no)
+                        ?getTime(getYellowCard(player.player_no))
                         : ""
                         }}
                     </div>
                     <div class="bg-indigo-200 h-full text-center grid items-center">
                         {{
-                        get2min(player.player_no)[0]
-                        ? getTime(get2min(player.player_no)[0])
+    get2min(player.player_no)[0]
+        ? getTime(get2min(player.player_no)[0])
                         : ""
                         }}
                     </div>
                     <div class="bg-indigo-200 h-full text-center grid items-center">
                         {{
-                        get2min(player.player_no)[1]
-                        ? getTime(get2min(player.player_no)[1])
+    get2min(player.player_no)[1]
+        ? getTime(get2min(player.player_no)[1])
                         : ""
                         }}
                     </div>
                     <div class="bg-indigo-200 h-full text-center grid items-center">
                         {{
-                        get2min(player.player_no)[2]
-                        ? getTime(get2min(player.player_no)[2])
+    get2min(player.player_no)[2]
+        ? getTime(get2min(player.player_no)[2])
                         : ""
                         }}
                     </div>
                     <div class="bg-red-400 h-full text-center grid items-center">
                         {{
-                        getRedCard(player.player_no)
-                        ? getTime(getRedCard(player.player_no))
+    getRedCard(player.player_no)
+                        ?getTime(getRedCard(player.player_no))
                         : ""
                         }}
                     </div>
@@ -330,11 +330,11 @@ const getYellowCard = (no) => {
         ) {
             //console.log("message: " + message);
             if (message.includes("Verwarnung")) {
-                let player_no = message.match(/\d+/)[0];
+                let player_no = message.match(/\d+/);
                 if (!player_no) {
                     player_no = message.replace("Verwarnung für die Nummer ", "").charAt(0);
                 }
-                if (player_no == no) {
+                if (player_no[0] == no) {
                     return gameTicker.value[i].game_time;
                 }
             }
@@ -411,13 +411,9 @@ const tickerInit = async () => {
         // Set fetch interval
         setInterval(async () => {
             let tmp = await fetchTicker(gameToken.value);
-            if (!showAll.value) {
-                tmp = tmp.filter(
-                    (item) => !messageFilter.includes(item["message"])
-                );
-            }
             tmp = tmp.reverse();
-            gameTicker.value = removeDuplicates(tmp);
+            tmp = removeDuplicates(tmp);
+            gameTicker.value = tmp;
             if (
                 gameTicker.value[0].game_time &&
                 gameTicker.value.length > gameTickerLastLength.value
@@ -435,14 +431,18 @@ const tickerInit = async () => {
             } else {
                 gameTickerStop.value = false;
             }
+
+            // Filter out start and stop messages
+            if (!showAll.value) {
+                gameTicker.value = gameTicker.value.filter(
+                    (item) => !messageFilter.includes(item["message"])
+                );
+            }
             gameScore.value = gameTicker.value[0];
+
         }, interval);
         let tmp = await fetchTicker(gameToken.value);
-        if (!showAll.value) {
-            tmp = tmp.filter(
-                (item) => !messageFilter.includes(item["message"])
-            );
-        }
+
         tmp = tmp.reverse();
         gameTicker.value = removeDuplicates(tmp);
         if (gameTicker.value[0].game_time) {
@@ -453,6 +453,14 @@ const tickerInit = async () => {
         } else {
             gameTickerStop.value = false;
         }
+
+        // Filter out start and stop messages
+        if (!showAll.value) {
+            gameTicker.value = gameTicker.value.filter(
+                (item) => !messageFilter.includes(item["message"])
+            );
+        }
+
         gameTickerInfo.value = await fetchTickerInfo(gameToken.value);
 
         //Sort team_members by no

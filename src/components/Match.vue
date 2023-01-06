@@ -274,7 +274,6 @@ const forceUpdate = async (gID, tID, cID) => {
     await getData();
 };
 
-
 onMounted(async () => {
     await setGameID();
     await getData();

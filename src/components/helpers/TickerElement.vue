@@ -114,11 +114,11 @@ const init = () => {
     }
     // Verwarnung
     else if (message.includes("Verwarnung")) {
-        let player_no = message.match(/\d+/)[0];
+        let player_no = message.match(/\d+/);
         if (!player_no) {
             player_no = message.replace("Verwarnung für die Nummer ", "").charAt(0);
         }
-        const player = team_members.find(m => m.player_no == player_no);
+        const player = team_members.find(m => m.player_no[0] == player_no);
         info.value =
             "Verwarnung für Nr. " + player_no;
         info_long.value = "Verwarnung für die Nummer " + player_no;
