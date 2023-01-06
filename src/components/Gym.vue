@@ -267,7 +267,7 @@ const fetchMatches = async () => {
     }
     else {
         url = "https://spo.handball4all.de/service/if_g_json.php?cmd=pgy&g=" +
-            gym_id.value + "&do=" + week_selected.value;
+            gym_id.value;
     }
     const response = await fetch(url);
 
