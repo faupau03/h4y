@@ -244,20 +244,20 @@ const getScore = (no) => {
         ) {
             //console.log("message: " + message);
             if (message.includes("Tor")) {
-                let player_no = message.match(/\d+/)[0];
+                let player_no = message.match(/\d+/);
                 if (!player_no) {
                     player_no = message.charAt(message.length - 1);
                 }
-                if (player_no == no) {
+                if (player_no[0] == no) {
                     score++;
                 }
             }
             else if (message.includes("7m") && message.includes("Erfolgreicher")) {
-                let player_no = message.replace("7m", "").match(/\d+/)[0];
+                let player_no = message.replace("7m", "").match(/\d+/);
                 if (!player_no) {
                     player_no = message.charAt(message.length - 1);
                 }
-                if (player_no == no) {
+                if (player_no[0] == no) {
                     score++;
                 }
             }
@@ -281,11 +281,11 @@ const get7mScore = (no) => {
                 message.includes("7m") &&
                 (message.includes("Tor") ||
                     message.includes("Erfolgreicher"))) {
-                let player_no = message.replace("7m", "").match(/\d+/)[0];
+                let player_no = message.replace("7m", "").match(/\d+/);
                 if (!player_no) {
                     player_no = message.charAt(message.length - 1);
                 }
-                if (player_no == no) {
+                if (player_no[0] == no) {
                     score++;
                 }
             }
@@ -306,11 +306,11 @@ const get7m = (no) => {
         ) {
             //console.log("message: " + message);
             if (message.includes("7m")) {
-                let player_no = message.replace("7m", "").match(/\d+/)[0];
+                let player_no = message.replace("7m", "").match(/\d+/);
                 if (!player_no) {
                     player_no = message.charAt(message.length - 1);
                 }
-                if (player_no == no) {
+                if (player_no[0] == no) {
                     score++;
                 }
             }
@@ -353,11 +353,11 @@ const getRedCard = (no) => {
         ) {
             //console.log("message: " + message);
             if (message.includes("Disqualifikation")) {
-                let player_no = message.match(/\d+/)[0];
+                let player_no = message.match(/\d+/);
                 if (!player_no) {
                     player_no = message.replace("Disqualifikation für die Nummer ", "").charAt(0);
                 }
-                if (player_no == no) {
+                if (player_no[0] == no) {
                     return gameTicker.value[i].game_time;
                 }
             }

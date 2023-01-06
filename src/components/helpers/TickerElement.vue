@@ -65,9 +65,12 @@ const init = () => {
         message.includes("7m") &&
         (message.includes("Tor") || message.includes("Erfolgreicher"))
     ) {
-        let player_no = message.replace("7m", "").match(/\d+/)[0];
+        let player_no = message.replace("7m", "").match(/\d+/);
         if (!player_no) {
             player_no = message.charAt(message.length - 1);
+        }
+        else {
+            player_no = player_no[0];
         }
         const player = team_members.find(m => m.player_no == player_no);
         info.value =
@@ -80,9 +83,12 @@ const init = () => {
     }
     // 7m
     else if (message.includes("7m")) {
-        let player_no = message.replace("7m", "").match(/\d+/)[0];
+        let player_no = message.replace("7m", "").match(/\d+/);
         if (!player_no) {
             player_no = message.charAt(message.length - 1);
+        }
+        else {
+            player_no = player_no[0];
         }
         const player = team_members.find(m => m.player_no == player_no);
         info.value = "7m von Nr. " + player_no;
@@ -94,10 +100,14 @@ const init = () => {
     }
     // Tor
     else if (message.includes("Tor")) {
-        let player_no = message.match(/\d+/)[0];
+        let player_no = message.match(/\d+/);
         if (!player_no) {
             player_no = message.charAt(message.length - 1);
         }
+        else {
+            player_no = player_no[0];
+        }
+
         const player = team_members.find(m => m.player_no == player_no);
         info.value = "Tor durch Nr. " + player_no;
         info_long.value = "Tor durch die Nummer " + player_no;
@@ -118,7 +128,10 @@ const init = () => {
         if (!player_no) {
             player_no = message.replace("Verwarnung für die Nummer ", "").charAt(0);
         }
-        const player = team_members.find(m => m.player_no[0] == player_no);
+        else {
+            player_no = player_no[0];
+        }
+        const player = team_members.find(m => m.player_no == player_no);
         info.value =
             "Verwarnung für Nr. " + player_no;
         info_long.value = "Verwarnung für die Nummer " + player_no;
@@ -133,6 +146,9 @@ const init = () => {
         if (!player_no) {
             player_no = message.replace("Disqualifikation für die Nummer ", "").charAt(0);
         }
+        else {
+            player_no = player_no[0];
+        }
         const player = team_members.find(m => m.player_no == player_no);
         info.value = "Disqualifikation für Nr. " + player_no;
         info_long.value = "Disqualifikation für die Nummer " + player_no;
@@ -146,6 +162,9 @@ const init = () => {
         let player_no = message.replace("2-min", "").match(/\d+/);
         if (!player_no) {
             player_no = message.replace("2-min Strafe für die Nummer ", "").charAt(0);
+        }
+        else {
+            player_no = player_no[0];
         }
         const player = team_members.find(m => m.player_no == player_no);
         info.value =
