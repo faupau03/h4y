@@ -89,7 +89,7 @@
                             </span>
                         </span>
                         <DisclosureButton @click="!open ? showClass(item.gClassID) : ''"
-                            class="btn bg-opacity-75 flex justify-end flex-nowrap gap-3"
+                            class="btn btn-primary bg-opacity-75 flex justify-end flex-nowrap gap-3"
                             :class="[open ? 'rounded-b-none mb-0' : '']">
                             <ChevronUpIcon class="w-5 h-5 shrink-0" :class="[
                                 open ? 'transform rotate-180' : ''

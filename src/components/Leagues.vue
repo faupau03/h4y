@@ -51,8 +51,9 @@
                     </div>
                     <div v-if="!games_loading" class="w-full mx-auto">
                         <Disclosure v-for="(team) in classes" :key="team.gClassID" v-slot="{ open }">
-                            <div class="bg-primary text-primary-content content-center p-0 rounded-md uppercase flex text-sm font-bold justify-between bg-opacity-75 w-full flex-nowrap gap-3 pl-3 my-1"
-                                :class="[open ? 'rounded-b-none mb-0' : '']">
+                            <div class="bg-primary text-primary-content content-center p-0 rounded-md uppercase flex text-sm justify-between bg-opacity-75 disabled:bg-neutral/50 w-full flex-nowrap gap-3 pl-3 my-1"
+                                :class="[open ? 'rounded-b-none mb-0' : '', classes.find(c => c.gClassID === team.gClassID).games.every(element =>
+                                element[Object.keys(element)[0]].length < 1) ? 'bg-opacity-50' : 'font-bold']">
                                 <div id="class-name" class="mr-auto my-auto">
                                     <a :href="'/league#' + team.gClassID" class="link link-hover"><span
                                             class="h-fit my-auto sm:hidden block">{{
@@ -75,13 +76,13 @@
                                         </span>
                                     </span>
                                 </span>
-                                <DisclosureButton class="btn justify-self-end  flex-nowrap gap-3" @click="
+                                <DisclosureButton class="btn btn-primary justify-self-end  flex-nowrap gap-3" @click="
                                     team.gClassID !== teamClassID
                                         ? (teamClassID = team.gClassID,
                                             open = true)
                                         : (teamClassID = null, open = false)
                                 " :disabled="classes.find(c => c.gClassID === team.gClassID).games.every(element =>
-element[Object.keys(element)[0]].length < 1)">
+element[Object.keys(element)[0]].length < 1)" :class="[open ? 'rounded-b-none mb-0' : '']">
 
                                     <ChevronUpIcon class="w-5 h-5" :class="[
                                         open ? 'transform rotate-180' : '',
