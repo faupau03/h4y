@@ -14,12 +14,13 @@
                         <UserGroupIcon class="text-gray-500 h-full" />
                     </div>
                     <div id="club-info" class="m-5">
-                        <div class="font-bold">
-                            {{ team ? team.head.name : "" }}
-                        </div>
-                        <div class="text-sm">
-                            {{ club ? club.lname : "" }}
-                        </div>
+                        <a v-if="team" :href="'/league#' + teamClassID" class="font-bold link link-hover">
+                            {{ team.head.name }}
+                        </a>
+                        <br>
+                        <a v-if="club" :href="'/club#' + club.id" class="text-sm link link-hover">
+                            {{ club.lname }}
+                        </a>
                     </div>
                 </div>
             </div>
