@@ -61,7 +61,6 @@
                             </p>
                         </PopoverPanel>
                     </Popover>
-
                 </div>
             </div>
 
@@ -117,7 +116,7 @@
 
 
                                 <Match v-for="game in team[Object.keys(team)[0]]" :match="game" :key="game.gID"
-                                    :teamID="Object.keys(team)[0]" :teamClassID="activeClass.id">
+                                    :teamID="Object.keys(team)[0]" :teamClassID="activeClass.id" :id="game.gID">
                                 </Match>
                                 <div id="no-data" v-show="false" class="mb-2">
                                     <div id="no-future-matches" v-show="!showAll">
@@ -155,7 +154,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, onUpdated, ref } from 'vue';
 import { fetchTeamID, fetchClub, fetchTeamGames2 } from './functions/fetchData';
 import { useRoute } from 'vue-router';
 
@@ -181,12 +180,15 @@ import Header from "./helpers/Header.vue";
 import HeaderLoading from "./helpers/HeaderLoading.vue";
 import Period from "./helpers/Period.vue";
 
+import { getClosestDate } from "./functions/misc.js";
+
 // Variables
 const classes = ref([]); // Classes for this club
 const activeClass = ref({}); // Class ID for the opened class
 const teamIDs = ref([]); // Team IDs for the opened class
 const club = ref({}); // Club data
 const showAll = ref(false); // Show all games
+const closestGameID = ref(); // Closest game ID
 
 // Period variables
 const period_selected = ref(); // Selected period
@@ -287,7 +289,21 @@ const showClass = (class_id) => {
             });
         }
         activeClass.value.games = await Promise.all(teams);
+
+        // check which game is the nearest in terms of time
+        const closestGame = getClosestDate(activeClass.value.games);
+        console.log(String(closestGame.gID));
+        closestGameID.value = String(closestGame.gID);
         loadingGames.value = false;
+        setTimeout(() => {
+            try {
+                console.log("Scrolling to: " + closestGameID.value);
+                document.getElementById(closestGameID.value).scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }, 200);
     })
         .catch(error => {
             console.log(error);
@@ -313,5 +329,11 @@ const fetchClubInfo = async () => {
         netError.value = true;
     };
 };
+
+
+onUpdated(() => {
+    console.log("updated");
+    //document.getElementById(closestGameID.value).scrollIntoView({ behavior: 'smooth' });
+});
 
 </script>

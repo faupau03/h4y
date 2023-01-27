@@ -30,6 +30,40 @@ const getDate = (game) => {
     return date;
 };
 
+
+const getClosestDate = (games) => {
+    const team_games = games[0][Object.keys(games[0])[0]];
+    console.log(Object.keys(games[0]));
+    console.log(games[0]);
+    console.log(team_games);
+    console.log(Object.keys(games[0]));
+
+    console.log(JSON.stringify(games));
+    let targetDate = new Date();
+    const gameDates = team_games.map((game) => {
+        const date_split = game.gDate.split(".");
+        const time_split = game.gTime.split(":");
+        //TODO: this date is hardcoded to the 21st century
+        const date = new Date(
+            "20" + date_split[2],
+            date_split[1] - 1,
+            date_split[0],
+            time_split[0],
+            time_split[1]
+        );
+        return date;
+    });
+
+    let closestDate = gameDates.reduce((prev, curr) => {
+        return (Math.abs(curr - targetDate) < Math.abs(prev - targetDate) ? curr : prev);
+    });
+    const closestDateIndex = gameDates.indexOf(closestDate);
+    console.log("closestDateIndex");
+    console.log(closestDateIndex)
+    return team_games[closestDateIndex];
+}
+
+
 const filterGames = (games, showAll) => {
     if (showAll) {
         return games;
@@ -126,4 +160,4 @@ function hslToHex(h, s, l) {
 }
 const delay = (ms = 1000) => new Promise(r => setTimeout(r, ms));
 
-export { getDate, filterGames, isDark, hslToHex, delay };
+export { getDate, filterGames, isDark, hslToHex, delay, getClosestDate };
