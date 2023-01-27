@@ -44,9 +44,11 @@
                     {{ match.gGuestGoals }}
                 </div>
                 <!-- Live animation -->
-                <div v-show="match.live == true" class="rounded-full relative w-4 h-4 mt-0.5">
-                    <div class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75"></div>
-                    <div class="z-20 mx-auto my-auto mt-0.5 animate-none rounded-full h-3 w-3 bg-red-500"></div>
+                <div v-show="match.live == true" class="rounded-full w-4 h-4 mt-0.5 flex">
+                    <div class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75">
+                    </div>
+                    <div class="z-20 mx-auto my-auto mt-0.5 animate-none rounded-full h-3 w-3 bg-red-500">
+                    </div>
                 </div>
             </div>
 

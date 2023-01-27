@@ -70,7 +70,7 @@
             <!-- v-if="!loading && club.menu && club.menu.period.selectedID == period_selected" -->
             <div v-if="true" class="p-1">
                 <Disclosure v-for="item in classes" v-slot="{ open }">
-                    <div class="bg-primary text-primary-content content-center p-0 rounded-md uppercase flex text-sm font-bold justify-between bg-opacity-75 w-full flex-nowrap gap-3 pl-3 my-1"
+                    <div class="bg-primary items-center text-primary-content content-center p-0 rounded-md uppercase flex text-sm font-bold justify-between bg-opacity-75 w-full flex-nowrap gap-3 pl-3 my-1"
                         :class="[open ? 'rounded-b-none mb-0' : '']">
                         <div id="class-name" class="mr-auto my-auto">
                             <a :href="'/league#' + item.gClassID" class="link link-hover"><span
@@ -87,6 +87,14 @@
                             <span class="h-fit" v-if="item.games.length < 1">
                             </span>
                         </span>
+                        <!-- live animation if live -->
+                        <!-- Live animation -->
+                        <div v-show="checkLive(item.gClassID)" class="rounded-full w-4 h-4">
+                            <div class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75">
+                            </div>
+                            <div class="z-20 mx-auto my-auto animate-none rounded-full h-3 w-3 bg-red-500"></div>
+                        </div>
+
                         <DisclosureButton @click="!open ? showClass(item.gClassID) : ''"
                             class="btn btn-primary bg-opacity-75 flex justify-end flex-nowrap gap-3"
                             :class="[open ? 'rounded-b-none mb-0' : '']">
