@@ -83,7 +83,19 @@
                     <div id="dark-mode">
                         <ThemeSwitcher class="btn px-0" />
                     </div>
-
+                    <div>
+                        <span class="text-xs">Letzte Spiele</span>
+                        <input v-model="showLast" type="range" min="0" max="5" class="relative range range-xs z-10"
+                            step="1" />
+                        <div class="w-full flex relative -top-6  justify-between text-xs px-2 text-accent">
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -151,6 +163,7 @@ const offline = ref(false);
 const dependencies = ref([]);
 const show_last_page = ref(true);
 const darkmode = ref(false);
+const showLast = ref(1);
 
 const title = "Einstellungen";
 const subtitle = "Infos";
@@ -210,8 +223,22 @@ watch(show_last_page, async (newValue, oldValue) => {
     window.dispatchEvent(new Event("storage"));
 });
 
+watch(showLast, async (newValue, oldValue) => {
+    console.log("changed showLast");
+
+    if (newValue != oldValue) {
+        console.log("showLast changed to " + newValue);
+        localStorage.setItem("showLast", newValue);
+    }
+    window.dispatchEvent(new Event("storage"));
+});
+
 const setShowLastPage = () => {
     show_last_page.value = localStorage.getItem("show_last_page") === "true";
+}
+
+const setShowLast = () => {
+    showLast.value = localStorage.getItem("showLast");
 }
 
 
@@ -236,6 +263,7 @@ onMounted(() => {
     themeChange(false);
     loadDeps();
     setShowLastPage();
+    setShowLast();
 });
 
 </script>

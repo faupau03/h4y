@@ -34,7 +34,7 @@ const filterGames = (games, showAll) => {
     if (showAll) {
         return games;
     }
-    return games.filter((game) => {
+    const filtered_games = games.filter((game) => {
         const date_split = game.gDate.split(".");
         const time_split = game.gTime.split(":");
         //TODO: this date is hardcoded to the 21st century
@@ -48,6 +48,19 @@ const filterGames = (games, showAll) => {
         date.setHours(date.getHours() + 2);     // 2 hour buffer time
         return date > new Date();
     });
+
+
+    let showLast = 1;
+    // load showLast games from local storage
+    if (localStorage.getItem("showLast")) {
+        showLast = localStorage.getItem("showLast");
+    }
+
+    // show last games depending on the settings
+    for (let i = 0; i < showLast; i++) {
+        filtered_games.unshift(games[games.length - filtered_games.length - 1]);
+    }
+    return filtered_games;
 };
 
 const lightOrDark = (color) => {

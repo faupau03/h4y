@@ -1,4 +1,4 @@
-import { delay } from "./misc";
+import { delay, filterGames } from "./misc";
 const fetchTeamGames = async (teamID, classID, clubMatches, showAll) => {
   if (!teamID) {
     console.log("no teamid");
@@ -14,27 +14,9 @@ const fetchTeamGames = async (teamID, classID, clubMatches, showAll) => {
     teamID
   );
   const json = await response.json();
-  //console.log(json);
   const team_games = json[0]["content"]["futureGames"]["games"];
-  //console.log(team_games);
-  //console.log(showAll);
-  if (showAll) {
-    return team_games;
-  }
-  return team_games.filter((game) => {
-    const date_split = game.gDate.split(".");
-    const time_split = game.gTime.split(":");
-    //TODO: this date is hardcoded to the 21st century
-    const date = new Date(
-      "20" + date_split[2],
-      date_split[1] - 1,
-      date_split[0],
-      time_split[0],
-      time_split[1]
-    );
-    date.setHours(date.getHours() + 2); // 2 hour puffertime
-    return date > new Date();
-  });
+
+  return filterGames(team_games, showAll);
 };
 
 const fetchTeamGames2 = async (teamID, classID, showAll) => {
@@ -53,27 +35,9 @@ const fetchTeamGames2 = async (teamID, classID, showAll) => {
     teamID
   );
   const json = await response.json();
-  //console.log(json);
   const team_games = json[0]["content"]["futureGames"]["games"];
-  //console.log(team_games);
-  //console.log(showAll);
-  if (showAll) {
-    return team_games;
-  }
-  return team_games.filter((game) => {
-    const date_split = game.gDate.split(".");
-    const time_split = game.gTime.split(":");
-    //TODO: this date is hardcoded to the 21st century
-    const date = new Date(
-      "20" + date_split[2],
-      date_split[1] - 1,
-      date_split[0],
-      time_split[0],
-      time_split[1]
-    );
-    date.setHours(date.getHours() + 2); // 2 hour puffertime
-    return date > new Date();
-  });
+
+  return filterGames(team_games, showAll);
 };
 
 const fetchClassGames = async (classID, showAll) => {
@@ -84,26 +48,7 @@ const fetchClassGames = async (classID, showAll) => {
   const json = await response.json();
 
   const class_games = json[0]["content"]["futureGames"]["games"];
-  //console.log(class_games);
-  //console.log(showAll);
-  if (showAll) {
-    //console.log("show all");
-    return class_games;
-  }
-  return class_games.filter((game) => {
-    const date_split = game.gDate.split(".");
-    const time_split = game.gTime.split(":");
-    //TODO: this date is hardcoded to the 21st century
-    const date = new Date(
-      "20" + date_split[2],
-      date_split[1] - 1,
-      date_split[0],
-      time_split[0],
-      time_split[1]
-    );
-    date.setHours(date.getHours() + 2); // 2 hour puffertime
-    return date > new Date();
-  });
+  return filterGames(class_games, showAll);
 };
 
 const fetchClass = async (classID) => {
@@ -144,11 +89,7 @@ const fetchTeamID = async (classID, clubName) => {
   const team_ids = json[0]["content"]["score"].filter((element) =>
     element.tabTeamname.includes(clubName)
   );
-  //console.log(team_ids[0].tabTeamID);
-  //console.log(team_ids);
   const ids = team_ids.map((team) => {
-    //console.log(team.tabTeamname);
-    //console.log(team.tabTeamID);
     return team.tabTeamID;
   });
   return ids;
