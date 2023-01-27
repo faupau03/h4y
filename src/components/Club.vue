@@ -89,7 +89,7 @@
                         </span>
                         <!-- live animation if live -->
                         <!-- Live animation -->
-                        <div v-show="checkLive(item.gClassID)" class="rounded-full w-4 h-4">
+                        <div v-show="checkLive(classes, item.gClassID)" class="rounded-full w-4 h-4">
                             <div class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75">
                             </div>
                             <div class="z-20 mx-auto my-auto animate-none rounded-full h-3 w-3 bg-red-500"></div>
@@ -188,7 +188,7 @@ import Header from "./helpers/Header.vue";
 import HeaderLoading from "./helpers/HeaderLoading.vue";
 import Period from "./helpers/Period.vue";
 
-import { getClosestDate } from "./functions/misc.js";
+import { getClosestDate, checkLive } from "./functions/misc.js";
 
 // Variables
 const classes = ref([]); // Classes for this club
@@ -221,18 +221,6 @@ const clubExample = {
     id: 170,
     name: 'Hbi Weilimdorf/Feuerbach',
 }
-
-// Get class after id from classes and check if any game is live
-const checkLive = (id) => {
-    console.log("checkLive");
-    console.log(id);
-    const classData = classes.value.find((item) => item.gClassID == id);
-    console.log(classData);
-    if (classData) {
-        return classData.games.some((game) => game.live == true);
-    }
-    return false;
-};
 
 
 

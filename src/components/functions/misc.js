@@ -92,7 +92,9 @@ const filterGames = (games, showAll) => {
 
     // show last games depending on the settings
     for (let i = 0; i < showLast; i++) {
-        filtered_games.unshift(games[games.length - filtered_games.length - 1]);
+        if (games.length - filtered_games.length - 1 >= 0) {
+            filtered_games.unshift(games[games.length - filtered_games.length - 1]);
+        }
     }
     return filtered_games;
 };
@@ -160,4 +162,16 @@ function hslToHex(h, s, l) {
 }
 const delay = (ms = 1000) => new Promise(r => setTimeout(r, ms));
 
-export { getDate, filterGames, isDark, hslToHex, delay, getClosestDate };
+// Get class after id from classes and check if any game is live
+const checkLive = (classes, id) => {
+    console.log("checkLive");
+    console.log(id);
+    const classData = classes.find((item) => item.gClassID == id);
+    console.log(classData);
+    if (classData) {
+        return classData.games.some((game) => game.live == true);
+    }
+    return false;
+};
+
+export { getDate, filterGames, isDark, hslToHex, delay, getClosestDate, checkLive };

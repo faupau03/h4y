@@ -75,7 +75,17 @@
                                             Keine zukünftigen Spiele
                                         </span>
                                     </span>
+                                    <!-- live animation if live -->
+                                    <!-- Live animation -->
+                                    <div v-show="checkLive(classes, team.gClassID)" class="rounded-full flex w-4 h-4">
+                                        <div
+                                            class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75">
+                                        </div>
+                                        <div class="z-20 mx-auto my-auto animate-none rounded-full h-3 w-3 bg-red-500">
+                                        </div>
+                                    </div>
                                 </span>
+
                                 <DisclosureButton class="btn btn-primary justify-self-end  flex-nowrap gap-3" @click="
                                     team.gClassID !== teamClassID
                                         ? (teamClassID = team.gClassID,
@@ -83,6 +93,7 @@
                                         : (teamClassID = null, open = false)
                                 " :disabled="classes.find(c => c.gClassID === team.gClassID).games.every(element =>
 element[Object.keys(element)[0]].length < 1)" :class="[open ? 'rounded-b-none mb-0' : '']">
+
 
                                     <ChevronUpIcon class="w-5 h-5" :class="[
                                         open ? 'transform rotate-180' : '',
@@ -157,6 +168,8 @@ import MatchLoading from "./helpers/MatchLoading.vue";
 import Period from "./helpers/Period.vue";
 import Week from "./helpers/Week.vue";
 import RegionSelect from "./helpers/RegionSelect.vue";
+
+import { checkLive } from "./functions/misc.js";
 
 const route = useRoute();
 const router = useRouter();
