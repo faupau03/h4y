@@ -18,7 +18,7 @@
     </Head> -->
     <div class="w-full grid gap-4">
         <NavBar title="Spiel" subtitle="Info" class="" />
-        <div id="game-header" class="card grid w-5/6 m-auto shadow-xl bg-base-100 relative">
+        <div id="game-header" class="card grid mx-4 sm:mx-10 shadow-xl bg-base-100 relative">
             <Header v-if="!loading" :type="'match'" :title="scores.head.name" :game="game" :game_id="gameID"
                 :team_id="teamID" :class_id="teamClassID" :net_error="netError"></Header>
             <HeaderLoading :net_error="netError" v-else />
@@ -92,7 +92,7 @@
         </div>
         <Ticker v-if="game && !loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live"
             @fullscreen="(x) => x ? fullscreen = true : fullscreen = false" />
-        <div id="scores" class="card bg-base-100 w-5/6 m-auto shadow-xl relative p-2">
+        <div id="scores" class="card bg-base-100 mx-4 sm:mx-10 shadow-xl relative p-2">
             <div v-show="loading ? true : scores.content.score.length" class="flex mt-1">
                 <span class="font-bold ml-2"> Tabelle </span>
                 <span class="hidden sm:block ml-auto mr-9"> Tore </span>
@@ -108,7 +108,7 @@
                 </Table>
             </div>
         </div>
-        <div class="card bg-base-100 w-5/6 m-auto shadow-xl relative p-2 mb-4">
+        <div class="card bg-base-100 mx-4 sm:mx-10 shadow-xl relative p-2 mb-4">
             <div class="mt-3 flex justify-between">
                 <h2 class="font-bold text-base m-1">
                     Spiele in dieser Klasse

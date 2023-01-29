@@ -5,7 +5,7 @@
         !gameTickerLoading &&
         gameTickerInfo &&
         gameTickerInfo['team_home']
-    " id="ticker" class="bg-base-100 w-5/6 m-auto shadow-xl relative p-2 gap-1 card" :class="
+    " id="ticker" class="bg-base-100 mx-4 sm:mx-10 shadow-xl relative p-2 gap-1 card" :class="
     fullscreenTicker
         ? '!m-0 !z-50 !absolute !right-0 !top-0 !bottom-0 !left-0 !h-screen !w-screen overflow-none rounded-none'
         : ''

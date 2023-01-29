@@ -1,10 +1,10 @@
 <template>
     <div v-if="side == 'left' && !guest">
         <div class="flex mr-1 ml-auto sm:mr-10 w-fit items-center">
-            <div class="hidden sm:block">
+            <div class="hidden xs:block">
                 {{ info_long }}
             </div>
-            <div class="block sm:hidden">
+            <div class="block xs:hidden">
                 {{ info }}
             </div>
 
@@ -14,10 +14,10 @@
     <div v-else-if="side == 'right' && guest">
         <div class="flex ml-1 mr-auto sm:ml-10 w-fit items-center">
             <img class="h-5 w-5 mr-1 sm:mt-1 -mt-0.5" :src="src" alt="" />
-            <div class="hidden sm:block">
+            <div class="hidden xs:block">
                 {{ info_long }}
             </div>
-            <div class="block sm:hidden">
+            <div class="block xs:hidden">
                 {{ info }}
             </div>
         </div>
