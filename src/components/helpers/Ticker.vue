@@ -10,33 +10,33 @@
         ? '!m-0 !z-50 !absolute !right-0 !top-0 !bottom-0 !left-0 !h-screen !w-screen overflow-none rounded-none'
         : ''
 ">
-        <div class="flex gap-2 py-2">
+        <div class="flex sm:gap-1  gap-0.5 py-0">
             <span class="font-bold ml-2"> Ticker </span>
-            <button v-show="infoTicker" class="ml-auto btn btn-primary" @click="infoTicker = false">
+            <button v-show="infoTicker" class="ml-auto btn btn-sm btn-primary" @click="infoTicker = false">
                 Spielverlauf
             </button>
-            <button v-show="!infoTicker" class="ml-auto btn btn-primary" @click="infoTicker = true">
+            <button v-show="!infoTicker" class="ml-auto btn btn-sm btn-primary" @click="infoTicker = true">
                 Aufstellung
             </button>
-            <button class="btn btn-accent">
+            <button class="btn btn-sm btn-accent">
                 <ArrowsPointingInIcon class="w-5" @click="fullscreenTicker = false; $emit('fullscreen', false)"
                     v-show="fullscreenTicker" />
                 <ArrowsPointingOutIcon class="w-5" @click="fullscreenTicker = true; $emit('fullscreen', true)"
                     v-show="!fullscreenTicker" />
             </button>
         </div>
-        <div id="header" class="flex justify-between mt-2 md:mt-0">
-            <div class="h-20 bg-primary text-primary-content text-sm sm:text-base relative font-bold flex items-center justify-center p-2 w-1/3"
+        <div id="header" class="flex justify-between h-12 md:mt-0">
+            <div class="h-12 bg-primary text-primary-content text-sm sm:text-base relative font-bold flex items-center justify-center p-2 w-1/3"
                 @click="infoTicker ? (selectedTeam = 'team_home') : null">
-                <div class="h-20 w-5 -scale-y-100 absolute -right-5 overflow-hidden inline-block">
+                <div class="h-12 w-5 -scale-y-100 absolute -right-5 overflow-hidden inline-block">
                     <div class="h-28 -mt-8 bg-primary -rotate-12 transform origin-bottom-right"></div>
                 </div>
                 <span class="truncate">
                     {{ gameTickerInfo["team_home"]["club"] }}
                 </span>
-                <div class="text-accent absolute right-0 sm:-top-7 -top-5 sm:text-lg">Heim</div>
+                <div class="text-accent absolute left-1 top-0 text-xs sm:text-md md:text-lg">Heim</div>
             </div>
-            <div class="grid justify-center mt-1">
+            <div class="grid justify-center relative -top-1 sm:-top-8">
                 <div class="flex justify-center md:text-xl sm:pl-0 pl-2">
                     <ClockIcon class="h-6 w-6 hidden sm:block" />
                     <!-- {{ getTime(gameTicker[0]["game_time"]) }} -->
@@ -51,19 +51,19 @@
 
                 </div>
             </div>
-            <div class="h-20 bg-secondary text-secondary-content text-sm sm:text-base font-bold relative flex items-center justify-center p-2 w-1/3"
+            <div class="h-12 bg-secondary text-secondary-content text-sm sm:text-base font-bold relative flex items-center justify-center p-2 w-1/3"
                 @click="infoTicker ? (selectedTeam = 'team_guest') : null">
                 <span class="truncate">
                     {{ gameTickerInfo["team_guest"]["club"] }}
                 </span>
-                <div class="text-accent absolute left-0 sm:-top-7 -top-5 sm:text-lg">Gast</div>
-                <div class="h-20 w-5 -scale-x-100 absolute -left-5 overflow-hidden inline-block">
+                <div class="text-accent absolute right-1 top-0 text-xs md:text-lg sm:text-md">Gast</div>
+                <div class="h-12 w-5 -scale-x-100 absolute -left-5 overflow-hidden inline-block">
                     <div class="h-28 -mt-8 bg-secondary -rotate-12 transform origin-bottom-right"></div>
                 </div>
             </div>
         </div>
         <div id="ticker" v-show="!infoTicker" class="card">
-            <div class="flex justify-evenly p-3 bg-base-300 font-bold">
+            <div class="flex justify-evenly p-1 sm:p-2 md:p-3  bg-base-300 font-bold sm:text-md text-sm my-0">
                 <div>Aktion</div>
                 <div>Spielstand</div>
                 <div>Aktion</div>
@@ -71,7 +71,7 @@
             <hr class="bg-accent h-[1px]">
             <div id="data" class="overflow-none mb-2 bg-base-300" :class="fullscreenTicker ? 'pb-4' : 'max-h-80'">
                 <VirtualisedList class="h-full" :nodes="gameTicker" :viewportHeight="
-                    fullscreenTicker ? screenHeight() - 216 : 320
+                    fullscreenTicker ? screenHeight() - 160 : 320
                 " :getNodeHeight="
     (node) => {
         if (screenWidth() < 640) {
