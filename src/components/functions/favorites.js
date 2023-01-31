@@ -4,7 +4,7 @@ const updateFavorites = (favorites) => {
 
 const getFavorites = async () => {
     const json = localStorage.getItem("favorites");
-    if (json) {
+    if (json && JSON.parse(json)) {
         return JSON.parse(json);
     } else {
         return [];

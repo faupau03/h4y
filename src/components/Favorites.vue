@@ -66,6 +66,8 @@ import Team from "./Team.vue";
 import { Bars3Icon } from "@heroicons/vue/24/outline";
 import Gym from "./Gym.vue";
 
+import { getFavorites } from "./functions/favorites.js";
+
 const favorites = ref([]);
 const selectedFavorite = ref({});
 const showMenu = ref(false);
@@ -118,16 +120,6 @@ const removeFavorite = () => {
 
 const updateFavorites = () => {
     localStorage.setItem("favorites", JSON.stringify(favorites.value));
-};
-
-const getFavorites = async () => {
-    const json = localStorage.getItem("favorites");
-    if (json) {
-        favorites.value = JSON.parse(json);
-    } else {
-        favorites.value = [];
-    }
-    getSelectedFavorite();
 };
 
 onMounted(async () => {
