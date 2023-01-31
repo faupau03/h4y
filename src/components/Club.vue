@@ -255,6 +255,7 @@ const loadClub = async (period_id) => {
         // Set club name
         club.value.lname = data[0].head.name;
         fetchClubInfo();
+        fetchAddress();
         loading.value = false;
     })
         .catch((error) => {
@@ -326,6 +327,31 @@ const fetchClubInfo = async () => {
     };
 };
 
+const fetchAddress = async () => {
+    if (localStorage.getItem("club_addresses") && JSON.parse(localStorage.getItem("club_addresses"))) {
+        console.log("club_addresses found in localStorage");
+        console.log(JSON.parse(localStorage.getItem("club_addresses")))
+        console.log(club.value.id)
+        club.value.webaddress = JSON.parse(localStorage.getItem("club_addresses"))[club.value.id];
+        console.log("FETCHADDRESS: " + club.value.webaddress);
+    }
+
+    // // return if offline
+    // if (offline.value) {
+    //     console.log("offline");
+    //     return;
+    // }
+    fetch("/club_address.json")
+        .then((response) => response.json())
+        .then((data) => {
+            club.value.webaddress = data[club.value.id];
+            localStorage.setItem("club_addresses", JSON.stringify(data));
+        })
+        .catch((error) => {
+            //console.error("Error:", error);
+            console.log("Probably no internet connection");
+        });
+};
 
 onUpdated(() => {
     console.log("updated");
