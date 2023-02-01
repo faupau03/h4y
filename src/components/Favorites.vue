@@ -99,31 +99,9 @@ const getSelectedFavorite = () => {
     }
 };
 
-const addFavorite = () => {
-    favorites.value.push({
-        type: "club",
-        name: club.value.lname,
-        id: club.value.id,
-        no: club.value.no,
-    });
-    updateFavorites();
-};
-
-const removeFavorite = () => {
-    for (const favorite of favorites.value) {
-        if (favorite.type == "club" && favorite.id == club.value.id) {
-            favorites.value.splice(favorites.value.indexOf(favorite), 1);
-        }
-    }
-    updateFavorites();
-};
-
-const updateFavorites = () => {
-    localStorage.setItem("favorites", JSON.stringify(favorites.value));
-};
-
 onMounted(async () => {
-    await getFavorites();
+    favorites.value = await getFavorites();
     await getSelectedFavorite();
 });
+
 </script>
