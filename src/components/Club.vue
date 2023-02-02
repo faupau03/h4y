@@ -217,15 +217,14 @@ const props = defineProps(["club_id"]);
 
 const data = ref([]);
 
-const clubExample = {
-    id: 170,
-    name: 'Hbi Weilimdorf/Feuerbach',
-}
+// const clubExample = {
+//     id: 170,
+//     name: 'Hbi Weilimdorf/Feuerbach',
+// }
 
 
 
 onMounted(() => {
-    console.log("Hello World");
 
     // Set club id
     if (props.club_id) {
@@ -259,7 +258,7 @@ const loadClub = async (period_id) => {
         loading.value = false;
     })
         .catch((error) => {
-            console.log(error);
+            //console.log(error);
             loading.value = false;
             netError.value = true;
         });
@@ -289,21 +288,21 @@ const showClass = (class_id) => {
 
         // check which game is the nearest in terms of time
         const closestGame = getClosestDate(activeClass.value.games);
-        console.log(String(closestGame.gID));
+        //console.log(String(closestGame.gID));
         closestGameID.value = String(closestGame.gID);
         loadingGames.value = false;
         setTimeout(() => {
             try {
-                console.log("Scrolling to: " + closestGameID.value);
+                //console.log("Scrolling to: " + closestGameID.value);
                 document.getElementById(closestGameID.value).scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
             }
             catch (error) {
-                console.log(error);
+                //console.log(error);
             }
         }, 200);
     })
         .catch(error => {
-            console.log(error);
+            //console.log(error);
             loadingGames.value = false;
             netError.value = true;
         });
@@ -319,21 +318,21 @@ const fetchClubInfo = async () => {
             return res.id == club.value.id;
         });
         club.value = await club_info[0];
-        console.log(club.value);
+        //console.log(club.value);
     }
     catch (error) {
-        console.log(error);
+        //console.log(error);
         netError.value = true;
     };
 };
 
 const fetchAddress = async () => {
     if (localStorage.getItem("club_addresses") && JSON.parse(localStorage.getItem("club_addresses"))) {
-        console.log("club_addresses found in localStorage");
-        console.log(JSON.parse(localStorage.getItem("club_addresses")))
-        console.log(club.value.id)
+        //console.log("club_addresses found in localStorage");
+        //console.log(JSON.parse(localStorage.getItem("club_addresses")))
+        //console.log(club.value.id)
         club.value.webaddress = JSON.parse(localStorage.getItem("club_addresses"))[club.value.id];
-        console.log("FETCHADDRESS: " + club.value.webaddress);
+        //console.log("FETCHADDRESS: " + club.value.webaddress);
     }
 
     // // return if offline
@@ -349,12 +348,12 @@ const fetchAddress = async () => {
         })
         .catch((error) => {
             //console.error("Error:", error);
-            console.log("Probably no internet connection");
+            //console.log("Probably no internet connection");
         });
 };
 
 onUpdated(() => {
-    console.log("updated");
+    //console.log("updated");
     //document.getElementById(closestGameID.value).scrollIntoView({ behavior: 'smooth' });
 });
 

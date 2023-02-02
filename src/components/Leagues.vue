@@ -196,7 +196,7 @@ const og = ref(null);
 
 //watch route change
 watch(route, async (newVal, oldVal) => {
-    console.log("route changed", newVal.hash);
+    //console.log("route changed", newVal.hash);
     if (newVal.hash) {
         o.value = newVal.hash.replace("#", "").split(';')[0];
         if (o.value == "undefined") {
@@ -227,23 +227,23 @@ watch(route, async (newVal, oldVal) => {
 });
 
 const updateRegion = (id) => {
-    console.log("updateRegion");
-    console.log(region_list.value[id]);
+    //console.log("updateRegion");
+    //console.log(region_list.value[id]);
     region_selected.value = id;
     o.value = id;
     router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value + ';' + period_selected.value + ';' + week_selected.value });
 }
 const updateWeek = (id) => {
-    console.log("updateWeek");
-    console.log(week_list.value[id]);
+    //console.log("updateWeek");
+    //console.log(week_list.value[id]);
     week_selected.value = id;
     router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value + ';' + period_selected.value + ';' + week_selected.value });
 }
 
 const updatePeriod = (id) => {
-    console.log("updatePeriod");
-    console.log(id);
-    console.log(period_list.value[id]);
+    //console.log("updatePeriod");
+    //console.log(id);
+    //console.log(period_list.value[id]);
     period_selected.value = id;
     router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value + ';' + period_selected.value + ';' + week_selected.value });
 }
@@ -375,10 +375,10 @@ onMounted(async () => {
         og.value = null;
     }
 
-    console.log("o", o.value);
-    console.log("og", og.value);
+    //console.log("o", o.value);
+    //console.log("og", og.value);
     await getLeagues();
-    console.log("leagues", leagues.value);
+    //console.log("leagues", leagues.value);
 
 
     if (o.value || og.value) {

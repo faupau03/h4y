@@ -1,6 +1,4 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { Bars3Icon, StarIcon, MagnifyingGlassIcon, UserGroupIcon, } from "@heroicons/vue/24/outline";
 import ReloadPWA from "./components/ReloadPWA.vue";
 import { ref, onMounted, onUpdated, watch, handleError } from "vue";
@@ -33,16 +31,16 @@ const updateTab = () => {
     now_tab.value = window.location.href;
 }
 
-
+// TODO: needed?
 window.addEventListener('storage', () => {
-    console.log("storage changed");
+    //console.log("storage changed");
     show_last_page.value = localStorage.getItem("show_last_page") === "true";
-    console.log(show_last_page.value);
+    //console.log(show_last_page.value);
     updateTab();
 });
 
 onUpdated(() => {
-    console.log("onUpdated");
+    //console.log("onUpdated");
     updateTab();
     is_dark.value = isDark();
 });
@@ -50,8 +48,8 @@ onUpdated(() => {
 onMounted(() => {
     themeChange(false);
     is_dark.value = isDark();
-    console.log("onMounted");
-    console.log("new version 14");
+    //console.log("onMounted");
+    //console.log("new version 14");
     localFavorites.value = JSON.parse(
         localStorage.getItem("favorites") || "[]"
     );

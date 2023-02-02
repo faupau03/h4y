@@ -63,7 +63,7 @@
                                 Keine Spiele in dieser Klasse
                             </div>
                         </div>
-                        <Match v-for="match in leagueMatches" :key="match.id" :match="match" :teamID="teamID"
+                        <Match v-for="match in leagueMatches" :key="match.id" :match="match" :teamID="null"
                             :teamClassID="class_id"></Match>
                     </div>
                 </div>
@@ -117,7 +117,7 @@ const getData = async () => {
         class_id.value
     );
     leagueMatches.value = league.value.content.futureGames.games;
-    console.log(leagueMatches.value)
+    //console.log(leagueMatches.value)
     leagueMatches.value = filterGames(leagueMatches.value, showAll.value);
     loading.value = false;
 };

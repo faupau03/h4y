@@ -1,15 +1,15 @@
 const getDate = (game) => {
 
-    console.log(game);
+    //console.log(game);
 
     const date_split = game.gDate.split(".");
     const time_split = game.gTime.split(":");
     //TODO: this date is hardcoded to the 21st century
-    console.log(date_split[2]);
-    console.log(date_split[1]);
-    console.log(date_split[0]);
-    console.log(time_split[0]);
-    console.log(time_split[1]);
+    //console.log(date_split[2]);
+    //console.log(date_split[1]);
+    //console.log(date_split[0]);
+    //console.log(time_split[0]);
+    //console.log(time_split[1]);
 
     let date = new Date(
         "20" + date_split[2],
@@ -33,12 +33,12 @@ const getDate = (game) => {
 
 const getClosestDate = (games) => {
     const team_games = games[0][Object.keys(games[0])[0]];
-    console.log(Object.keys(games[0]));
-    console.log(games[0]);
-    console.log(team_games);
-    console.log(Object.keys(games[0]));
+    //console.log(Object.keys(games[0]));
+    //console.log(games[0]);
+    //console.log(team_games);
+    //console.log(Object.keys(games[0]));
 
-    console.log(JSON.stringify(games));
+    //console.log(JSON.stringify(games));
     let targetDate = new Date();
     const gameDates = team_games.map((game) => {
         const date_split = game.gDate.split(".");
@@ -58,8 +58,8 @@ const getClosestDate = (games) => {
         return (Math.abs(curr - targetDate) < Math.abs(prev - targetDate) ? curr : prev);
     });
     const closestDateIndex = gameDates.indexOf(closestDate);
-    console.log("closestDateIndex");
-    console.log(closestDateIndex)
+    //console.log("closestDateIndex");
+    //console.log(closestDateIndex)
     return team_games[closestDateIndex];
 }
 
@@ -144,9 +144,9 @@ const lightOrDark = (color) => {
 };
 
 const isDark = () => {
-    console.log("color");
-    console.log(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--b3').split(" ")[2]));
-    console.log(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--b3').split(" ")[2]) < 50);
+    //console.log("color");
+    //console.log(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--b3').split(" ")[2]));
+    //console.log(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--b3').split(" ")[2]) < 50);
     return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--b3').split(" ")[2]) < 50;
 }
 
@@ -164,10 +164,10 @@ const delay = (ms = 1000) => new Promise(r => setTimeout(r, ms));
 
 // Get class after id from classes and check if any game is live
 const checkLive = (classes, id) => {
-    console.log("checkLive");
-    console.log(id);
+    //console.log("checkLive");
+    //console.log(id);
     const classData = classes.find((item) => item.gClassID == id);
-    console.log(classData);
+    //console.log(classData);
     if (classData) {
         return classData.games.some((game) => game.live == true);
     }

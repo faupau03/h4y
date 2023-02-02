@@ -64,6 +64,7 @@ import { ref, onMounted } from "vue";
 import {
     ShareIcon,
     ClockIcon,
+    ExclamationCircleIcon,
     StarIcon as StarIconOutline,
 } from "@heroicons/vue/24/outline";
 import { DocumentIcon, ChatBubbleBottomCenterTextIcon, StarIcon } from "@heroicons/vue/24/solid";
