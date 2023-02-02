@@ -34,7 +34,7 @@
                     <TableLoading v-for="i in 10" :key="i"> </TableLoading>
                 </div>
                 <Table v-else-if="league" v-for="team_score in league.content.score" :key="team_score.tabTeamID"
-                    :team_score="team_score">
+                    :team_score="team_score" @clicked-team="clickedTeam">
                 </Table>
             </div>
             <div class="grid w-5/6 m-auto relative bg-base-100 card shadow-xl mb-4 px-2">
@@ -76,7 +76,7 @@
 import { onMounted } from "vue";
 import { ref, toRef } from "vue";
 import { watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import NavBar from "./helpers/NavBar.vue";
 import Match from "./helpers/Match.vue";
@@ -101,6 +101,7 @@ import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/24/outlin
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 const route = useRoute();
+const router = useRouter();
 const props = defineProps(["class"]);
 
 const loading = ref(true);
@@ -126,6 +127,22 @@ const setClassID = async () => {
     if (class_id.value == null) {
         const hash = route.hash.substring(1);
         class_id.value = hash;
+    }
+};
+
+const clickedTeam = async (team_name) => {
+    console.log(team_name);
+    const response = await fetch(
+        "https://spo.handball4all.de/service/if_g_json.php?cmd=cs&cs=" +
+        team_name
+    );
+    const json = await response.json();
+    const club = json[0].searchResult.list[0];
+    if (club && club.id) {
+        router.push({
+            path: "/club",
+            hash: "#" + club.id
+        });
     }
 };
 

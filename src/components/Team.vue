@@ -3,10 +3,12 @@
         <div class="w-full grid gap-4">
             <NavBar title="Team" subtitle="Spielübersicht" />
             <div id="club-header" class="w-5/6 m-auto relative bg-base-100 card shadow-xl grid">
-                <Header @updateFavorites="emit('updateFavorites')" :type="'team'" :games="teamMatches" :team_id="teamID"
-                    :class_id="teamClassID" :club_id="teamClubNo" :team="team" :club="club"></Header>
+                <Header v-if="club && club.id" @updateFavorites="emit('updateFavorites')" :type="'team'"
+                    :games="teamMatches" :team_id="teamID" :class_id="teamClassID" :club_id="club.id" :team="team"
+                    :club="club"></Header>
+                <HeaderLoading v-else />
                 <div id="content" class="flex flex-wrap mb-5">
-                    <img v-if="team && teamClubNo && img_loaded" :src="'logos/clubs/' + teamClubNo + '.png'"
+                    <img v-if="team && club && club.id && img_loaded" :src="'logos/clubs/' + club.no + '.png'"
                         @error="img_loaded = false" alt="" id="club-logo"
                         class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg" />
 
@@ -18,7 +20,7 @@
                             {{ team.head.name }}
                         </a>
                         <br>
-                        <a v-if="club" :href="'/club#' + club.id" class="text-sm link link-hover">
+                        <a v-if="club && club.id" :href="'/club#' + club.id" class="text-sm link link-hover">
                             {{ club.lname }}
                         </a>
                     </div>
@@ -36,7 +38,7 @@
                     <TableLoading v-for="i in 10" :key="i"> </TableLoading>
                 </div>
                 <Table v-else-if="team" v-for="team_score in team.content.score" :key="team_score.tabTeamID"
-                    :team_score="team_score">
+                    :team_score="team_score" @clickedTeam="clickedTeam">
                 </Table>
             </div>
             <div class="grid w-5/6 m-auto relative bg-base-100 card shadow-xl mb-4 px-2">
@@ -78,7 +80,7 @@
 import { onMounted } from "vue";
 import { ref, toRef } from "vue";
 import { watch } from "vue";
-import { useRoute } from "vue-router";
+import { routerKey, useRoute, useRouter } from "vue-router";
 
 import NavBar from "./helpers/NavBar.vue";
 import Match from "./helpers/Match.vue";
@@ -86,6 +88,7 @@ import MatchLoading from "./helpers/MatchLoading.vue";
 import Table from "./helpers/Table.vue";
 import TableLoading from "./helpers/TableLoading.vue";
 import Header from "./helpers/Header.vue";
+import HeaderLoading from "./helpers/HeaderLoading.vue";
 
 // helper function
 import { fetchTeam, fetchTeamGames } from "./functions/fetchData.js";
@@ -102,6 +105,7 @@ import { StarIcon as StarIconOutline, ShareIcon } from "@heroicons/vue/24/outlin
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
 const route = useRoute();
+const router = useRouter();
 const props = defineProps(["team_id", "team_class", "team_club"]);
 
 const img_loaded = ref(true);
@@ -149,6 +153,13 @@ const fetchClub = async () => {
     );
     const json = await response.json();
     club.value = json[0].searchResult.list[0];
+    if (club.value && club.value.no) {
+        router.push({
+            path: "/team",
+            hash: "#" + teamID.value + ";" + teamClassID.value + ";" + club.value.no
+        });
+    }
+
 };
 
 const setTeamID = async () => {
@@ -159,6 +170,7 @@ const setTeamID = async () => {
         teamClassID.value = props.team_class;
         teamClubNo.value = props.team_club;
     } else {
+        console.log("route")
         const hash = route.hash.substring(1);
         const params = hash.split(";");
         teamID.value = params[0];
@@ -170,9 +182,29 @@ const setTeamID = async () => {
     //console.log("teamClubNo: " + teamClubNo.value);
 };
 
-onMounted(async () => {
+const clickedTeam = async (team_name) => {
+    console.log("clickedTeam: " + team_name);
+    console.log(isNaN(team_name.substring(team_name.length)))
+    if (!isNaN(team_name.substring(team_name.length))) {
+        team_name = team_name.substring(0, team_name.length - 2);
+    }
+    await router.push({
+        path: "/team",
+        hash: "#" + teamID.value + ";" + teamClassID.value + ";" + team_name
+    });
+    console.log("clickedTeam: " + team_name);
+    console.log(route.fullPath);
+    club.value = null;
+    init();
+};
+
+const init = async () => {
     await setTeamID();
     await getData();
     await fetchClub();
+};
+
+onMounted(async () => {
+    await init();
 });
 </script>

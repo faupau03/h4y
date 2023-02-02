@@ -3,10 +3,8 @@
         <div class="text-sm mr-1">
             {{ team_score.tabScore }}
         </div>
-        <div
-            class="font-bold text-sm"
-            v-html="wbr(team_score.tabTeamname)"
-        ></div>
+        <a @click="$emit('clickedTeam', team_score.tabTeamname)"
+            class="font-bold text-sm hover:underline cursor-pointer" v-html="wbr(team_score.tabTeamname)"></a>
         <div class="ml-auto hidden sm:flex mr-7 text-sm">
             <img class="h-5 w-5 mt-0.5 mr-1" src="/icons/goal.png" alt="" />
             {{ team_score.numGoalsShot }} : {{ team_score.numGoalsGot }}
@@ -26,6 +24,7 @@
 
 <script setup>
 const props = defineProps(["team_score"]);
+const emits = defineEmits(["clickedTeam"]);
 
 const wbr = (str) => {
     return str.replace("/", "/<wbr>");
