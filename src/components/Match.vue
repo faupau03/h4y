@@ -74,9 +74,20 @@
 
                     </div>
                 </div>
-                <div class="m-1 sm:m-5">
+                <div class="flex flex-wrap mx-1 gap-1 sm:m-5 justify-between">
+                    <div class="flex text-sm gap-3">
+                        <div class="flex">
+                            <InformationCircleIcon class="h-5" />
+                            {{ game.gComment }}
+                        </div>
+                        <div class="flex">
+                            <UserCircleIcon class="h-5" />
+                            {{ game.gReferee }}
+                        </div>
+
+                    </div>
                     <div v-if="game">
-                        <Maps class="w-full" :location="
+                        <Maps class="" :location="
                             game.gGymnasiumName +
                             '+' +
                             game.gGymnasiumStreet +
@@ -86,45 +97,45 @@
                             game.gGymnasiumTown
                         " :name="game.gGymnasiumName" :town="game.gGymnasiumTown" :id="game.gGymnasiumID" />
                     </div>
-                    <MapsLoading v-else class="w-full" />
+                    <MapsLoading v-else class="" />
                 </div>
             </div>
         </div>
-        <Ticker v-if="game && !loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live"
-            @fullscreen="(x) => x ? fullscreen = true : fullscreen = false" />
-        <div id="scores" class="card bg-base-100 mx-4 sm:mx-10 shadow-xl relative p-2">
-            <div v-show="loading ? true : scores.content.score.length" class="flex mt-1">
-                <span class="font-bold ml-2"> Tabelle </span>
-                <span class="hidden sm:block ml-auto mr-9"> Tore </span>
-                <span class="sm:ml-0 ml-auto mr-5"> Spiele </span>
-                <span class="mr-2"> Punkte </span>
-                <span class="sm:block hidden">+/-</span>
-            </div>
-            <div v-if="loading">
-                <TableLoading v-for="i in 10" :key="i"> </TableLoading>
-            </div>
-            <div v-else>
-                <Table v-for="team_score in scores.content.score" :key="team_score.tabTeamID" :team_score="team_score">
-                </Table>
+    </div>
+    <Ticker v-if="game && !loading" ref="tickerScore" :game_token="game.gToken" :game_live="game.live"
+        @fullscreen="(x) => x ? fullscreen = true : fullscreen = false" />
+    <div id="scores" class="card bg-base-100 mx-4 sm:mx-10 shadow-xl relative p-2">
+        <div v-show="loading ? true : scores.content.score.length" class="flex mt-1">
+            <span class="font-bold ml-2"> Tabelle </span>
+            <span class="hidden sm:block ml-auto mr-9"> Tore </span>
+            <span class="sm:ml-0 ml-auto mr-5"> Spiele </span>
+            <span class="mr-2"> Punkte </span>
+            <span class="sm:block hidden">+/-</span>
+        </div>
+        <div v-if="loading">
+            <TableLoading v-for="i in 10" :key="i"> </TableLoading>
+        </div>
+        <div v-else>
+            <Table v-for="team_score in scores.content.score" :key="team_score.tabTeamID" :team_score="team_score">
+            </Table>
+        </div>
+    </div>
+    <div class="card bg-base-100 mx-4 sm:mx-10 shadow-xl relative p-2 mb-4">
+        <div class="mt-3 flex justify-between">
+            <h2 class="font-bold text-base m-1">
+                Spiele in dieser Klasse
+            </h2>
+            <Cal class="ml-auto mr-1 mt-1" :games="classGames"
+                :name="scores.head ? scores.head.name + (showAll ? ' (Alle Spiele)' : '') : ''" type="multiple" />
+            <div class="text-sm m-2">
+                Alle Spiele
+                <input class="ml-1 mb-1 rounded" type="checkbox" name="" id="" v-model="showAll"
+                    @click="teamClassID ? getData(teamClassID) : null" />
             </div>
         </div>
-        <div class="card bg-base-100 mx-4 sm:mx-10 shadow-xl relative p-2 mb-4">
-            <div class="mt-3 flex justify-between">
-                <h2 class="font-bold text-base m-1">
-                    Spiele in dieser Klasse
-                </h2>
-                <Cal class="ml-auto mr-1 mt-1" :games="classGames"
-                    :name="scores.head ? scores.head.name + (showAll ? ' (Alle Spiele)' : '') : ''" type="multiple" />
-                <div class="text-sm m-2">
-                    Alle Spiele
-                    <input class="ml-1 mb-1 rounded" type="checkbox" name="" id="" v-model="showAll"
-                        @click="teamClassID ? getData(teamClassID) : null" />
-                </div>
-            </div>
-            <ClassGames v-if="!loading" :games="classGames" :loading="loading" :showAll="showAll"
-                :teamClassID="teamClassID" @gameUpdate="(gID, tID, cID) => forceUpdate(gID, tID, cID)"></ClassGames>
-            <ClassGamesLoading v-else />
-        </div>
+        <ClassGames v-if="!loading" :games="classGames" :loading="loading" :showAll="showAll" :teamClassID="teamClassID"
+            @gameUpdate="(gID, tID, cID) => forceUpdate(gID, tID, cID)"></ClassGames>
+        <ClassGamesLoading v-else />
     </div>
 </template>
 
@@ -159,7 +170,7 @@ import {
     MapPinIcon,
     InformationCircleIcon,
 } from "@heroicons/vue/24/solid";
-import { ShareIcon, ClockIcon, XCircleIcon } from "@heroicons/vue/24/outline";
+import { ShareIcon, ClockIcon, XCircleIcon, UserCircleIcon } from "@heroicons/vue/24/outline";
 import { StarIcon as StarIconOutline } from "@heroicons/vue/24/outline";
 import {
     UserGroupIcon,
