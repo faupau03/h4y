@@ -10,9 +10,9 @@
                 <div id="content" class="flex flex-wrap mb-5">
                     <img v-if="team && club && club.id && img_loaded" :src="'logos/clubs/' + club.no + '.png'"
                         @error="img_loaded = false" alt="" id="club-logo"
-                        class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg" />
+                        class="card h-24 sm:h-32 lg:h-48 ml-5 shadow-2xl" />
 
-                    <div v-else class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg shadow-2xl bg-gray-200">
+                    <div v-else class="h-24 sm:h-32 lg:h-48 ml-5 card shadow-2xl bg-gray-200">
                         <UserGroupIcon class="text-gray-500 h-full" />
                     </div>
                     <div id="club-info" class="m-5">
@@ -195,6 +195,7 @@ const clickedTeam = async (team_name) => {
     console.log("clickedTeam: " + team_name);
     console.log(route.fullPath);
     club.value = null;
+    img_loaded.value = true;
     init();
 };
 

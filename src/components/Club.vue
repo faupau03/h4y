@@ -8,9 +8,10 @@
 
             <div id="content" class="flex flex-wrap mb-5">
                 <img v-if="club && club.no && img_loaded" :src="'logos/clubs/' + club.no + '.png'"
-                    @error="img_loaded = false" alt="" id="club-logo" class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg" />
+                    @error="img_loaded = false" alt="" id="club-logo"
+                    class="h-24 sm:h-32 lg:h-48 ml-5 card shadow-2xl" />
 
-                <div v-else class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg shadow-2xl bg-gray-200">
+                <div v-else class="h-24 sm:h-32 lg:h-48 ml-5 card shadow-2xl bg-gray-200">
                     <UserGroupIcon class="text-gray-500 h-full" />
                 </div>
                 <div id="club-info" class="m-5">
