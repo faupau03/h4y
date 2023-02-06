@@ -71,7 +71,7 @@
             <!-- v-if="!loading && club.menu && club.menu.period.selectedID == period_selected" -->
             <div v-if="true" class="p-1">
                 <Disclosure v-for="item in classes" v-slot="{ open }">
-                    <div class="bg-primary items-center text-primary-content content-center p-0 rounded-md uppercase flex text-sm font-bold justify-between bg-opacity-75 w-full flex-nowrap gap-3 pl-3 my-1"
+                    <div class="bg-primary items-center text-primary-content content-center p-0 rounded-[var(--rounded-btn)] uppercase flex text-sm font-bold justify-between bg-opacity-75 w-full flex-nowrap gap-3 pl-3 my-1"
                         :class="[open ? 'rounded-b-none mb-0' : '']">
                         <div id="class-name" class="mr-auto my-auto">
                             <a :href="'/league#' + item.gClassID" class="link link-hover"><span
@@ -106,7 +106,7 @@
 
                     </div>
                     <DisclosurePanel static v-show="item.gClassID == activeClass.id && open"
-                        class="px-4 pt-4 pb-2 text-sm bg-primary bg-opacity-20 rounded-b">
+                        class="px-4 pt-4 pb-2 text-sm bg-primary bg-opacity-20 rounded-b-[var(--rounded-btn)]">
                         <div v-if="!loadingGames">
                             <div v-for="team in activeClass.games">
                                 <div id="league-info" class="flex">
