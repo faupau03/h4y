@@ -4,6 +4,7 @@ module.exports = {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
+  mode: 'jit',
   theme: {
     screens: {
       'xs': '294px',
