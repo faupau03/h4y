@@ -116,7 +116,8 @@
             <TableLoading v-for="i in 10" :key="i"> </TableLoading>
         </div>
         <div v-else>
-            <Table v-for="team_score in scores.content.score" :key="team_score.tabTeamID" :team_score="team_score">
+            <Table v-for="team_score in scores.content.score" :key="team_score.tabTeamID" :team_score="team_score"
+                @clickedTeam="clickedTeam">
             </Table>
         </div>
     </div>
@@ -143,7 +144,7 @@
 import { onMounted } from "vue";
 import { ref, toRef } from "vue";
 import { watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 //helper components
 import NavBar from "./helpers/NavBar.vue";
@@ -189,6 +190,8 @@ import {
 import { filterGames } from "./functions/misc.js";
 
 const route = useRoute();
+const router = useRouter();
+
 const props = defineProps(["team_id", "team_class", "game_id"]);
 
 const games = ref([]);
@@ -271,6 +274,21 @@ const getData = async () => {
     //console.log("games: " + games.value)
     //console.log("loading: " + loading.value);
     //console.log("game: " + game.value);
+};
+
+
+const clickedTeam = async (team_name) => {
+    console.log("clickedTeam: " + team_name);
+    console.log(isNaN(team_name.substring(team_name.length)))
+    if (!isNaN(team_name.substring(team_name.length))) {
+        team_name = team_name.substring(0, team_name.length - 2);
+    }
+    await router.push({
+        path: "/team",
+        hash: "#" + teamID.value + ";" + teamClassID.value + ";" + team_name
+    });
+    console.log("clickedTeam: " + team_name);
+    console.log(route.fullPath);
 };
 
 const forceUpdate = async (gID, tID, cID) => {
