@@ -40,6 +40,11 @@
                 <Table v-else-if="team" v-for="team_score in team.content.score" :key="team_score.tabTeamID"
                     :team_score="team_score" @clickedTeam="clickedTeam">
                 </Table>
+                <!-- Additional information -->
+                <div v-if="team" class="text-xs card bg-accent/30 p-2">
+                    <div v-for="comment in team.content.scoreComments" v-html="comment">
+                    </div>
+                </div>
             </div>
             <div class="grid w-5/6 m-auto relative bg-base-100 card shadow-xl mb-4 px-2">
                 <div class="mt-3 flex justify-between">

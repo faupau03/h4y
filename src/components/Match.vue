@@ -119,6 +119,11 @@
                     @clickedTeam="clickedTeam">
                 </Table>
             </div>
+            <!-- Additional information -->
+            <div v-if="!loading" class="text-xs card bg-accent/30 p-2">
+                <div v-for="comment in scores.content.scoreComments" v-html="comment">
+                </div>
+            </div>
         </div>
         <div class="card bg-base-100 mx-4 sm:mx-10 shadow-xl relative p-2 mb-4">
             <div class="mt-3 flex justify-between">
