@@ -52,7 +52,7 @@
 
                 </div>
                 <div id="game-class" class="text-md sm:text-sl justify-center flex"></div>
-                <div class="font-bold text-3xl sm:text-4xl my-4 justify-center flex" v-if="!loading">
+                <div class="font-bold text-3xl sm:text-4xl mt-4 justify-center flex" v-if="!loading">
                     {{
                     !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.home_score
     ? tickerScore.gameScore.home_score
@@ -63,6 +63,19 @@
                     !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.guest_score
     ? tickerScore.gameScore.guest_score
     : game.gGuestGoals
+                    }}
+                </div>
+                <div class="text-2xl sm:text-xl justify-center flex" v-if="!loading">
+                    {{
+                    !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.home_score
+    ? tickerScore.gameScore.home_score_1
+    : game.gHomeGoals_1
+                    }}
+                    :
+                    {{
+                    !loading && tickerScore && tickerScore.gameScore && tickerScore.gameScore.guest_score
+    ? tickerScore.gameScore.guest_score_1
+    : game.gGuestGoals_1
                     }}
                 </div>
                 <div v-else class="font-bold text-3xl sm:text-4xl my-4 justify-center flex animate-pulse">
@@ -120,7 +133,7 @@
                 </Table>
             </div>
             <!-- Additional information -->
-            <div v-if="!loading" class="text-xs card bg-accent/30 p-2">
+            <div v-if="!loading" class="text-xs p-1">
                 <div v-for="comment in scores.content.scoreComments" v-html="comment">
                 </div>
             </div>

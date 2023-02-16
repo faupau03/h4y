@@ -41,7 +41,7 @@
                     :team_score="team_score" @clickedTeam="clickedTeam">
                 </Table>
                 <!-- Additional information -->
-                <div v-if="team" class="text-xs card bg-accent/30 p-2">
+                <div v-if="team" class="text-xs p-1">
                     <div v-for="comment in team.content.scoreComments" v-html="comment">
                     </div>
                 </div>

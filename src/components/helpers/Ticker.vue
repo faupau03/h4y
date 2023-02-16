@@ -1,5 +1,4 @@
-<template>
-    <!-- Live ticker with option to fullscreen -->
+<template><!-- Live ticker with option to fullscreen -->
     <div v-if="
         gameLive &&
         !gameTickerLoading &&
@@ -77,15 +76,14 @@
         if (screenWidth() < 640) {
             return 56;
         }
-        return 86;
+        return 72;
     }
 " :get-node-key="(node, index) => index">
                     <template #cell="slotProps">
                         <div class="flex justify-evenly md:text-xl sm:text-sm text-xs p-2 mx-2 rounded items-center">
                             <div class="w-2/5 text-ellipsis overflow-hidden">
-                                <TickerElement :message="slotProps.node.message"
-                                    :team_home="gameTickerInfo['team_home']" :team_guest="gameTickerInfo['team_guest']"
-                                    side="left" />
+                                <TickerElement :message="slotProps.node.message" :team_home="gameTickerInfo['team_home']"
+                                    :team_guest="gameTickerInfo['team_guest']" side="left" />
                             </div>
                             <div>
                                 <div class="flex justify-center">
@@ -131,52 +129,52 @@
                     </div>
                     <div>
                         {{
-    get7m(player.player_no)
-                        ?get7m(player.player_no) +
-    "/" +
-    get7mScore(player.player_no)
-                        : ""
+                            get7m(player.player_no)
+                            ? get7m(player.player_no) +
+                            "/" +
+                            get7mScore(player.player_no)
+                            : ""
                         }}
                     </div>
                     <div class="bg-yellow-400 h-full text-center grid items-center">
                         {{
-    getYellowCard(player.player_no)
-                        ?getTime(getYellowCard(player.player_no))
-                        : ""
+                            getYellowCard(player.player_no)
+                            ? getTime(getYellowCard(player.player_no))
+                            : ""
                         }}
                     </div>
                     <div class="bg-indigo-200 h-full text-center grid items-center">
                         {{
-    get2min(player.player_no)[0]
-        ? getTime(get2min(player.player_no)[0])
-                        : ""
+                            get2min(player.player_no)[0]
+                            ? getTime(get2min(player.player_no)[0])
+                            : ""
                         }}
                     </div>
                     <div class="bg-indigo-200 h-full text-center grid items-center">
                         {{
-    get2min(player.player_no)[1]
-        ? getTime(get2min(player.player_no)[1])
-                        : ""
+                            get2min(player.player_no)[1]
+                            ? getTime(get2min(player.player_no)[1])
+                            : ""
                         }}
                     </div>
                     <div class="bg-indigo-200 h-full text-center grid items-center">
                         {{
-    get2min(player.player_no)[2]
-        ? getTime(get2min(player.player_no)[2])
-                        : ""
+                            get2min(player.player_no)[2]
+                            ? getTime(get2min(player.player_no)[2])
+                            : ""
                         }}
                     </div>
                     <div class="bg-red-400 h-full text-center grid items-center">
                         {{
-    getRedCard(player.player_no)
-                        ?getTime(getRedCard(player.player_no))
-                        : ""
+                            getRedCard(player.player_no)
+                            ? getTime(getRedCard(player.player_no))
+                            : ""
                         }}
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+</div>
 </template>
 
 <script setup>
@@ -208,6 +206,8 @@ const gameTickerTimer = ref(null);
 const gameTickerStop = ref(false);
 const gameTickerTime = ref(0);
 const gameTickerLastLength = ref(0);
+
+const score_halftime = ref(null);
 
 const selectedTeam = ref("team_home");
 
@@ -438,7 +438,17 @@ const tickerInit = async () => {
                     (item) => !messageFilter.includes(item["message"])
                 );
             }
+            if (gameTicker.value[0].message.includes("Spielstand 1. Halbzeit")) {
+                score_halftime.value = {
+                    home_score_1: gameTicker.value[0].home_score,
+                    guest_score_1: gameTicker.value[0].guest_score,
+                };
+            }
             gameScore.value = gameTicker.value[0];
+            if (score_halftime.value) {
+                gameScore.value.home_score_1 = score_halftime.value.home_score_1;
+                gameScore.value.guest_score_1 = score_halftime.value.guest_score_1;
+            }
 
         }, interval);
         let tmp = await fetchTicker(gameToken.value);
