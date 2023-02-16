@@ -14,11 +14,11 @@
                     </div>
                     <div id="club-info" class="m-5">
                         <div class="font-bold">
-                            {{ league? league.content.futureGames.gClassLname : "" }}
+                            {{ league ? league.content.futureGames.gClassLname : "" }}
                         </div>
                         <!-- <div class="text-sm">
-                            {{ club? club.lname : "" }}
-                        </div> -->
+                                {{ club? club.lname : "" }}
+                            </div> -->
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-    </div>
+</div>
 </template>
 
 <script setup>
@@ -117,7 +117,6 @@ const getData = async () => {
         class_id.value
     );
     leagueMatches.value = league.value.content.futureGames.games;
-    //console.log(leagueMatches.value)
     leagueMatches.value = filterGames(leagueMatches.value, showAll.value);
     loading.value = false;
 };

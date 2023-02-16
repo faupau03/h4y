@@ -55,7 +55,7 @@
             </span>
         </div>
 
-    </div>
+</div>
 </template>
 
 <script setup>
@@ -84,7 +84,6 @@ const getSelectedFavorite = () => {
     } else {
         selectedFavorite.value = {};
     }
-    //console.log(selectedFavoriteLoc);
     let isFavorite = false;
     favorites.value.forEach((favorite) => {
         if (

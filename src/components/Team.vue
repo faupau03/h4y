@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-    </div>
+</div>
 </template>
 
 <script setup>
@@ -168,7 +168,6 @@ const fetchClub = async () => {
 };
 
 const setTeamID = async () => {
-    //console.log(props.team_id);
     if (props.team_id && props.team_class && props.team_club) {
         console.log("props");
         teamID.value = props.team_id;
@@ -182,9 +181,6 @@ const setTeamID = async () => {
         teamClassID.value = params[1];
         teamClubNo.value = params[2];
     }
-    //console.log("teamID: " + teamID.value);
-    //console.log("teamClassID: " + teamClassID.value);
-    //console.log("teamClubNo: " + teamClubNo.value);
 };
 
 const clickedTeam = async (team_name) => {

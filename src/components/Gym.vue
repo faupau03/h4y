@@ -13,8 +13,8 @@
                     <div class="text-base-content -mt-1 underline hover:text-gray-900">
                         <!-- TODO: add link to org -->
                         <!-- {{ og }} -->
-                        <router-link v-if="og.length"
-                            :to="'/leagues#' + og.find(findOg).id + ';' + og.find(findOg).v_id">{{ gym.org }}
+                        <router-link v-if="og.length" :to="'/leagues#' + og.find(findOg).id + ';' + og.find(findOg).v_id">{{
+                            gym.org }}
                         </router-link>
                     </div>
                     <div id="info" class="grid text-xs sm:text-base xs:text-sm">
@@ -57,16 +57,16 @@
             <div class="mt-3 flex justify-between gap-1 flex-wrap sm:flex-nowrap">
                 <h2 class="font-bold text-lg m-1">Spiele</h2>
                 <!-- <div class="text-sm m-2">
-                    Alle Spiele
-                    <input
-                        class="ml-1 mb-1 rounded"
-                        type="checkbox"
-                        name=""
-                        id=""
-                        v-model="showAll"
-                        @click="teamClassID ? getData(teamClassID) : null"
-                    />
-                </div> -->
+                        Alle Spiele
+                        <input
+                            class="ml-1 mb-1 rounded"
+                            type="checkbox"
+                            name=""
+                            id=""
+                            v-model="showAll"
+                            @click="teamClassID ? getData(teamClassID) : null"
+                        />
+                    </div> -->
                 <div class="flex flex-wrap gap-2 sm:justify-end">
                     <Week @updateWeek="(id) => updateWeek(id)" :selected="week_selected" :list="week_list"
                         :loading="loading" />
@@ -81,12 +81,12 @@
                         :class="index == 0 ? '' : 'mt-1'">
                         <span>{{ team.gClassSname }}</span>
                         <!-- <ChevronUpIcon
-                            class="w-5 h-5 text-indigo-900"
-                            :class="[
-                                open ? 'transform rotate-180' : '',
-                                team.games.length ? '' : '!text-gray-500',
-                            ]"
-                        /> -->
+                                class="w-5 h-5 text-indigo-900"
+                                :class="[
+                                    open ? 'transform rotate-180' : '',
+                                    team.games.length ? '' : '!text-gray-500',
+                                ]"
+                            /> -->
                     </DisclosureButton>
                     <DisclosurePanel static v-if="team"
                         class="px-4 pt-4 pb-2 text-sm bg-primary bg-opacity-20 rounded-b-lg">
@@ -108,7 +108,7 @@
                 </div>
             </div>
         </div>
-    </div>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -178,9 +178,6 @@ const goDateForward = () => {
 };
 
 const findOg = (item) => {
-    //console.log(gym.value.org);
-    //console.log(item);
-    //console.log(item.name);
     return item.name === gym.value.org;
 }
 

@@ -19,7 +19,6 @@ const is_dark = ref(isDark());
 
 //watch route change
 watch(route, (newVal, oldVal) => {
-    //console.log("route changed", newVal, oldVal);
     updateTab();
 });
 
@@ -33,14 +32,11 @@ const updateTab = () => {
 
 // TODO: needed?
 window.addEventListener('storage', () => {
-    //console.log("storage changed");
     show_last_page.value = localStorage.getItem("show_last_page") === "true";
-    //console.log(show_last_page.value);
     updateTab();
 });
 
 onUpdated(() => {
-    //console.log("onUpdated");
     updateTab();
     is_dark.value = isDark();
 });
@@ -48,8 +44,6 @@ onUpdated(() => {
 onMounted(() => {
     themeChange(false);
     is_dark.value = isDark();
-    //console.log("onMounted");
-    //console.log("new version 14");
     localFavorites.value = JSON.parse(
         localStorage.getItem("favorites") || "[]"
     );
@@ -128,10 +122,8 @@ onMounted(() => {
                                 <path
                                     d="m417.81 158.92-3.6914 17.09 84.562 18.355 14.766 84.938-70.207 35.102 7.8281 15.656 81.859-40.914-19.039-109.38-96.078-20.848z"
                                     fill-rule="evenodd" />
-                                <path d="m418.91 412.63-11.074 13.535 46.449 38.008 11.074-13.535z"
-                                    fill-rule="evenodd" />
-                                <path
-                                    d="m545 415.5-94.609 32.504-32.676 60.395 15.379 8.3398 29.465-54.414 88.148-30.281z"
+                                <path d="m418.91 412.63-11.074 13.535 46.449 38.008 11.074-13.535z" fill-rule="evenodd" />
+                                <path d="m545 415.5-94.609 32.504-32.676 60.395 15.379 8.3398 29.465-54.414 88.148-30.281z"
                                     fill-rule="evenodd" />
                                 <path d="m528.45 275.5-11.965 12.781 63.848 59.746 11.965-12.785-63.848-59.746z"
                                     fill-rule="evenodd" />
@@ -139,10 +131,8 @@ onMounted(() => {
                                     fill-rule="evenodd" />
                                 <path d="m402.7 37.512-50.688 54.926 12.852 11.863 50.688-54.926-12.852-11.859z"
                                     fill-rule="evenodd" />
-                                <path d="m168.57 344.68-25.359 71.812 16.508 5.8086 25.328-71.812z"
-                                    fill-rule="evenodd" />
-                                <path d="m113.41 225.84-8.375 15.379 46.449 25.328 8.4102-15.348z"
-                                    fill-rule="evenodd" />
+                                <path d="m168.57 344.68-25.359 71.812 16.508 5.8086 25.328-71.812z" fill-rule="evenodd" />
+                                <path d="m113.41 225.84-8.375 15.379 46.449 25.328 8.4102-15.348z" fill-rule="evenodd" />
                                 <path d="m220.7 70.77-11.758 12.957 46.449 42.246 11.793-12.953-46.484-42.246z"
                                     fill-rule="evenodd" />
                                 <path d="m210.17 471.94-0.88672 17.5 88.594 4.4102 0.85547-17.465-88.559-4.4414z"
@@ -342,7 +332,7 @@ onMounted(() => {
                 </div>
             </router-link>
         </div>
-    </div>
+</div>
 </template>
 
 

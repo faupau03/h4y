@@ -53,7 +53,7 @@
                         <Disclosure v-for="(team) in classes" :key="team.gClassID" v-slot="{ open }">
                             <div class="bg-primary text-primary-content content-center p-0 rounded-md uppercase flex text-sm justify-between bg-opacity-75 disabled:bg-neutral/50 w-full flex-nowrap gap-3 pl-3 my-1"
                                 :class="[open ? 'rounded-b-none mb-0' : '', classes.find(c => c.gClassID === team.gClassID).games.every(element =>
-                                element[Object.keys(element)[0]].length < 1) ? 'bg-opacity-50' : 'font-bold']">
+                                    element[Object.keys(element)[0]].length < 1) ? 'bg-opacity-50' : 'font-bold']">
                                 <div id="class-name" class="mr-auto my-auto">
                                     <a :href="'/league#' + team.gClassID" class="link link-hover"><span
                                             class="h-fit my-auto sm:hidden block">{{
@@ -92,7 +92,7 @@
                                             open = true)
                                         : (teamClassID = null, open = false)
                                 " :disabled="classes.find(c => c.gClassID === team.gClassID).games.every(element =>
-element[Object.keys(element)[0]].length < 1)" :class="[open ? 'rounded-b-none mb-0' : '']">
+    element[Object.keys(element)[0]].length < 1)" :class="[open ? 'rounded-b-none mb-0' : '']">
 
 
                                     <ChevronUpIcon class="w-5 h-5" :class="[
@@ -108,15 +108,15 @@ element[Object.keys(element)[0]].length < 1)" :class="[open ? 'rounded-b-none mb
 
                                     <hr class="bg-gray-400 text-black h-[1.5px] -mt-3" />
                                     <!-- <router-link v-if="Object.keys(subTeam)[0]" :to="
-                                    'team#' +
-                                    Object.keys(subTeam)[0] +
-                                    ';' +
-                                    team.gClassID +
-                                    ';'
-                                
-                                "
-                                    class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900">
-                                    Zum Team</router-link> -->
+                                                            'team#' +
+                                                            Object.keys(subTeam)[0] +
+                                                            ';' +
+                                                            team.gClassID +
+                                                            ';'
+                                                        
+                                                        "
+                                                            class="ml-auto mr-0 w-fit block underline-offset-2 underline hover:text-indigo-700 text-indigo-900">
+                                                            Zum Team</router-link> -->
                                     <div id="league-info">
                                         <!-- Information about how many games and button to team component -->
                                     </div>
@@ -146,8 +146,7 @@ element[Object.keys(element)[0]].length < 1)" :class="[open ? 'rounded-b-none mb
                 </div>
             </div>
         </div>
-    </div>
-
+</div>
 </template>
 
 <script setup>
@@ -196,7 +195,6 @@ const og = ref(null);
 
 //watch route change
 watch(route, async (newVal, oldVal) => {
-    //console.log("route changed", newVal.hash);
     if (newVal.hash) {
         o.value = newVal.hash.replace("#", "").split(';')[0];
         if (o.value == "undefined") {
@@ -227,46 +225,33 @@ watch(route, async (newVal, oldVal) => {
 });
 
 const updateRegion = (id) => {
-    //console.log("updateRegion");
-    //console.log(region_list.value[id]);
     region_selected.value = id;
     o.value = id;
     router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value + ';' + period_selected.value + ';' + week_selected.value });
 }
 const updateWeek = (id) => {
-    //console.log("updateWeek");
-    //console.log(week_list.value[id]);
     week_selected.value = id;
     router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value + ';' + period_selected.value + ';' + week_selected.value });
 }
 
 const updatePeriod = (id) => {
-    //console.log("updatePeriod");
-    //console.log(id);
-    //console.log(period_list.value[id]);
     period_selected.value = id;
     router.push({ path: '/leagues', hash: '#' + o.value + ';' + og.value + ';' + period_selected.value + ';' + week_selected.value });
 }
 
 const updateFilter = (show) => {
     const all_classes = JSON.parse(JSON.stringify(games_data.value.content.classes));
-    //console.log("Before:", JSON.stringify(games_data.value.content.classes).length);
 
     classes.value = all_classes.map((club_class) => {
         club_class.games = filterGames(club_class.games, show);
         return club_class;
     });
-    //console.log("After:", JSON.stringify(classes.value).length);
 }
 
 const fetchGames = async () => {
 
-    //console.log("o", o.value);
-    //console.log("og", og.value);
     games_loading.value = true;
 
-    //console.log(selected.value);
-    //console.log(period.value);
     let response;
     if (week_selected.value || period_selected.value) {
         if (o.value && og.value) {
@@ -298,9 +283,6 @@ const fetchGames = async () => {
     period_list.value = games_data.value.menu.period.list;
     period_selected.value = games_data.value.menu.period.selectedID;
 
-    //console.log("periods", periods.value);
-    //console.log("period", period.value);
-
     week_list.value = games_data.value.menu.dt.list;
     week_selected.value = games_data.value.menu.dt.selected;
 
@@ -318,11 +300,9 @@ const fetchGames = async () => {
 
 
 const goPeriodBack = () => {
-    //console.log("Objects", periods.value);
-    //console.log("Array", Object.keys(periods.value));
     const index = Object.keys(periods.value).indexOf(String(period.value));
     const newPeriod = Object.keys(periods.value)[index - 1];
-    //console.log(index);
+
     if (!newPeriod) return;
     period.value = newPeriod;
     fetchGames();
@@ -338,11 +318,8 @@ const goPeriodForward = () => {
 
 
 const goDateBack = () => {
-    //console.log(date_list.value);
     const index = Object.keys(date_list.value).findIndex((element) => element == selected.value);
-    //console.log(index);
     selected.value = Object.keys(date_list.value)[index - 1];
-    //console.log(selected.value);
     fetchGames();
 };
 const goDateForward = () => {
@@ -375,11 +352,7 @@ onMounted(async () => {
         og.value = null;
     }
 
-    //console.log("o", o.value);
-    //console.log("og", og.value);
     await getLeagues();
-    //console.log("leagues", leagues.value);
-
 
     if (o.value || og.value) {
         await fetchGames();
