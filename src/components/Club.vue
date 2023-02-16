@@ -2,14 +2,13 @@
     <div class="w-full grid gap-4">
         <NavBar title="Verein" subtitle="Spielübersicht" />
         <div id="club-header" class="grid w-5/6 m-auto relative bg-base-100 card shadow-xl">
-            <Header v-if="club" :type="'club'" :club="club" :club_id="club.no"
-                @updateFavorites="emit('updateFavorites')"></Header>
+            <Header v-if="club" :type="'club'" :club="club" :club_id="club.no" @updateFavorites="emit('updateFavorites')">
+            </Header>
             <HeaderLoading v-else />
 
             <div id="content" class="flex flex-wrap mb-5">
                 <img v-if="club && club.no && img_loaded" :src="'logos/clubs/' + club.no + '.png'"
-                    @error="img_loaded = false" alt="" id="club-logo"
-                    class="h-24 sm:h-32 lg:h-48 ml-5 card shadow-2xl" />
+                    @error="img_loaded = false" alt="" id="club-logo" class="h-24 sm:h-32 lg:h-48 ml-5 card shadow-2xl" />
 
                 <div v-else class="h-24 sm:h-32 lg:h-48 ml-5 card shadow-2xl bg-gray-200">
                     <UserGroupIcon class="text-gray-500 h-full" />
@@ -116,9 +115,8 @@
 
                                     <!-- Information about how many games and button to team component -->
                                     <router-link v-if="Object.keys(team)[0] && !loadingGames"
-                                        :to="'/team#' + Object.keys(team)[0] + ';' + activeClass.id + ';' + club.no"
-                                        class=" ml-auto mr-0 w-fit block underline-offset-2 underline text-base-content
-                                hover:opacity-50">
+                                        :to="'/team#' + Object.keys(team)[0] + ';' + activeClass.id + ';' + club.no" class=" ml-auto mr-0 w-fit block underline-offset-2 underline text-base-content
+                                    hover:opacity-50">
                                         Zum Team</router-link>
                                 </div>
 
@@ -159,7 +157,7 @@
 
             </div>
         </div>
-    </div>
+</div>
 </template>
 
 <script setup>
@@ -329,11 +327,7 @@ const fetchClubInfo = async () => {
 
 const fetchAddress = async () => {
     if (localStorage.getItem("club_addresses") && JSON.parse(localStorage.getItem("club_addresses"))) {
-        //console.log("club_addresses found in localStorage");
-        //console.log(JSON.parse(localStorage.getItem("club_addresses")))
-        //console.log(club.value.id)
         club.value.webaddress = JSON.parse(localStorage.getItem("club_addresses"))[club.value.id];
-        //console.log("FETCHADDRESS: " + club.value.webaddress);
     }
 
     // // return if offline
