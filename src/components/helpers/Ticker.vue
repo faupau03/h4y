@@ -1,4 +1,5 @@
-<template><!-- Live ticker with option to fullscreen -->
+<template>
+    <!-- Live ticker with option to fullscreen -->
     <div v-if="
         gameLive &&
         !gameTickerLoading &&
@@ -68,9 +69,9 @@
                 <div>Aktion</div>
             </div>
             <hr class="bg-accent h-[1px]">
-            <div id="data" class="overflow-none mb-2 bg-base-300" :class="fullscreenTicker ? 'pb-4' : 'max-h-80'">
+            <div id="data" class="overflow-none mb-2 bg-base-300" :class="fullscreenTicker ? 'pb-4' : 'max-h-96'">
                 <VirtualisedList class="h-full" :nodes="gameTicker" :viewportHeight="
-                    fullscreenTicker ? screenHeight() - 160 : 320
+                    fullscreenTicker ? screenHeight() - 160 : 384
                 " :getNodeHeight="
     (node) => {
         if (screenWidth() < 640) {
@@ -174,7 +175,7 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 </template>
 
 <script setup>
