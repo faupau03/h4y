@@ -21,7 +21,7 @@
                 {{ info }}
             </div>
         </div>
-</div>
+    </div>
 </template>
 <script setup>
 import { onMounted } from "vue";
@@ -142,7 +142,7 @@ const init = () => {
     }
     // Disqualifikation
     else if (message.includes("Disqualifikation")) {
-        let player_no = message.match(/\d+/)[0];
+        let player_no = message.match(/\d+/);
         if (!player_no) {
             player_no = message.replace("Disqualifikation für die Nummer ", "").charAt(0);
         }
