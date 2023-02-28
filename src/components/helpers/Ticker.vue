@@ -423,10 +423,10 @@ const tickerInit = async () => {
                 gameTickerTime.value = gameTicker.value[0].game_time;
             }
             if (
-                gameTicker.value[0].stops_time == true ||
-                (gameTicker.value[1].stops_time == true &&
-                    gameTicker.value[1].game_time ==
-                    gameTicker.value[0].game_time)
+                gameTicker.value[0].stops_time == true //||
+                //(gameTicker.value[1].stops_time == true &&
+                //     gameTicker.value[1].game_time ==
+                //     gameTicker.value[0].game_time)
             ) {
                 gameTickerStop.value = true;
             } else {
