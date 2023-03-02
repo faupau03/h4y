@@ -6,7 +6,7 @@
             </Header>
             <HeaderLoading v-else />
 
-            <div id="content" class="flex flex-wrap mb-5">
+            <div id="content" class="flex flex-wrap sm:mb-5">
                 <img v-if="club && club.no && img_loaded" :src="'logos/clubs/' + club.no + '.png'"
                     @error="img_loaded = false" alt="" id="club-logo" class="h-24 sm:h-32 lg:h-48 ml-5 card shadow-2xl" />
 
@@ -19,7 +19,8 @@
                     </div>
                     <div class="text-base-content">Postleitzahl: {{ club.postal }}</div>
                     <div class="text-base-content">Nummer: {{ club.no }}</div>
-                    <div class="absolute bottom-5 right-5 flex items-center gap-1 text-base-content hover:text-accent">
+                    <div v-if="club.webaddress"
+                        class="absolute bottom-5 right-5 flex items-center gap-1 text-base-content hover:text-accent">
                         <GlobeAltIcon class="h-5" />
                         <a class=" underline mb-1" :href="'http://' + club.webaddress">{{
                             club.webaddress
@@ -116,7 +117,7 @@
                                     <!-- Information about how many games and button to team component -->
                                     <router-link v-if="Object.keys(team)[0] && !loadingGames"
                                         :to="'/team#' + Object.keys(team)[0] + ';' + activeClass.id + ';' + club.no" class=" ml-auto mr-0 w-fit block underline-offset-2 underline text-base-content
-                                    hover:opacity-50">
+                                                hover:opacity-50">
                                         Zum Team</router-link>
                                 </div>
 
@@ -157,7 +158,7 @@
 
             </div>
         </div>
-</div>
+    </div>
 </template>
 
 <script setup>

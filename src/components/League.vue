@@ -5,7 +5,7 @@
             <div id="club-header" class="w-5/6 m-auto relative bg-base-100 card shadow-xl grid">
                 <Header @updateFavorites="emit('updateFavorites')" :type="'class'" :games="leagueMatches"
                     :class_id="class_id"></Header>
-                <div id="content" class="flex flex-wrap mb-5">
+                <div id="content" class="flex flex-wrap sm:mb-5">
                     <img v-if="false" :src="'logos/clubs/' + teamClubNo + '.png'" @error="img_loaded = false" alt=""
                         id="club-logo" class="h-24 sm:h-32 lg:h-48 ml-5 rounded-lg" />
 
@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 </template>
 
 <script setup>

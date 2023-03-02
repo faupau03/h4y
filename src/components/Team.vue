@@ -7,7 +7,7 @@
                     :games="teamMatches" :team_id="teamID" :class_id="teamClassID" :club_id="club.id" :team="team"
                     :club="club"></Header>
                 <HeaderLoading v-else />
-                <div id="content" class="flex flex-wrap mb-5">
+                <div id="content" class="flex flex-wrap sm:mb-5">
                     <img v-if="team && club && club.id && img_loaded" :src="'logos/clubs/' + club.no + '.png'"
                         @error="img_loaded = false" alt="" id="club-logo"
                         class="card h-24 sm:h-32 lg:h-48 ml-5 shadow-2xl" />
@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 </template>
 
 <script setup>
@@ -185,6 +185,9 @@ const setTeamID = async () => {
 
 const clickedTeam = async (team_name) => {
     console.log("clickedTeam: " + team_name);
+    console.log(team.value.content.score);
+    teamID.value = team.value.content.score.find(element => element.tabTeamname == team_name).tabTeamID;
+    console.log(teamID.value)
     console.log(isNaN(team_name.substring(team_name.length)))
     if (!isNaN(team_name.substring(team_name.length))) {
         team_name = team_name.substring(0, team_name.length - 2);
@@ -201,8 +204,12 @@ const clickedTeam = async (team_name) => {
 };
 
 const init = async () => {
+    console.log("set team id");
     await setTeamID();
+    console.log(teamID.value);
+    console.log("get data");
     await getData();
+    console.log("fetch club");
     await fetchClub();
 };
 
