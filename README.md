@@ -66,11 +66,11 @@
 ## About The Project
 
 <p>
-  <img src="img/Leagues.jpeg" alt="Leagues" width="100"/>
-  <img src="img/Favorites.jpeg" alt="Favorites" width="100"/>
-  <img src="img/Search.jpeg" alt="Search" width="100"/>
-  <img src="img/Club.jpeg" alt="Club" width="100"/>
-  <img src="img/Team.jpeg" alt="Team" width="100"/>
+  <img src="img/Leagues.png" alt="Leagues" width="100"/>
+  <img src="img/Favorites.png" alt="Favorites" width="100"/>
+  <img src="img/Search.png" alt="Search" width="100"/>
+  <img src="img/Club.png" alt="Club" width="100"/>
+  <img src="img/Team.png" alt="Team" width="100"/>
   <img src="img/Ticker.jpeg" alt="Match" width="100"/>
   <img src="img/Ticker_lineup.jpeg" alt="Match Lineup" width="100"/>
   <img src="img/Ticker_full.jpeg" alt="Ticker" width="300"/>
@@ -204,7 +204,7 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2022 [Paul Paffe](https://github.com/faupau03).<br />
+Copyright © 2023 [Paul Paffe](https://github.com/faupau03).<br />
 This project is [MIT](https://opensource.org/licenses/MIT) licensed.
 See `LICENSE` for more information.
 
