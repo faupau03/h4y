@@ -77,13 +77,7 @@
                                     </span>
                                     <!-- live animation if live -->
                                     <!-- Live animation -->
-                                    <div v-show="checkLive(classes, team.gClassID)" class="rounded-full flex w-4 h-4">
-                                        <div
-                                            class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75">
-                                        </div>
-                                        <div class="z-20 mx-auto my-auto animate-none rounded-full h-3 w-3 bg-red-500">
-                                        </div>
-                                    </div>
+                                    <LiveElement v-show="checkLive(classes, team.gClassID)" class="" />
                                 </span>
 
                                 <DisclosureButton class="btn btn-primary justify-self-end  flex-nowrap gap-3" @click="
@@ -146,7 +140,7 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 </template>
 
 <script setup>
@@ -167,6 +161,7 @@ import MatchLoading from "./helpers/MatchLoading.vue";
 import Period from "./helpers/Period.vue";
 import Week from "./helpers/Week.vue";
 import RegionSelect from "./helpers/RegionSelect.vue";
+import LiveElement from "./helpers/LiveElement.vue";
 
 import { checkLive } from "./functions/misc.js";
 

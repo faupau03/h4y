@@ -132,7 +132,7 @@ const setClassID = async () => {
 const clickedTeam = async (team_name) => {
     console.log(team_name);
     if (!isNaN(team_name.substring(team_name.length))) {
-        team_name = team_name.substring(0, team_name.length - 2);
+        team_name = team_name.substring(0, team_name.length - 1);
     }
     const response = await fetch(
         "https://spo.handball4all.de/service/if_g_json.php?cmd=cs&cs=" +

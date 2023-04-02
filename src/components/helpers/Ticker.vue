@@ -38,7 +38,8 @@
             </div>
             <div class="grid justify-center relative -top-1 sm:-top-8">
                 <div class="flex justify-center md:text-xl sm:pl-0 pl-2">
-                    <ClockIcon class="h-6 w-6 hidden sm:block" />
+                    <ClockIcon v-if="!gameTickerStop" class="h-6 w-6 hidden sm:block mt-0.5" />
+                    <PauseIcon v-else class="h-6 w-6 hidden sm:block text-red-500 mt-0.5" />
                     <!-- {{ getTime(gameTicker[0]["game_time"]) }} -->
                     {{ getTime(gameTickerTime) }}
                 </div>
@@ -184,7 +185,7 @@ import { fetchTickerInfo, fetchTicker } from "../functions/fetchData.js";
 import TickerElement from "./TickerElement.vue";
 import { VirtualisedList } from "vue-virtualised";
 import { ClockIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon } from "@heroicons/vue/24/outline";
-
+import { PauseIcon } from "@heroicons/vue/24/solid";
 
 const props = defineProps(["game_token", "game_live"]);
 

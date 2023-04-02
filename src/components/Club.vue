@@ -88,13 +88,8 @@
                             <span class="h-fit" v-if="item.games.length < 1">
                             </span>
                         </span>
-                        <!-- live animation if live -->
-                        <!-- Live animation -->
-                        <div v-show="checkLive(classes, item.gClassID)" class="rounded-full w-4 h-4">
-                            <div class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75">
-                            </div>
-                            <div class="z-20 mx-auto my-auto animate-none rounded-full h-3 w-3 bg-red-500"></div>
-                        </div>
+                        <LiveElement v-show="checkLive(classes, item.gClassID)" class="">
+                        </LiveElement>
 
                         <DisclosureButton @click="!open ? showClass(item.gClassID) : ''"
                             class="btn btn-primary bg-opacity-75 flex justify-end flex-nowrap gap-3"
@@ -117,7 +112,7 @@
                                     <!-- Information about how many games and button to team component -->
                                     <router-link v-if="Object.keys(team)[0] && !loadingGames"
                                         :to="'/team#' + Object.keys(team)[0] + ';' + activeClass.id + ';' + club.no" class=" ml-auto mr-0 w-fit block underline-offset-2 underline text-base-content
-                                                hover:opacity-50">
+                                                                hover:opacity-50">
                                         Zum Team</router-link>
                                 </div>
 
@@ -187,6 +182,7 @@ import MatchLoading from "./helpers/MatchLoading.vue";
 import Header from "./helpers/Header.vue";
 import HeaderLoading from "./helpers/HeaderLoading.vue";
 import Period from "./helpers/Period.vue";
+import LiveElement from "./helpers/LiveElement.vue";
 
 import { getClosestDate, checkLive } from "./functions/misc.js";
 

@@ -11,10 +11,8 @@
         <div id="title" class="hidden sm:flex font-bold md:text-lg sm:text-base text-sm">
             {{ title }}
         </div>
-        <div v-if="type == 'match'" v-show="game.live == true" class="rounded-full relative w-4 h-4 mt-2">
-            <div class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-500 opacity-75"></div>
-            <div class="z-20 mx-auto my-auto mt-0.5 animate-none rounded-full h-3 w-3 bg-red-500"></div>
-        </div>
+        <LiveElement v-if="type == 'match'" v-show="game.live == true" class="">
+        </LiveElement>
 
         <Popover v-if="net_error" class="relative">
             <PopoverButton class="flex items-center btn btn-sm btn-square">
@@ -35,8 +33,7 @@
             'https://spo.handball4all.de/misc/sboPublicReports.php?sGID=' +
             game.sGID
         ">
-            <DocumentIcon class="h-6 mt-1 hover:text-accent"
-                :class="game.robotextstate == 'generated' ? '' : 'ml-auto'" />
+            <DocumentIcon class="h-6 mt-1 hover:text-accent" :class="game.robotextstate == 'generated' ? '' : 'ml-auto'" />
         </a>
         <Cal v-if="type == 'match'" class="cursor-pointer" :type="'single'" :class="game.sGID ? '' : 'ml-auto'"
             :game="game" />
@@ -56,6 +53,7 @@
 <script setup>
 // helper components
 import Cal from "./Cal.vue";
+import LiveElement from "./LiveElement.vue";
 import PressText from "./PressText.vue";
 // functions
 import { getFavorites, updateFavorites } from "../functions/favorites";
